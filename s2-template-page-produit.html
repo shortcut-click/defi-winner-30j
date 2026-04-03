@@ -95,6 +95,40 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
   <h1 class="page-title">Template Page Produit</h1>
   <p class="page-sub">Structure copy complète pour ta page produit Shopify. Remplis chaque section, utilise les prompts IA fournis. Copie-colle directement dans Shopify.</p>
 
+  <!-- PONT PERSONA → COPY -->
+  <div style="background:#111;border:1px solid #1D9E7540;border-radius:12px;padding:18px 22px;margin-bottom:28px;">
+    <div style="font-size:0.68rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#1D9E75;margin-bottom:10px;">🗂 Avant d'écrire — relis ta Fiche Persona</div>
+    <p style="font-size:0.79rem;color:#888;margin-bottom:14px;">Chaque bloc de copy vient directement de ta fiche persona. Ne devine rien — traduis tes données en mots. Voilà le mapping :</p>
+    <div style="display:flex;flex-direction:column;gap:7px;font-size:0.76rem;">
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;">
+        <div style="background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:7px 11px;color:#999;">Situation du persona</div>
+        <div style="color:#1D9E75;text-align:center;font-weight:700;">→</div>
+        <div style="background:#0f0f0f;border:1px solid #1D9E7530;border-radius:6px;padding:7px 11px;color:#f0f0f0;">Paragraphe "Pour qui" — Description (bloc 3)</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;">
+        <div style="background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:7px 11px;color:#999;">Déclencheur (moment clé)</div>
+        <div style="color:#1D9E75;text-align:center;font-weight:700;">→</div>
+        <div style="background:#0f0f0f;border:1px solid #1D9E7530;border-radius:6px;padding:7px 11px;color:#f0f0f0;">Accroche / Tagline (bloc 2) — le moment précis</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;">
+        <div style="background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:7px 11px;color:#999;">Émotion dominante</div>
+        <div style="color:#1D9E75;text-align:center;font-weight:700;">→</div>
+        <div style="background:#0f0f0f;border:1px solid #1D9E7530;border-radius:6px;padding:7px 11px;color:#f0f0f0;">Titre (bloc 1) + angle des hooks pub S3</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;">
+        <div style="background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:7px 11px;color:#999;">Hook retenu</div>
+        <div style="color:#1D9E75;text-align:center;font-weight:700;">→</div>
+        <div style="background:#0f0f0f;border:1px solid #1D9E7530;border-radius:6px;padding:7px 11px;color:#f0f0f0;">1ère ligne de description + 1er hook pub S3</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 24px 1fr;gap:6px;align-items:center;">
+        <div style="background:#0f0f0f;border:1px solid #2a2a2a;border-radius:6px;padding:7px 11px;color:#999;">Plateforme cible</div>
+        <div style="color:#1D9E75;text-align:center;font-weight:700;">→</div>
+        <div style="background:#0f0f0f;border:1px solid #1D9E7530;border-radius:6px;padding:7px 11px;color:#f0f0f0;">Format créa dominant (9:16 Instagram/TikTok ou 1:1 Facebook)</div>
+      </div>
+    </div>
+    <a href="s1-template-persona.html" style="display:inline-block;margin-top:12px;font-size:0.74rem;font-weight:700;color:#1D9E75;text-decoration:none;">↗ Ouvrir ma Fiche Persona S1</a>
+  </div>
+
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab('copy')">Structure Copy</button>
     <button class="tab-btn" onclick="switchTab('prompts')">Prompts IA</button>
@@ -264,6 +298,7 @@ body { background: var(--bg); color: var(--text); font-family: -apple-system, Bl
           <div class="field">
             <label>Preuve sociale</label>
             <input placeholder="Ex : ⭐ 4.8/5 — 847 avis vérifiés">
+            <div style="font-size:0.7rem;color:#fb923c;margin-top:5px;line-height:1.4;">⚠️ Pas encore d'avis ? Alternatives légales : nombre de commandes fournisseur ("Déjà +4 800 commandes"), mention presse/blog si tu en as une, ou simplement la garantie de remboursement — ne fabrique jamais des chiffres d'avis.</div>
           </div>
           <div class="field">
             <label>Livraison</label>
@@ -404,6 +439,47 @@ function copyPrompt(id, btn) {
     setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
   });
 }
+
+// ─── AUTO-SAUVEGARDE ────────────────────────────────────────────────────────
+(function() {
+  var KEY = 'defi_template_s2'; var _t;
+  function showSaved() {
+    var ind = document.getElementById('_si');
+    if (!ind) return;
+    ind.style.opacity = '1'; clearTimeout(_t);
+    _t = setTimeout(function() { ind.style.opacity = '0'; }, 2000);
+  }
+  function saveFields() {
+    var d = {};
+    document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
+      d[i] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
+    showSaved();
+  }
+  function restoreFields() {
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!d) return;
+      document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
+        if (d[i] === undefined) return;
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = d[i]; else el.value = d[i];
+      });
+    } catch(e) {}
+  }
+  document.addEventListener('DOMContentLoaded', function() {
+    var inner = document.querySelector('.header-inner');
+    if (inner) {
+      var ind = document.createElement('span'); ind.id = '_si';
+      ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
+      ind.textContent = '💾 Sauvegardé'; inner.appendChild(ind);
+    }
+    restoreFields();
+    document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
+      el.addEventListener('input', saveFields); el.addEventListener('change', saveFields);
+    });
+  });
+})();
 </script>
 </body>
 </html>
