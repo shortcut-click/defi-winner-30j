@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classement — Le Défi Winner 30J | Tariqa PRO</title>
+<style>
+:root {
+  --green: #1D9E75;
+  --green-light: #25c491;
+  --gold: #f59e0b;
+  --silver: #94a3b8;
+  --bronze: #cd7c3a;
+  --blue: #60a5fa;
+  --orange: #fb923c;
+  --red: #f87171;
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --surface2: #1e1e1e;
+  --border: #2a2a2a;
+  --text: #f1f1f1;
+  --muted: #888;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+/* HEADER */
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; position: sticky; top: 0; z-index: 100; }
+.hdr-left { display: flex; align-items: center; gap: 12px; }
+.logo { background: var(--green); color: #fff; font-weight: 800; font-size: 12px; padding: 4px 9px; border-radius: 5px; letter-spacing: 0.05em; }
+.hdr-title { font-size: 15px; font-weight: 700; }
+.hdr-sub { font-size: 11px; color: var(--muted); margin-top: 1px; }
+.live-pill { display: flex; align-items: center; gap: 5px; background: rgba(29,158,117,0.1); border: 1px solid var(--green); color: var(--green); font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; }
+.live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+/* STATS */
+.stats { display: flex; gap: 10px; padding: 14px 24px; flex-wrap: wrap; }
+.stat { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px; flex: 1; min-width: 110px; text-align: center; }
+.stat-val { font-size: 24px; font-weight: 800; color: var(--green); line-height: 1; }
+.stat-lbl { font-size: 11px; color: var(--muted); margin-top: 3px; }
+
+/* TABS */
+.week-tabs { display: flex; gap: 6px; padding: 0 24px 14px; overflow-x: auto; scrollbar-width: none; }
+.week-tabs::-webkit-scrollbar { display: none; }
+.wtab { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; white-space: nowrap; user-select: none; transition: all 0.15s; }
+.wtab:hover, .wtab.active { background: var(--green); border-color: var(--green); color: #fff; }
+
+/* PODIUM */
+.podium { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; padding: 0 24px 14px; }
+.pod-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; position: relative; overflow: hidden; }
+.pod-card.p1 { border-color: rgba(245,158,11,0.4); }
+.pod-card.p2 { border-color: rgba(148,163,184,0.3); }
+.pod-card.p3 { border-color: rgba(205,124,58,0.3); }
+.pod-glow { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); width: 80px; height: 40px; border-radius: 50%; filter: blur(20px); opacity: 0.25; pointer-events: none; }
+.p1 .pod-glow { background: var(--gold); }
+.p2 .pod-glow { background: var(--silver); }
+.p3 .pod-glow { background: var(--bronze); }
+.pod-medal { font-size: 22px; margin-bottom: 5px; }
+.pod-name { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+.pod-score { font-size: 22px; font-weight: 800; }
+.p1 .pod-score { color: var(--gold); }
+.p2 .pod-score { color: var(--silver); }
+.p3 .pod-score { color: var(--bronze); }
+.pod-sub { font-size: 10px; color: var(--muted); }
+
+/* WINNER BANNER */
+.winner-banner { margin: 0 24px 14px; background: linear-gradient(135deg,rgba(245,158,11,0.08),rgba(29,158,117,0.08)); border: 1px solid rgba(245,158,11,0.3); border-radius: 12px; padding: 12px 18px; display: flex; align-items: center; gap: 12px; }
+.wb-icon { font-size: 22px; }
+.wb-label { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.06em; }
+.wb-name { font-size: 15px; font-weight: 800; }
+.wb-score { font-size: 20px; font-weight: 800; color: var(--gold); margin-left: auto; }
+
+/* TABLE */
+.lb-wrap { padding: 0 24px 20px; }
+.lb { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.lb-head { display: grid; grid-template-columns: 48px 1fr 66px 66px 66px 66px 84px 84px; background: var(--surface2); border-bottom: 1px solid var(--border); padding: 9px 14px; }
+.lb-head-week { grid-template-columns: 48px 1fr 80px 90px 80px 80px; }
+.lh { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; text-align: center; }
+.lh.l { text-align: left; }
+.lb-body { /* rows go here */ }
+.lb-row { display: grid; grid-template-columns: 48px 1fr 66px 66px 66px 66px 84px 84px; padding: 11px 14px; border-bottom: 1px solid var(--border); align-items: center; transition: background 0.12s; position: relative; }
+.lb-row:last-child { border-bottom: none; }
+.lb-row:hover { background: rgba(255,255,255,0.015); }
+.lb-row.r1 { background: rgba(245,158,11,0.04); }
+.lb-row.r2 { background: rgba(148,163,184,0.03); }
+.lb-row.r3 { background: rgba(205,124,58,0.03); }
+.lb-row.top-week::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--green); border-radius: 0 2px 2px 0; }
+.lb-row-week { grid-template-columns: 48px 1fr 80px 90px 80px 80px; }
+
+/* Rank */
+.rank-cell { text-align: center; }
+.rank-num { width: 26px; height: 26px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; }
+.r1 .rank-num { background: rgba(245,158,11,0.18); color: var(--gold); }
+.r2 .rank-num { background: rgba(148,163,184,0.14); color: var(--silver); }
+.r3 .rank-num { background: rgba(205,124,58,0.14); color: var(--bronze); }
+.r-other .rank-num { background: var(--surface2); color: var(--muted); }
+
+/* Participant */
+.p-cell { display: flex; align-items: center; gap: 9px; }
+.avatar { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; flex-shrink: 0; color: #fff; }
+.p-name { font-size: 13px; font-weight: 600; }
+.p-tag { font-size: 11px; color: var(--muted); }
+.badges { display: flex; gap: 3px; margin-top: 3px; flex-wrap: wrap; }
+.badge { font-size: 9px; font-weight: 700; padding: 2px 5px; border-radius: 3px; letter-spacing: 0.03em; }
+.b-winner { background: rgba(245,158,11,0.18); color: var(--gold); border: 1px solid rgba(245,158,11,0.3); }
+.b-vente { background: rgba(29,158,117,0.18); color: var(--green); border: 1px solid rgba(29,158,117,0.3); }
+.b-atc { background: rgba(96,165,250,0.18); color: var(--blue); border: 1px solid rgba(96,165,250,0.3); }
+.b-rapide { background: rgba(251,146,60,0.18); color: var(--orange); border: 1px solid rgba(251,146,60,0.3); }
+
+/* Scores */
+.sc { text-align: center; }
+.pill { display: inline-block; padding: 2px 7px; border-radius: 5px; font-size: 11px; font-weight: 700; min-width: 38px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); }
+.pill.hi { background: rgba(29,158,117,0.14); border-color: rgba(29,158,117,0.3); color: var(--green); }
+.pill.mid { background: rgba(251,146,60,0.1); border-color: rgba(251,146,60,0.25); color: var(--orange); }
+.pill.lo { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.25); color: var(--red); }
+.pill.none { color: var(--border); background: transparent; border-color: var(--border); }
+
+/* Total */
+.tot-cell { text-align: center; }
+.tot-val { font-size: 17px; font-weight: 800; }
+.tot-hi { color: var(--green); }
+.tot-mid { color: var(--orange); }
+.tot-lo { color: var(--text); }
+.tot-max { font-size: 10px; color: var(--muted); }
+
+/* Progress */
+.prog-cell { text-align: center; }
+.prog-bar-bg { background: var(--surface2); border-radius: 3px; height: 5px; overflow: hidden; margin-bottom: 3px; }
+.prog-bar { height: 100%; background: linear-gradient(90deg,var(--green),var(--green-light)); border-radius: 3px; }
+.prog-pct { font-size: 10px; color: var(--muted); font-weight: 600; }
+
+/* Empty */
+.empty { padding: 44px 20px; text-align: center; color: var(--muted); font-size: 13px; }
+.empty-icon { font-size: 28px; margin-bottom: 8px; }
+
+/* COMMENTS */
+.section-ttl { font-size: 11px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; padding: 18px 24px 8px; display: flex; align-items: center; gap: 8px; }
+.section-ttl::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.comments { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 9px; }
+.comment-card { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 13px 15px; }
+.cc-head { display: flex; align-items: center; gap: 9px; margin-bottom: 7px; }
+.cc-avatar { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 800; color: #fff; flex-shrink: 0; }
+.cc-name { font-size: 12px; font-weight: 600; }
+.cc-week { font-size: 11px; color: var(--muted); margin-left: auto; }
+.cc-text { font-size: 12px; color: #ccc; line-height: 1.6; padding-left: 35px; font-style: italic; }
+
+/* ADMIN */
+.admin-btn-float { position: fixed; bottom: 20px; right: 20px; background: var(--green); color: #fff; border: none; border-radius: 50%; width: 46px; height: 46px; font-size: 18px; cursor: pointer; box-shadow: 0 4px 18px rgba(29,158,117,0.4); z-index: 200; display: flex; align-items: center; justify-content: center; transition: transform 0.15s; }
+.admin-btn-float:hover { transform: scale(1.1); }
+.admin-panel { display: none; position: fixed; bottom: 76px; right: 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 13px; padding: 18px; width: 320px; max-height: 72vh; overflow-y: auto; z-index: 200; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
+.admin-panel.open { display: block; }
+.ap-title { font-size: 13px; font-weight: 800; color: var(--green); margin-bottom: 14px; }
+.ap-section { margin-bottom: 14px; }
+.ap-lbl { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 7px; }
+.ap-input { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 9px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; font-family: inherit; }
+.ap-input:focus { outline: none; border-color: var(--green); }
+.ap-select { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 9px; border-radius: 6px; font-size: 12px; margin-bottom: 5px; font-family: inherit; cursor: pointer; }
+.ap-select:focus { outline: none; border-color: var(--green); }
+.ap-textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 7px 9px; border-radius: 6px; font-size: 11px; resize: vertical; min-height: 56px; font-family: inherit; }
+.ap-textarea:focus { outline: none; border-color: var(--green); }
+.score-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 5px; margin-bottom: 7px; }
+.score-col { text-align: center; }
+.score-col-lbl { font-size: 9px; color: var(--muted); margin-bottom: 2px; }
+.ap-score { width: 100%; background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 5px; border-radius: 6px; font-size: 12px; font-weight: 600; text-align: center; font-family: inherit; }
+.ap-score:focus { outline: none; border-color: var(--green); }
+.badges-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+.badge-check { font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 4px; cursor: pointer; }
+.ap-action { width: 100%; background: var(--green); color: #fff; border: none; padding: 9px; border-radius: 7px; font-size: 12px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 3px; }
+.ap-action:hover { background: var(--green-light); }
+.ap-danger { background: transparent; border: 1px solid var(--red); color: var(--red); margin-top: 7px; font-size: 11px; }
+.ap-danger:hover { background: rgba(248,113,113,0.08); }
+.ap-divider { height: 1px; background: var(--border); margin: 12px 0; }
+.ap-list { display: flex; flex-direction: column; gap: 4px; max-height: 110px; overflow-y: auto; }
+.ap-list-item { display: flex; align-items: center; justify-content: space-between; background: var(--surface2); padding: 5px 9px; border-radius: 5px; font-size: 11px; }
+.ap-del { background: transparent; border: none; color: var(--red); cursor: pointer; font-size: 13px; padding: 0 2px; }
+
+/* TOAST */
+.toast { position: fixed; bottom: 76px; left: 50%; transform: translateX(-50%) translateY(16px); background: var(--surface); border: 1px solid var(--green); color: var(--green); padding: 8px 18px; border-radius: 7px; font-size: 12px; font-weight: 600; opacity: 0; pointer-events: none; transition: all 0.25s; z-index: 300; white-space: nowrap; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (max-width: 680px) {
+  .lb-head, .lb-row { grid-template-columns: 40px 1fr 58px 58px; }
+  .lb-head .lh:nth-child(n+4), .lb-row .sc:nth-child(n+4), .lb-row .tot-cell, .lb-row .prog-cell { display: none; }
+  .podium { grid-template-columns: 1fr; }
+  .admin-panel { width: calc(100vw - 32px); right: 16px; }
+  .stats, .week-tabs, .lb-wrap, .comments, .podium { padding-left: 14px; padding-right: 14px; }
+  .winner-banner { margin-left: 14px; margin-right: 14px; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="hdr-left">
+    <span class="logo">TARIQA PRO</span>
+    <div>
+      <div class="hdr-title">Le Défi Winner 30J — Classement</div>
+      <div class="hdr-sub">Niche enfants · Session 2026</div>
+    </div>
+  </div>
+  <div class="live-pill"><div class="live-dot"></div>EN DIRECT</div>
+</header>
+
+<div class="stats" id="statsBar"></div>
+
+<div class="week-tabs" id="weekTabs">
+  <div class="wtab active" data-view="global">🏆 Classement global</div>
+  <div class="wtab" data-view="s1">S1 — Sourcing</div>
+  <div class="wtab" data-view="s2">S2 — Shopify</div>
+  <div class="wtab" data-view="s3">S3 — Créas</div>
+  <div class="wtab" data-view="s4">S4 — Lancement</div>
+</div>
+
+<div id="winnerBannerWrap"></div>
+<div class="podium" id="podiumSection"></div>
+<div class="lb-wrap"><div class="lb" id="leaderboard"></div></div>
+<div id="commentsWrap"></div>
+
+<div class="toast" id="toast"></div>
+<button class="admin-btn-float" id="adminToggle" title="Admin">⚙️</button>
+
+<div class="admin-panel" id="adminPanel">
+  <div class="ap-title">⚙️ Gestion du classement</div>
+
+  <div class="ap-section">
+    <div class="ap-lbl">Ajouter un participant</div>
+    <input class="ap-input" id="newName" placeholder="Prénom Nom">
+    <input class="ap-input" id="newTag" placeholder="Sous-niche (ex: sommeil bébé)">
+    <button class="ap-action" id="btnAdd">+ Ajouter</button>
+  </div>
+
+  <div class="ap-divider"></div>
+
+  <div class="ap-section">
+    <div class="ap-lbl">Saisir les scores</div>
+    <select class="ap-select" id="selScore"></select>
+    <div class="score-row">
+      <div class="score-col"><div class="score-col-lbl">S1 /100</div><input class="ap-score" id="sc1" type="number" min="0" max="100" placeholder="—"></div>
+      <div class="score-col"><div class="score-col-lbl">S2 /100</div><input class="ap-score" id="sc2" type="number" min="0" max="100" placeholder="—"></div>
+      <div class="score-col"><div class="score-col-lbl">S3 /100</div><input class="ap-score" id="sc3" type="number" min="0" max="100" placeholder="—"></div>
+      <div class="score-col"><div class="score-col-lbl">S4 /100</div><input class="ap-score" id="sc4" type="number" min="0" max="100" placeholder="—"></div>
+    </div>
+    <div class="badges-row">
+      <label class="badge-check"><input type="checkbox" id="bVente"> 🛒 Vente</label>
+      <label class="badge-check"><input type="checkbox" id="bAtc"> 🛍️ ATC</label>
+      <label class="badge-check"><input type="checkbox" id="bRapide"> ⚡ Rapide</label>
+    </div>
+    <button class="ap-action" id="btnSave">Enregistrer</button>
+  </div>
+
+  <div class="ap-divider"></div>
+
+  <div class="ap-section">
+    <div class="ap-lbl">Commentaire Hamza</div>
+    <select class="ap-select" id="selComment"></select>
+    <select class="ap-select" id="selWeek">
+      <option value="S1">Semaine 1</option>
+      <option value="S2">Semaine 2</option>
+      <option value="S3">Semaine 3</option>
+      <option value="S4">Semaine 4</option>
+    </select>
+    <textarea class="ap-textarea" id="commentText" placeholder="Commentaire de feedback..."></textarea>
+    <button class="ap-action" id="btnComment">Ajouter</button>
+  </div>
+
+  <div class="ap-divider"></div>
+
+  <div class="ap-section">
+    <div class="ap-lbl">Participants inscrits</div>
+    <div class="ap-list" id="apList"></div>
+  </div>
+
+  <div class="ap-divider"></div>
+  <button class="ap-action ap-danger" id="btnReset">Réinitialiser tout</button>
+</div>
+
+<script>
+var COLORS = ['#1D9E75','#7c3aed','#ea580c','#0284c7','#dc2626','#0891b2','#65a30d','#d97706','#9333ea'];
+var view = 'global';
+
+function loadState() {
+  try { var d = localStorage.getItem('ctp_sc_v3'); if (d) return JSON.parse(d); } catch(e) {}
+  return { participants: [], comments: [] };
+}
+function saveState() { try { localStorage.setItem('ctp_sc_v3', JSON.stringify(state)); } catch(e) {} }
+var state = loadState();
+
+function getTotal(p) {
+  var t = 0;
+  ['s1','s2','s3','s4'].forEach(function(k) { if (p[k] != null) t += p[k]; });
+  return t;
+}
+function countRendus(p) {
+  var c = 0;
+  ['s1','s2','s3','s4'].forEach(function(k) { if (p[k] != null) c++; });
+  return c;
+}
+function getInitials(name) {
+  return name.trim().split(/\s+/).map(function(w) { return w[0] || ''; }).join('').toUpperCase().slice(0,2);
+}
+function getColor(idx) { return COLORS[idx % COLORS.length]; }
+function pillClass(v) { return v >= 80 ? 'hi' : v >= 60 ? 'mid' : 'lo'; }
+
+function toast(msg) {
+  var t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2200);
+}
+
+function makePill(val) {
+  var sp = document.createElement('span');
+  if (val == null) { sp.className = 'pill none'; sp.textContent = '—'; }
+  else { sp.className = 'pill ' + pillClass(val); sp.textContent = String(val); }
+  return sp;
+}
+
+function makeProgressBar(pct) {
+  var wrap = document.createElement('div');
+  wrap.className = 'prog-cell';
+  var bg = document.createElement('div');
+  bg.className = 'prog-bar-bg';
+  var bar = document.createElement('div');
+  bar.className = 'prog-bar';
+  bar.style.width = pct + '%';
+  bg.appendChild(bar);
+  var lbl = document.createElement('div');
+  lbl.className = 'prog-pct';
+  lbl.textContent = pct + '%';
+  wrap.appendChild(bg);
+  wrap.appendChild(lbl);
+  return wrap;
+}
+
+function makeAvatar(name, colorIdx) {
+  var av = document.createElement('div');
+  av.className = 'avatar';
+  av.style.background = getColor(colorIdx);
+  av.textContent = getInitials(name);
+  return av;
+}
+
+function makeParticipantCell(p, colorIdx, rank, totalParticipants) {
+  var cell = document.createElement('div');
+  cell.className = 'p-cell';
+  cell.appendChild(makeAvatar(p.name, colorIdx));
+  var info = document.createElement('div');
+  var nameEl = document.createElement('div');
+  nameEl.className = 'p-name';
+  nameEl.textContent = p.name;
+  info.appendChild(nameEl);
+  if (p.tag) {
+    var tagEl = document.createElement('div');
+    tagEl.className = 'p-tag';
+    tagEl.textContent = p.tag;
+    info.appendChild(tagEl);
+  }
+  var bdgs = document.createElement('div');
+  bdgs.className = 'badges';
+  if (rank === 1 && getTotal(p) > 0 && view === 'global') {
+    var b = document.createElement('span'); b.className = 'badge b-winner'; b.textContent = '🏆 Leader'; bdgs.appendChild(b);
+  }
+  if (p.badges) {
+    if (p.badges.vente) { var b = document.createElement('span'); b.className = 'badge b-vente'; b.textContent = '🛒 Vente'; bdgs.appendChild(b); }
+    if (p.badges.atc) { var b = document.createElement('span'); b.className = 'badge b-atc'; b.textContent = '🛍️ ATC'; bdgs.appendChild(b); }
+    if (p.badges.rapide) { var b = document.createElement('span'); b.className = 'badge b-rapide'; b.textContent = '⚡ Rapide'; bdgs.appendChild(b); }
+  }
+  if (bdgs.children.length) info.appendChild(bdgs);
+  cell.appendChild(info);
+  return cell;
+}
+
+function makeRankCell(rank) {
+  var cell = document.createElement('div');
+  cell.className = 'rank-cell';
+  var num = document.createElement('span');
+  num.className = 'rank-num';
+  num.textContent = String(rank);
+  cell.appendChild(num);
+  return cell;
+}
+
+function buildGlobalRow(p, rank, colorIdx) {
+  var row = document.createElement('div');
+  var rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : 'r-other';
+  row.className = 'lb-row ' + rankClass;
+  if (rank === 1 && getTotal(p) > 0) row.classList.add('top-week');
+
+  row.appendChild(makeRankCell(rank));
+  row.appendChild(makeParticipantCell(p, colorIdx, rank, 0));
+
+  ['s1','s2','s3','s4'].forEach(function(k) {
+    var sc = document.createElement('div');
+    sc.className = 'sc';
+    sc.appendChild(makePill(p[k]));
+    row.appendChild(sc);
+  });
+
+  var tot = getTotal(p);
+  var totCell = document.createElement('div');
+  totCell.className = 'tot-cell';
+  var totVal = document.createElement('div');
+  totVal.className = 'tot-val ' + (tot >= 280 ? 'tot-hi' : tot >= 160 ? 'tot-mid' : 'tot-lo');
+  totVal.textContent = String(tot);
+  var totMax = document.createElement('div');
+  totMax.className = 'tot-max';
+  totMax.textContent = '/ 400';
+  totCell.appendChild(totVal);
+  totCell.appendChild(totMax);
+  row.appendChild(totCell);
+
+  row.appendChild(makeProgressBar(Math.round(tot / 400 * 100)));
+  return row;
+}
+
+function buildWeekRow(p, rank, colorIdx, wk) {
+  var row = document.createElement('div');
+  var rankClass = rank === 1 ? 'r1' : rank === 2 ? 'r2' : rank === 3 ? 'r3' : 'r-other';
+  row.className = 'lb-row lb-row-week ' + rankClass;
+  if (rank === 1 && p[wk] != null) row.classList.add('top-week');
+
+  row.appendChild(makeRankCell(rank));
+  row.appendChild(makeParticipantCell(p, colorIdx, rank, 0));
+
+  var scCell = document.createElement('div');
+  scCell.className = 'sc';
+  scCell.appendChild(makePill(p[wk]));
+  row.appendChild(scCell);
+
+  var statut = document.createElement('div');
+  statut.className = 'sc';
+  statut.style.fontSize = '11px';
+  statut.style.color = 'var(--muted)';
+  if (p[wk] == null) statut.textContent = '⏳ En attente';
+  else if (p[wk] >= 80) statut.textContent = '✅ Excellent';
+  else if (p[wk] >= 60) statut.textContent = '🟡 Bien';
+  else statut.textContent = '🔴 À retravailler';
+  row.appendChild(statut);
+
+  var bonusCell = document.createElement('div');
+  bonusCell.className = 'sc';
+  if (p.badges && p.badges.rapide) {
+    var bsp = document.createElement('span');
+    bsp.className = 'badge b-rapide';
+    bsp.textContent = '⚡ Bonus';
+    bonusCell.appendChild(bsp);
+  } else {
+    bonusCell.textContent = '—';
+    bonusCell.style.color = 'var(--border)';
+    bonusCell.style.fontSize = '12px';
+  }
+  row.appendChild(bonusCell);
+
+  row.appendChild(makeProgressBar(p[wk] != null ? p[wk] : 0));
+  return row;
+}
+
+function renderPodium(sorted) {
+  var section = document.getElementById('podiumSection');
+  while (section.firstChild) section.removeChild(section.firstChild);
+  if (view !== 'global' || sorted.length === 0) return;
+
+  var order = [1, 0, 2];
+  var medals = ['🥈', '🏆', '🥉'];
+  var classes = ['p2', 'p1', 'p3'];
+
+  order.forEach(function(idx, i) {
+    var p = sorted[idx];
+    var card = document.createElement('div');
+    card.className = 'pod-card ' + classes[i];
+
+    var glow = document.createElement('div');
+    glow.className = 'pod-glow';
+    card.appendChild(glow);
+
+    var medal = document.createElement('div');
+    medal.className = 'pod-medal';
+    medal.textContent = medals[i];
+    card.appendChild(medal);
+
+    var nm = document.createElement('div');
+    nm.className = 'pod-name';
+    nm.textContent = p ? p.name : '—';
+    card.appendChild(nm);
+
+    var sc = document.createElement('div');
+    sc.className = 'pod-score';
+    sc.textContent = p ? String(getTotal(p)) : '0';
+    card.appendChild(sc);
+
+    var sub = document.createElement('div');
+    sub.className = 'pod-sub';
+    sub.textContent = classes[i] === 'p1' ? 'pts / 400' : 'pts';
+    card.appendChild(sub);
+
+    section.appendChild(card);
+  });
+}
+
+function renderWinnerBanner(sorted) {
+  var wrap = document.getElementById('winnerBannerWrap');
+  while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+  if (view === 'global' || sorted.length === 0) return;
+  var wk = view;
+  var wSorted = sorted.slice().sort(function(a, b) {
+    var va = a[wk] != null ? a[wk] : -1;
+    var vb = b[wk] != null ? b[wk] : -1;
+    return vb - va;
+  });
+  var winner = wSorted[0];
+  if (!winner || winner[wk] == null) return;
+
+  var banner = document.createElement('div');
+  banner.className = 'winner-banner';
+
+  var icon = document.createElement('div');
+  icon.className = 'wb-icon';
+  icon.textContent = '🏅';
+  banner.appendChild(icon);
+
+  var info = document.createElement('div');
+  var lbl = document.createElement('div');
+  lbl.className = 'wb-label';
+  lbl.textContent = 'Winner de la semaine';
+  info.appendChild(lbl);
+  var nm = document.createElement('div');
+  nm.className = 'wb-name';
+  nm.textContent = winner.name;
+  info.appendChild(nm);
+  banner.appendChild(info);
+
+  var sc = document.createElement('div');
+  sc.className = 'wb-score';
+  sc.textContent = winner[wk] + ' pts';
+  banner.appendChild(sc);
+
+  wrap.appendChild(banner);
+}
+
+function renderTable(sorted) {
+  var lb = document.getElementById('leaderboard');
+  while (lb.firstChild) lb.removeChild(lb.firstChild);
+
+  var head = document.createElement('div');
+  head.className = view === 'global' ? 'lb-head' : 'lb-head lb-head-week';
+
+  var cols = view === 'global'
+    ? ['#', 'Participant', 'S1', 'S2', 'S3', 'S4', 'Total', 'Progression']
+    : ['#', 'Participant', 'Score', 'Statut', 'Bonus', 'Progression'];
+
+  cols.forEach(function(c, i) {
+    var th = document.createElement('div');
+    th.className = 'lh' + (i <= 1 ? ' l' : '');
+    th.textContent = c;
+    head.appendChild(th);
+  });
+  lb.appendChild(head);
+
+  var body = document.createElement('div');
+  body.className = 'lb-body';
+
+  if (sorted.length === 0) {
+    var empty = document.createElement('div');
+    empty.className = 'empty';
+    var icon = document.createElement('div');
+    icon.className = 'empty-icon';
+    icon.textContent = '📋';
+    var msg = document.createTextNode('Aucun participant. Ajoutes-en via le panneau ⚙️');
+    empty.appendChild(icon);
+    empty.appendChild(msg);
+    body.appendChild(empty);
+    lb.appendChild(body);
+    return;
+  }
+
+  var viewSorted = view === 'global' ? sorted : sorted.slice().sort(function(a, b) {
+    var va = a[view] != null ? a[view] : -1;
+    var vb = b[view] != null ? b[view] : -1;
+    return vb - va;
+  });
+
+  viewSorted.forEach(function(p, idx) {
+    var colorIdx = state.participants.findIndex(function(q) { return q.id === p.id; });
+    var row = view === 'global'
+      ? buildGlobalRow(p, idx + 1, colorIdx)
+      : buildWeekRow(p, idx + 1, colorIdx, view);
+    body.appendChild(row);
+  });
+  lb.appendChild(body);
+}
+
+function renderComments(sorted) {
+  var wrap = document.getElementById('commentsWrap');
+  while (wrap.firstChild) wrap.removeChild(wrap.firstChild);
+
+  var filtered = state.comments.filter(function(c) {
+    return view === 'global' || c.week.toLowerCase() === view;
+  });
+  if (filtered.length === 0) return;
+
+  var ttl = document.createElement('div');
+  ttl.className = 'section-ttl';
+  ttl.textContent = 'Commentaires Hamza';
+  wrap.appendChild(ttl);
+
+  var list = document.createElement('div');
+  list.className = 'comments';
+  filtered.forEach(function(c) {
+    var p = state.participants.find(function(x) { return x.id === c.participantId; });
+    if (!p) return;
+    var colorIdx = state.participants.findIndex(function(q) { return q.id === p.id; });
+
+    var card = document.createElement('div');
+    card.className = 'comment-card';
+
+    var head = document.createElement('div');
+    head.className = 'cc-head';
+
+    var av = document.createElement('div');
+    av.className = 'cc-avatar';
+    av.style.background = getColor(colorIdx);
+    av.textContent = getInitials(p.name);
+    head.appendChild(av);
+
+    var nm = document.createElement('div');
+    nm.className = 'cc-name';
+    nm.textContent = p.name;
+    head.appendChild(nm);
+
+    var wk = document.createElement('div');
+    wk.className = 'cc-week';
+    wk.textContent = c.week;
+    head.appendChild(wk);
+
+    card.appendChild(head);
+
+    var txt = document.createElement('div');
+    txt.className = 'cc-text';
+    txt.textContent = c.text;
+    card.appendChild(txt);
+
+    list.appendChild(card);
+  });
+  wrap.appendChild(list);
+}
+
+function renderStats(sorted) {
+  var bar = document.getElementById('statsBar');
+  while (bar.firstChild) bar.removeChild(bar.firstChild);
+
+  var totalRendus = 0;
+  var totalVentes = 0;
+  var s1Scores = [];
+  sorted.forEach(function(p) {
+    totalRendus += countRendus(p);
+    if (p.badges && p.badges.vente) totalVentes++;
+    if (p.s1 != null) s1Scores.push(p.s1);
+  });
+  var avgS1 = s1Scores.length ? Math.round(s1Scores.reduce(function(a,b){return a+b;},0) / s1Scores.length) : null;
+
+  var defs = [
+    { val: sorted.length, lbl: 'Participants' },
+    { val: totalRendus, lbl: 'Livrables rendus' },
+    { val: totalVentes, lbl: 'Premières ventes' },
+    { val: avgS1 != null ? avgS1 : '—', lbl: 'Moyenne S1' }
+  ];
+  defs.forEach(function(d) {
+    var card = document.createElement('div');
+    card.className = 'stat';
+    var v = document.createElement('div');
+    v.className = 'stat-val';
+    v.textContent = String(d.val);
+    var l = document.createElement('div');
+    l.className = 'stat-lbl';
+    l.textContent = d.lbl;
+    card.appendChild(v);
+    card.appendChild(l);
+    bar.appendChild(card);
+  });
+}
+
+function render() {
+  var sorted = state.participants.slice().sort(function(a, b) { return getTotal(b) - getTotal(a); });
+  renderStats(sorted);
+  renderPodium(sorted);
+  renderWinnerBanner(sorted);
+  renderTable(sorted);
+  renderComments(sorted);
+  refreshAdmin();
+}
+
+/* ADMIN */
+function refreshAdmin() {
+  var sel1 = document.getElementById('selScore');
+  var sel2 = document.getElementById('selComment');
+  var prev1 = sel1.value;
+  var prev2 = sel2.value;
+  while (sel1.firstChild) sel1.removeChild(sel1.firstChild);
+  while (sel2.firstChild) sel2.removeChild(sel2.firstChild);
+  var placeholder1 = new Option('— Choisir —', '');
+  var placeholder2 = new Option('— Choisir —', '');
+  sel1.appendChild(placeholder1);
+  sel2.appendChild(placeholder2);
+  state.participants.forEach(function(p) {
+    sel1.appendChild(new Option(p.name, p.id));
+    sel2.appendChild(new Option(p.name, p.id));
+  });
+  if (prev1) sel1.value = prev1;
+  if (prev2) sel2.value = prev2;
+
+  var list = document.getElementById('apList');
+  while (list.firstChild) list.removeChild(list.firstChild);
+  if (state.participants.length === 0) {
+    var empty = document.createElement('div');
+    empty.style.color = 'var(--muted)';
+    empty.style.fontSize = '11px';
+    empty.style.padding = '4px';
+    empty.textContent = 'Aucun participant';
+    list.appendChild(empty);
+    return;
+  }
+  state.participants.forEach(function(p) {
+    var item = document.createElement('div');
+    item.className = 'ap-list-item';
+    var nm = document.createTextNode(p.name);
+    item.appendChild(nm);
+    var del = document.createElement('button');
+    del.className = 'ap-del';
+    del.textContent = '✕';
+    del.setAttribute('data-id', p.id);
+    item.appendChild(del);
+    list.appendChild(item);
+  });
+}
+
+document.getElementById('apList').addEventListener('click', function(e) {
+  if (e.target.classList.contains('ap-del')) {
+    var id = e.target.getAttribute('data-id');
+    state.participants = state.participants.filter(function(p) { return p.id !== id; });
+    state.comments = state.comments.filter(function(c) { return c.participantId !== id; });
+    saveState();
+    render();
+    toast('Participant supprimé');
+  }
+});
+
+document.getElementById('adminToggle').addEventListener('click', function() {
+  document.getElementById('adminPanel').classList.toggle('open');
+});
+
+document.getElementById('btnAdd').addEventListener('click', function() {
+  var name = document.getElementById('newName').value.trim();
+  var tag = document.getElementById('newTag').value.trim();
+  if (!name) { toast('⚠️ Renseigne un nom'); return; }
+  if (state.participants.some(function(p) { return p.name.toLowerCase() === name.toLowerCase(); })) {
+    toast('⚠️ Ce participant existe déjà'); return;
+  }
+  state.participants.push({ id: 'p' + Date.now(), name: name, tag: tag, s1: null, s2: null, s3: null, s4: null, badges: { vente: false, atc: false, rapide: false } });
+  saveState();
+  document.getElementById('newName').value = '';
+  document.getElementById('newTag').value = '';
+  render();
+  toast('✅ ' + name + ' ajouté(e)');
+});
+
+document.getElementById('selScore').addEventListener('change', function() {
+  var p = state.participants.find(function(x) { return x.id === this.value; }, this);
+  if (!p) return;
+  document.getElementById('sc1').value = p.s1 != null ? p.s1 : '';
+  document.getElementById('sc2').value = p.s2 != null ? p.s2 : '';
+  document.getElementById('sc3').value = p.s3 != null ? p.s3 : '';
+  document.getElementById('sc4').value = p.s4 != null ? p.s4 : '';
+  document.getElementById('bVente').checked = !!(p.badges && p.badges.vente);
+  document.getElementById('bAtc').checked = !!(p.badges && p.badges.atc);
+  document.getElementById('bRapide').checked = !!(p.badges && p.badges.rapide);
+});
+
+document.getElementById('btnSave').addEventListener('click', function() {
+  var id = document.getElementById('selScore').value;
+  if (!id) { toast('⚠️ Choisis un participant'); return; }
+  var p = state.participants.find(function(x) { return x.id === id; });
+  if (!p) return;
+  function parseScore(v) { var n = parseInt(v); return (!isNaN(n) && n >= 0 && n <= 100) ? n : null; }
+  var v1 = document.getElementById('sc1').value;
+  var v2 = document.getElementById('sc2').value;
+  var v3 = document.getElementById('sc3').value;
+  var v4 = document.getElementById('sc4').value;
+  if (v1 !== '') p.s1 = parseScore(v1);
+  if (v2 !== '') p.s2 = parseScore(v2);
+  if (v3 !== '') p.s3 = parseScore(v3);
+  if (v4 !== '') p.s4 = parseScore(v4);
+  p.badges = { vente: document.getElementById('bVente').checked, atc: document.getElementById('bAtc').checked, rapide: document.getElementById('bRapide').checked };
+  saveState();
+  render();
+  toast('✅ Scores enregistrés pour ' + p.name);
+});
+
+document.getElementById('btnComment').addEventListener('click', function() {
+  var id = document.getElementById('selComment').value;
+  var week = document.getElementById('selWeek').value;
+  var text = document.getElementById('commentText').value.trim();
+  if (!id) { toast('⚠️ Choisis un participant'); return; }
+  if (!text) { toast('⚠️ Saisis un commentaire'); return; }
+  state.comments.push({ id: 'c' + Date.now(), participantId: id, week: week, text: text });
+  saveState();
+  document.getElementById('commentText').value = '';
+  render();
+  toast('✅ Commentaire ajouté');
+});
+
+document.getElementById('btnReset').addEventListener('click', function() {
+  if (!confirm('Réinitialiser tout le classement ? Action irréversible.')) return;
+  state = { participants: [], comments: [] };
+  saveState();
+  render();
+  toast('Classement réinitialisé');
+});
+
+document.getElementById('weekTabs').addEventListener('click', function(e) {
+  var tab = e.target.closest('.wtab');
+  if (!tab) return;
+  view = tab.getAttribute('data-view');
+  document.querySelectorAll('.wtab').forEach(function(t) { t.classList.toggle('active', t === tab); });
+  render();
+});
+
+/* DEMO DATA */
+function loadDemo() {
+  if (state.participants.length > 0) return;
+  state.participants = [
+    { id:'d1', name:'Nadia L.', tag:'Sécurité enfants', s1:91, s2:88, s3:76, s4:82, badges:{vente:true,atc:true,rapide:true} },
+    { id:'d2', name:'Karim B.', tag:'Éveil éducatif', s1:74, s2:79, s3:85, s4:null, badges:{vente:false,atc:true,rapide:false} },
+    { id:'d3', name:'Sarah M.', tag:'Sommeil bébé', s1:87, s2:82, s3:null, s4:null, badges:{vente:false,atc:false,rapide:true} },
+    { id:'d4', name:'Amina T.', tag:'Sommeil bébé', s1:78, s2:72, s3:80, s4:null, badges:{vente:false,atc:true,rapide:false} },
+    { id:'d5', name:'Youssef A.', tag:'Confort bien-être', s1:63, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} }
+  ];
+  state.comments = [
+    { id:'c1', participantId:'d1', week:'S1', text:'Excellent travail Nadia, analyse très rigoureuse. La marge ×4 est bien calculée et le persona est hyper précis. Continue comme ça !' },
+    { id:'c2', participantId:'d3', week:'S1', text:'Sarah, bon démarrage ! Ton produit a du potentiel mais les screenshots META Ads Library manquaient de profondeur. Montre les annonceurs actifs depuis 30j+.' }
+  ];
+  saveState();
+}
+
+loadDemo();
+render();
+</script>
+</body>
+</html>

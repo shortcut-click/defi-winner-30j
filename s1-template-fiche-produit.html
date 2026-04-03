@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche Produit — Semaine 1 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75;
+  --green-dim: #1D9E7515;
+  --green-border: #1D9E7540;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+  --red: #f87171;
+  --red-dim: #dc262615;
+  --red-border: #dc262640;
+  --orange: #fb923c;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+.header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 18px 0; position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 760px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag {
+  background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green);
+  border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700;
+}
+.print-btn {
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  border-radius: 8px; padding: 7px 16px; font-size: 0.78rem; cursor: pointer;
+  transition: all 0.2s; font-family: inherit;
+}
+.print-btn:hover { border-color: var(--green); color: var(--green); }
+
+.main { max-width: 760px; margin: 0 auto; padding: 36px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+.page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 36px; }
+
+/* Form sections */
+.form-section { margin-bottom: 32px; }
+.form-section-title {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--green); margin-bottom: 14px; padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* Field */
+.field { margin-bottom: 16px; }
+.field label {
+  display: block; font-size: 0.8rem; font-weight: 700; color: #ccc;
+  margin-bottom: 6px;
+}
+.field .hint { font-size: 0.74rem; color: var(--muted); margin-bottom: 6px; }
+.field input, .field textarea, .field select {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 11px 14px; color: var(--text);
+  font-size: 0.88rem; font-family: inherit; outline: none;
+  transition: border-color 0.2s;
+}
+.field input:focus, .field textarea:focus, .field select:focus { border-color: var(--green); }
+.field textarea { min-height: 80px; resize: vertical; }
+.field select option { background: var(--surface2); }
+
+/* Two col */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+
+/* Calc display */
+.calc-box {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px; margin-top: 12px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.calc-box .calc-step {
+  display: flex; flex-direction: column; align-items: center;
+  font-size: 0.78rem; color: var(--muted);
+}
+.calc-box .calc-step strong { font-size: 1rem; color: var(--text); display: block; }
+.calc-box .calc-op { font-size: 1.2rem; color: var(--muted2); }
+.calc-result { margin-left: auto; }
+.calc-result .result-val {
+  font-size: 1.4rem; font-weight: 800; color: var(--green);
+}
+.calc-result .result-label { font-size: 0.72rem; color: var(--muted); }
+.marge-badge {
+  display: inline-block; border-radius: 8px; padding: 4px 12px;
+  font-size: 0.8rem; font-weight: 700; margin-top: 8px;
+}
+.marge-ok { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+.marge-warn { background: #ea580c18; border: 1px solid #ea580c40; color: var(--orange); }
+.marge-fail { background: var(--red-dim); border: 1px solid var(--red-border); color: var(--red); }
+
+/* Filter checklist */
+.filter-checks { display: flex; flex-direction: column; gap: 8px; }
+.filter-check-row {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+  display: flex; align-items: flex-start; gap: 12px;
+}
+.filter-check-row label { display: flex; align-items: center; gap: 10px; cursor: pointer; flex: 1; }
+.filter-check-row input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--green); flex-shrink: 0; }
+.filter-check-row .fc-name { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.filter-check-row .fc-hint { font-size: 0.77rem; color: var(--muted); margin-top: 2px; }
+.filter-type-badge {
+  font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 6px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.disq-badge { background: var(--red-dim); border: 1px solid var(--red-border); color: var(--red); }
+.score-select { margin-top: 8px; }
+.pain-score-display {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+  display: flex; gap: 10px;
+}
+.pain-opt {
+  flex: 1; border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 10px; text-align: center; cursor: pointer; transition: all 0.2s;
+}
+.pain-opt:hover { border-color: #444; }
+.pain-opt.active-1 { border-color: var(--orange); background: #ea580c18; }
+.pain-opt.active-2 { border-color: #a78bfa; background: #7c3aed18; }
+.pain-opt.active-3 { border-color: var(--green); background: var(--green-dim); }
+.pain-opt .score-num { font-size: 1.2rem; font-weight: 800; }
+.pain-opt .score-lbl { font-size: 0.7rem; color: var(--muted); }
+
+/* Note */
+.note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--green); border-radius: 10px;
+  padding: 12px 16px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 14px;
+}
+.note strong { color: var(--text); }
+
+/* Niche selector */
+.niche-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.niche-opt {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 14px 16px; cursor: pointer;
+  transition: all 0.2s; user-select: none;
+}
+.niche-opt:hover { border-color: #444; }
+.niche-opt.selected { border-color: var(--green-border); background: var(--green-dim); }
+.niche-opt h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 3px; }
+.niche-opt p { font-size: 0.75rem; color: var(--muted); }
+.niche-opt .niche-icon { font-size: 1.2rem; margin-bottom: 6px; display: block; }
+
+/* Age range */
+.age-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.age-opt {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 10px 8px; text-align: center; cursor: pointer;
+  font-size: 0.78rem; font-weight: 700; color: var(--muted); transition: all 0.2s;
+}
+.age-opt:hover { border-color: #444; }
+.age-opt.selected { border-color: var(--green-border); background: var(--green-dim); color: var(--green); }
+
+@media (max-width: 580px) {
+  .two-col, .three-col { grid-template-columns: 1fr; }
+  .niche-grid { grid-template-columns: 1fr; }
+  .age-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media print {
+  .header { position: static; }
+  .print-btn { display: none; }
+  body { background: #fff; color: #111; }
+  .field input, .field textarea, .field select { background: #f9f9f9; border-color: #ddd; color: #111; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">S1 — Fiche Produit</span>
+    <button class="print-btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Template à remplir — Semaine 1</div>
+  <h1 class="page-title">Fiche Produit Winner</h1>
+  <p class="page-sub">Remplis chaque section. Prends une capture d'écran ou imprime en PDF pour ton livrable Circle.</p>
+
+  <!-- SECTION 1 : IDENTIFICATION -->
+  <div class="form-section">
+    <div class="form-section-title">1 — Identification du produit</div>
+
+    <div class="field">
+      <label>Nom du produit</label>
+      <div class="hint">Le nom tel qu'il apparaît chez le fournisseur (en français si possible)</div>
+      <input type="text" placeholder="Ex : Turbulette bébé 0-6 mois TOG 2.5 avec oreilles">
+    </div>
+
+    <div class="field">
+      <label>Description en 1 phrase (sans jargon)</label>
+      <div class="hint">Explique ce que ça fait pour qui, en une phrase simple</div>
+      <input type="text" placeholder="Ex : Un sac de couchage avec manches amovibles qui aide les bébés à dormir sans se réveiller au froid.">
+    </div>
+
+    <div class="field">
+      <label>Sous-niche choisie</label>
+      <div class="niche-grid" id="nicheGrid">
+        <div class="niche-opt" onclick="selectNiche(this)">
+          <span class="niche-icon">😴</span>
+          <h4>Sommeil bébé</h4>
+          <p>Turbulettes, veilleuses, bruit blanc, couvertures...</p>
+        </div>
+        <div class="niche-opt" onclick="selectNiche(this)">
+          <span class="niche-icon">🧩</span>
+          <h4>Éveil &amp; Éducatif</h4>
+          <p>Jouets Montessori, puzzles, livres sensoriels...</p>
+        </div>
+        <div class="niche-opt" onclick="selectNiche(this)">
+          <span class="niche-icon">🛡️</span>
+          <h4>Sécurité enfants</h4>
+          <p>Protections coins, barrières, harnais...</p>
+        </div>
+        <div class="niche-opt" onclick="selectNiche(this)">
+          <span class="niche-icon">🤱</span>
+          <h4>Confort &amp; Bien-être</h4>
+          <p>Portage, soin peau bébé, coussin allaitement...</p>
+        </div>
+      </div>
+      <input type="hidden" id="nicheValue">
+    </div>
+
+    <div class="field">
+      <label>Tranche d'âge cible</label>
+      <div class="age-grid" id="ageGrid">
+        <div class="age-opt" onclick="selectAge(this)">0–6 mois</div>
+        <div class="age-opt" onclick="selectAge(this)">6–24 mois</div>
+        <div class="age-opt" onclick="selectAge(this)">2–6 ans</div>
+        <div class="age-opt" onclick="selectAge(this)">6–12 ans</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 : PHASE 1 QUALIFICATION -->
+  <div class="form-section">
+    <div class="form-section-title">2 — Phase 1 : Qualification</div>
+
+    <div class="filter-checks">
+      <div class="filter-check-row">
+        <label>
+          <input type="checkbox">
+          <div>
+            <div class="fc-name">✅ Halal</div>
+            <div class="fc-hint">Le produit est conforme ? Justification :</div>
+          </div>
+        </label>
+        <span class="filter-type-badge disq-badge">❌ DISQ.</span>
+      </div>
+      <div class="field" style="padding:0 16px 12px;margin-bottom:0;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;margin-top:-10px;">
+        <input type="text" placeholder="Ex : Produit physique sans composant haram, publicités sans contenu illicite">
+      </div>
+
+      <div class="filter-check-row" style="margin-top:8px;">
+        <label>
+          <input type="checkbox">
+          <div>
+            <div class="fc-name">✅ Pas de nudité (3awra)</div>
+            <div class="fc-hint">Les créas peuvent-elles montrer le produit sans exposer la 3awra ?</div>
+          </div>
+        </label>
+        <span class="filter-type-badge disq-badge">❌ DISQ.</span>
+      </div>
+      <div class="field" style="padding:0 16px 12px;margin-bottom:0;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;margin-top:-10px;">
+        <input type="text" placeholder="Ex : Produit porté par un bébé en pyjama, aucune nudité requise dans les créas">
+      </div>
+
+      <div class="filter-check-row" style="margin-top:8px;">
+        <label>
+          <input type="checkbox">
+          <div>
+            <div class="fc-name">✅ Pas de fausses promesses</div>
+            <div class="fc-hint">Les affirmations marketing sont-elles réalistes et prouvables ?</div>
+          </div>
+        </label>
+        <span class="filter-type-badge disq-badge">❌ DISQ.</span>
+      </div>
+      <div class="field" style="padding:0 16px 12px;margin-bottom:0;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;margin-top:-10px;">
+        <input type="text" placeholder="Ex : On peut dire 'aide bébé à mieux dormir' mais pas 'garantit 12h de sommeil'">
+      </div>
+
+      <div class="filter-check-row" style="margin-top:8px;">
+        <label>
+          <input type="checkbox">
+          <div>
+            <div class="fc-name">✅ Compris en 3 secondes sans le son</div>
+            <div class="fc-hint">TikTok test : le produit se comprend immédiatement en vidéo silencieuse ?</div>
+          </div>
+        </label>
+        <span class="filter-type-badge disq-badge">❌ DISQ.</span>
+      </div>
+
+      <div class="filter-check-row" style="margin-top:8px;">
+        <label>
+          <input type="checkbox">
+          <div>
+            <div class="fc-name">✅ Déjà validé ailleurs (US/UK/Asie)</div>
+            <div class="fc-hint">Le marché anglophone ou asiatique achète déjà ce produit ?</div>
+          </div>
+        </label>
+        <span class="filter-type-badge disq-badge">❌ DISQ.</span>
+      </div>
+      <div class="field" style="padding:0 16px 12px;margin-bottom:0;background:var(--surface);border:1px solid var(--border);border-top:none;border-radius:0 0 10px 10px;margin-top:-10px;">
+        <input type="text" placeholder="Ex : Vu sur TikTok Shop US avec 10k+ avis, présent sur Amazon.com avec 8000 avis">
+      </div>
+    </div>
+
+    <div class="field" style="margin-top:20px;">
+      <label>Score douleur ⚠️ (non disqualifiant — mais impacte tes créas)</label>
+      <div class="pain-score-display">
+        <div class="pain-opt" onclick="selectPain(this, 1)" id="pain1">
+          <div class="score-num">1</div>
+          <div class="score-lbl">Désir d'amélioration</div>
+        </div>
+        <div class="pain-opt" onclick="selectPain(this, 2)" id="pain2">
+          <div class="score-num">2</div>
+          <div class="score-lbl">Problème réel</div>
+        </div>
+        <div class="pain-opt" onclick="selectPain(this, 3)" id="pain3">
+          <div class="score-num">3</div>
+          <div class="score-lbl">Urgent &amp; douloureux</div>
+        </div>
+      </div>
+      <div class="field" style="margin-top:8px;margin-bottom:0;">
+        <input type="text" placeholder="Justification : pourquoi ce score ? Ex : Les parents sans sommeil cherchent une solution urgente, ils payent sans hésiter">
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 : PHASE 2 VALIDATION -->
+  <div class="form-section">
+    <div class="form-section-title">3 — Phase 2 : Validation (données)</div>
+
+    <div class="field">
+      <label>Google Trends — résultat</label>
+      <div class="hint">Colle ici l'URL ou décris la courbe observée</div>
+      <select>
+        <option value="">Sélectionne la tendance observée</option>
+        <option>📈 Hausse — demande en croissance</option>
+        <option>➡️ Stable — demande constante sur 12 mois</option>
+        <option>🔄 Saisonnière — pics réguliers (Noël, rentrée...)</option>
+        <option>📉 Déclin — tendance en baisse</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Détail Google Trends</label>
+      <input type="text" placeholder="Ex : Stable en France sur 12 mois, pic en novembre-décembre pour les cadeaux">
+    </div>
+
+    <div class="two-col">
+      <div class="field">
+        <label>AliExpress — nombre de commandes</label>
+        <input type="number" placeholder="Ex : 12500" min="0">
+      </div>
+      <div class="field">
+        <label>AliExpress — note du produit</label>
+        <input type="number" placeholder="Ex : 4.7" min="1" max="5" step="0.1">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Lien fournisseur AliExpress (ou CJDropshipping)</label>
+      <input type="url" placeholder="https://aliexpress.com/item/...">
+    </div>
+
+    <div class="field">
+      <label>Délai de livraison estimé (France)</label>
+      <input type="text" placeholder="Ex : 12-20 jours via AliExpress Standard Shipping">
+    </div>
+
+    <div class="field">
+      <label>Concurrents META Ads Library</label>
+      <div class="hint">Nombre d'annonceurs actifs trouvés, durée estimée de leurs pubs</div>
+      <input type="text" placeholder="Ex : 4 annonceurs actifs depuis 35-50 jours sur 'turbulette bébé'">
+    </div>
+  </div>
+
+  <!-- SECTION 4 : CALCUL MARGE -->
+  <div class="form-section">
+    <div class="form-section-title">4 — Calcul de la marge ×4</div>
+
+    <div class="three-col">
+      <div class="field">
+        <label>Prix fournisseur (€)</label>
+        <input type="number" id="prixAchat" placeholder="Ex : 5.50" min="0" step="0.01" oninput="calcMarge()">
+      </div>
+      <div class="field">
+        <label>Frais de livraison (€)</label>
+        <input type="number" id="prixLivraison" placeholder="Ex : 3.00" min="0" step="0.01" oninput="calcMarge()">
+      </div>
+      <div class="field">
+        <label>Prix de vente visé (€)</label>
+        <input type="number" id="prixVente" placeholder="Ex : 39.00" min="0" step="0.01" oninput="calcMarge()">
+      </div>
+    </div>
+
+    <div class="calc-box" id="calcResult">
+      <div class="calc-step">
+        <span id="cAchat">€0.00</span>
+        <strong>Achat</strong>
+      </div>
+      <span class="calc-op">+</span>
+      <div class="calc-step">
+        <span id="cLivraison">€0.00</span>
+        <strong>Livraison</strong>
+      </div>
+      <span class="calc-op">=</span>
+      <div class="calc-step">
+        <span id="cTotal">€0.00</span>
+        <strong>Coût réel</strong>
+      </div>
+      <span class="calc-op">→</span>
+      <div class="calc-result">
+        <div class="result-val" id="cMultiple">— ×</div>
+        <div class="result-label">multiplicateur actuel</div>
+        <div id="margeBadge"></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Objectif :</strong> Marge ×4 minimum. Ticket de vente cible : €35–150. En dessous de ×4, les coûts publicitaires absorbent la marge et le business ne tient pas.
+    </div>
+  </div>
+
+  <!-- SECTION 5 : NORMES SÉCURITÉ -->
+  <div class="form-section">
+    <div class="form-section-title">5 — Normes de sécurité (niche enfants)</div>
+    <div class="filter-checks">
+      <div class="filter-check-row">
+        <label><input type="checkbox"><div><div class="fc-name">Marquage CE vérifié</div><div class="fc-hint">Le produit est-il certifié CE ? (obligatoire pour la vente en Europe)</div></div></label>
+      </div>
+      <div class="filter-check-row" style="margin-top:6px;">
+        <label><input type="checkbox"><div><div class="fc-name">Norme EN71 (si jouet)</div><div class="fc-hint">Norme européenne de sécurité des jouets — demander la certification au fournisseur</div></div></label>
+      </div>
+      <div class="filter-check-row" style="margin-top:6px;">
+        <label><input type="checkbox"><div><div class="fc-name">Matériaux non toxiques confirmés</div><div class="fc-hint">Le fournisseur confirme-t-il l'absence de BPA, phtalates, métaux lourds ?</div></div></label>
+      </div>
+    </div>
+    <div class="field" style="margin-top:12px;">
+      <label>Notes sur les certifications</label>
+      <input type="text" placeholder="Ex : Fournisseur certifié CE, fiche technique disponible sur demande">
+    </div>
+  </div>
+
+  <!-- SECTION 6 : NOTES -->
+  <div class="form-section">
+    <div class="form-section-title">6 — Notes &amp; observations</div>
+    <div class="field">
+      <label>Pourquoi ce produit ? (argument en 2-3 phrases)</label>
+      <textarea placeholder="Ex : J'ai trouvé 4 annonceurs actifs depuis plus de 40 jours. Google Trends est stable avec un pic en novembre. La marge est de ×4,8. Le problème des nuits courtes pour les parents est urgent et universel."></textarea>
+    </div>
+    <div class="field">
+      <label>Source META Ads Library (annonceur de référence)</label>
+      <input type="text" placeholder="Ex : Nom de la boutique concurrente observée + durée estimée de la pub">
+    </div>
+  </div>
+
+  <!-- SECTION 7 : COMMANDE STOCK -->
+  <div class="form-section" style="border-color:rgba(251,146,60,0.25);background:rgba(251,146,60,0.03);">
+    <div class="form-section-title" style="color:#fb923c;">7 — Commande de stock (Dropshipping 2.0)</div>
+    <div class="note" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.06);margin-bottom:16px;">
+      <strong>Rappel :</strong> Le modèle Tariqa PRO = tu commandes un stock minimum AVANT de construire ton site. Tu ne vends pas sans avoir le produit. Cette étape est obligatoire avant de passer à S2.
+    </div>
+    <div class="field">
+      <label>Contact fournisseur (email / WhatsApp / WeChat)</label>
+      <input type="text" placeholder="Ex : agent@cjdropshipping.com ou lien Alibaba du fournisseur">
+    </div>
+    <div class="three-col">
+      <div class="field">
+        <label>Quantité commandée (unités)</label>
+        <input type="number" id="stockQty" placeholder="Ex : 30" min="1" oninput="calcStock()">
+      </div>
+      <div class="field">
+        <label>Prix unitaire fournisseur (€)</label>
+        <input type="number" id="stockPrix" placeholder="Ex : 6.20" step="0.01" oninput="calcStock()">
+      </div>
+      <div class="field">
+        <label>Coût total stock (€)</label>
+        <input type="number" id="stockTotal" placeholder="Calculé auto" readonly style="background:var(--surface2);color:var(--green);font-weight:700;">
+      </div>
+    </div>
+    <div class="field">
+      <label>Date de commande passée</label>
+      <input type="date">
+    </div>
+    <div class="field">
+      <label>Date de réception estimée</label>
+      <input type="date">
+    </div>
+    <div class="filter-checks" style="margin-top:8px;">
+      <div class="filter-check-row">
+        <label><input type="checkbox"><div><div class="fc-name">✅ Fournisseur contacté et prix confirmé</div></div></label>
+      </div>
+      <div class="filter-check-row" style="margin-top:6px;">
+        <label><input type="checkbox"><div><div class="fc-name">✅ Marge ×4 vérifiée avec le prix fournisseur réel</div></div></label>
+      </div>
+      <div class="filter-check-row" style="margin-top:6px;">
+        <label><input type="checkbox"><div><div class="fc-name">✅ Commande passée — stock en transit</div></div></label>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROCHAINE ÉTAPE -->
+  <div style="margin-top:28px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;margin-bottom:80px;">
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 2</div>
+    <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">Fiche produit complète + stock commandé → construis le site</h3>
+    <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Toutes les sections remplies ? Stock commandé ? Maintenant tu ouvres Shopify et tu construis la page produit en utilisant exactement ces données (nom, prix, bénéfice, niche, persona).</p>
+    <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le template page produit S2</span>
+  </div>
+
+</main>
+
+<script>
+function selectNiche(el) {
+  document.querySelectorAll('.niche-opt').forEach(function(n) { n.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function selectAge(el) {
+  document.querySelectorAll('.age-opt').forEach(function(a) { a.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+
+function selectPain(el, score) {
+  document.querySelectorAll('.pain-opt').forEach(function(p) { p.classList.remove('active-1','active-2','active-3'); });
+  el.classList.add('active-' + score);
+}
+
+function calcMarge() {
+  var achat = parseFloat(document.getElementById('prixAchat').value) || 0;
+  var livraison = parseFloat(document.getElementById('prixLivraison').value) || 0;
+  var vente = parseFloat(document.getElementById('prixVente').value) || 0;
+  var total = achat + livraison;
+  document.getElementById('cAchat').textContent = '€' + achat.toFixed(2);
+  document.getElementById('cLivraison').textContent = '€' + livraison.toFixed(2);
+  document.getElementById('cTotal').textContent = '€' + total.toFixed(2);
+  var badge = document.getElementById('margeBadge');
+  if (total === 0) {
+    document.getElementById('cMultiple').textContent = '— ×';
+    badge.textContent = '';
+    badge.className = 'marge-badge';
+    return;
+  }
+  var mult = vente > 0 ? (vente / total) : 0;
+  document.getElementById('cMultiple').textContent = mult.toFixed(1) + ' ×';
+  if (mult >= 4) {
+    badge.textContent = '✓ Marge validée ×4';
+    badge.className = 'marge-badge marge-ok';
+  } else if (mult >= 3) {
+    badge.textContent = '⚠ Marge limite — ajuste le prix';
+    badge.className = 'marge-badge marge-warn';
+  } else {
+    badge.textContent = '✕ Marge insuffisante';
+    badge.className = 'marge-badge marge-fail';
+  }
+}
+
+function calcStock() {
+  var qty = parseFloat(document.getElementById('stockQty').value) || 0;
+  var prix = parseFloat(document.getElementById('stockPrix').value) || 0;
+  var totalEl = document.getElementById('stockTotal');
+  if (qty > 0 && prix > 0) {
+    totalEl.value = (qty * prix).toFixed(2);
+  } else {
+    totalEl.value = '';
+  }
+}
+</script>
+</body>
+</html>

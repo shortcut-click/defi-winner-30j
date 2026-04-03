@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Méthode S3 — Créations Publicitaires | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75;
+  --green-dim: #1D9E7515;
+  --green-border: #1D9E7540;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+  --orange: #fb923c;
+  --orange-dim: #ea580c15;
+  --orange-border: #ea580c40;
+  --blue: #60a5fa;
+  --blue-dim: #2563eb15;
+  --blue-border: #2563eb40;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 800px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag {
+  background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green);
+  border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700;
+}
+.main { max-width: 800px; margin: 0 auto; padding: 40px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+.page-title { font-size: 1.9rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+.page-title span { color: var(--green); }
+.page-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 40px; max-width: 540px; }
+
+/* Sections */
+.guide-section { margin-bottom: 44px; }
+.section-label {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 20px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.section-num {
+  width: 32px; height: 32px; border-radius: 9px;
+  background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 800; flex-shrink: 0;
+}
+.section-label h2 { font-size: 1.05rem; font-weight: 800; }
+.section-label p { font-size: 0.8rem; color: var(--muted); }
+.time-badge {
+  margin-left: auto; background: var(--orange-dim); border: 1px solid var(--orange-border);
+  color: var(--orange); border-radius: 999px; padding: 3px 12px;
+  font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+}
+
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: 12px; }
+.step {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px;
+  display: flex; gap: 16px; align-items: flex-start;
+}
+.step-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 800; flex-shrink: 0; margin-top: 1px;
+}
+.step-body h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.step-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+.step-body .path {
+  display: inline-block; background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; color: #aaa;
+  font-family: monospace; margin-top: 8px;
+}
+.step-tip {
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  border-radius: 8px; padding: 10px 14px;
+  font-size: 0.79rem; color: #bbb; margin-top: 10px; line-height: 1.5;
+}
+.step-tip strong { color: var(--text); }
+
+/* Two-col */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+/* Prompt box */
+.prompt-box {
+  background: #111; border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 0.78rem; color: #a8d8b9; line-height: 1.7;
+  white-space: pre-wrap; word-break: break-word;
+  position: relative;
+}
+.prompt-label {
+  font-size: 0.7rem; font-weight: 700; color: var(--green);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 10px; display: block;
+}
+.copy-btn {
+  position: absolute; top: 14px; right: 14px;
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--muted); border-radius: 6px; padding: 5px 12px;
+  font-size: 0.72rem; cursor: pointer; font-family: inherit;
+  transition: all 0.2s;
+}
+.copy-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* Info card */
+.info-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 20px; margin-bottom: 12px;
+}
+.info-card h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; }
+.info-card ul { list-style: none; display: flex; flex-direction: column; gap: 5px; }
+.info-card li { font-size: 0.82rem; color: var(--muted); padding-left: 14px; position: relative; }
+.info-card li::before { content: '→'; position: absolute; left: 0; color: var(--green); font-size: 0.7rem; top: 2px; }
+
+/* Note */
+.note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--green); border-radius: 10px;
+  padding: 14px 18px; font-size: 0.83rem; color: var(--muted); line-height: 1.65; margin-top: 16px;
+}
+.note strong { color: var(--text); }
+
+/* Alert */
+.alert {
+  background: var(--orange-dim); border: 1px solid var(--orange-border);
+  border-radius: 10px; padding: 14px 18px; font-size: 0.83rem; color: #ccc;
+  line-height: 1.6; margin-top: 16px;
+}
+.alert strong { color: var(--orange); }
+
+/* Timeline bloc (structure vidéo) */
+.timeline { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.timeline-row {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+}
+.timeline-time {
+  font-size: 0.72rem; font-weight: 800; color: var(--green);
+  font-family: monospace; white-space: nowrap; min-width: 52px; padding-top: 1px;
+}
+.timeline-body h5 { font-size: 0.85rem; font-weight: 700; margin-bottom: 2px; }
+.timeline-body p { font-size: 0.79rem; color: var(--muted); line-height: 1.45; }
+
+/* Checklist steps (cases a cocher) */
+.checklist { display: flex; flex-direction: column; gap: 10px; }
+.checklist-item {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 18px;
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.check-box {
+  width: 20px; height: 20px; border-radius: 5px;
+  border: 2px solid var(--muted2); flex-shrink: 0; margin-top: 1px;
+}
+.checklist-item p { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+.checklist-item strong { color: var(--text); font-size: 0.88rem; display: block; margin-bottom: 2px; }
+
+@media (max-width: 768px) {
+  .two-col { grid-template-columns: 1fr; }
+  .page-title { font-size: 1.5rem; }
+  .main { padding: 28px 16px 60px; }
+  .timeline-row { flex-direction: column; gap: 6px; }
+  .timeline-time { min-width: auto; }
+}
+@media print {
+  .header { position: static; }
+  body { background: #fff; color: #111; }
+  .note, .alert, .prompt-box, .timeline-row, .info-card, .step { background: #f5f5f5; border-color: #ddd; color: #333; }
+  .copy-btn { display: none; }
+  .step-tip { background: #eafaf4; border-color: #b2dece; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">Guide Méthode — Semaine 3</span>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Guide d'exécution pas à pas</div>
+  <h1 class="page-title">Créations <span>Publicitaires</span></h1>
+  <p class="page-sub">Visuels Canva, vidéo CapCut, import Meta Ads Manager. Suis dans l'ordre. Les créas servent les hooks — pas l'inverse.</p>
+
+  <!-- SECTION 1 : PRÉPARER LES ASSETS -->
+  <section class="guide-section">
+    <div class="section-label">
+      <div class="section-num">1</div>
+      <div>
+        <h2>Préparer les assets avant de créer</h2>
+        <p>Ce que tu dois avoir prêt avant d'ouvrir Canva ou CapCut</p>
+      </div>
+      <span class="time-badge">⏱ 20 min</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-body">
+          <h4>Récupérer les visuels du fournisseur</h4>
+          <p>AliExpress → page produit → télécharge les photos principales. N'utilise pas de screenshot — la qualité sera mauvaise. Installe l'extension Chrome <strong>"Image Downloader"</strong> pour récupérer les fichiers originaux en un clic. Vise <strong>10 à 15 visuels minimum</strong> pour avoir du choix au montage.</p>
+          <div class="path">Extension Chrome : "Image Downloader"</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <h4>Si tu as ton sample : prends tes propres photos et vidéos</h4>
+          <p>Éclairage naturel (fenêtre, pas flash) + fond simple (table blanche, tissu uni) + produit en situation réelle. Un enfant qui joue, un parent qui utilise le produit, un plan serré sur le détail qui fait la différence. C'est <strong>10× plus efficace</strong> qu'une photo fournisseur sur fond blanc.</p>
+          <div class="step-tip">
+            <strong>Format recommandé :</strong> Filme en 4K ou 1080p, mode portrait (9:16) directement si possible. Prends au moins 5 séquences différentes de 10-15 secondes chacune — tu choisiras au montage.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <h4>Avoir la fiche persona sous la main</h4>
+          <p>Chaque créa parle à <strong>une seule personne</strong>. Relis l'émotion dominante et le moment déclencheur de ta fiche persona avant de commencer. Si ton persona est "Sophie, 31 ans, culpabilité de ne pas dormir", ta créa doit résonner pour elle — pas pour tout le monde.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <h4>Avoir ses 3 hooks écrits avant d'ouvrir Canva</h4>
+          <p>Les 3 hooks (issus du framework créas S3) doivent être écrits et validés <strong>avant</strong> de toucher un outil de design. La créa sert le hook — pas l'inverse. Si tu ouvres Canva sans hook, tu vas créer quelque chose de joli mais qui ne convertit pas.</p>
+          <div class="step-tip">
+            <strong>Rappel structure hooks :</strong> Angle problème ("Ton bébé ne dort toujours pas plus de 2h d'affilée ?") / Angle bénéfice ("La turbulette qui a changé nos nuits en 3 jours") / Angle preuve ("4 847 mamans ont déjà adopté cette routine")
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Règle d'or :</strong> Tu dois avoir tes hooks ET tes visuels sources prêts avant de créer quoi que ce soit. Créer sans contenu = perdre du temps à remplir un template vide.
+    </div>
+  </section>
+
+  <!-- SECTION 2 : CANVA -->
+  <section class="guide-section">
+    <div class="section-label">
+      <div class="section-num">2</div>
+      <div>
+        <h2>Créer les visuels avec Canva</h2>
+        <p>3 visuels statiques minimum — formats 1:1 et 9:16</p>
+      </div>
+      <span class="time-badge">⏱ 45 min</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-body">
+          <h4>Créer le design au bon format</h4>
+          <p>Va sur <strong>canva.com</strong> → Créer un design → Choisir le format :</p>
+          <div class="two-col" style="margin-top:10px;">
+            <div class="info-card" style="margin-bottom:0">
+              <h4>Format 1:1 — Feed</h4>
+              <ul>
+                <li>Instagram Post</li>
+                <li>1080 × 1080 px</li>
+                <li>Pour Facebook Feed et Instagram Feed</li>
+                <li>Texte visible sans crop</li>
+              </ul>
+            </div>
+            <div class="info-card" style="margin-bottom:0">
+              <h4>Format 9:16 — Stories/Reels</h4>
+              <ul>
+                <li>Instagram Story</li>
+                <li>1080 × 1920 px</li>
+                <li>Pour Stories, Reels, TikTok</li>
+                <li>Priorité si budget limité</li>
+              </ul>
+            </div>
+          </div>
+          <div class="path">canva.com → Créer un design → Instagram Post ou Instagram Story</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <h4>Structure d'un visuel statique efficace</h4>
+          <p>Un visuel qui convertit suit toujours la même logique :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li><strong>Photo produit en contexte</strong> — pas sur fond blanc, en situation réelle</li>
+              <li><strong>Texte hook EN GROS en overlay</strong> — c'est l'élément numéro 1</li>
+              <li><strong>Logo ou nom boutique discret</strong> en bas (10-15% de la hauteur)</li>
+              <li><strong>CTA simple</strong> : "Découvrir →" ou "Voir le produit"</li>
+            </ul>
+          </div>
+          <div class="step-tip">
+            <strong>Hiérarchie visuelle :</strong> Ton regard va d'abord au texte le plus grand. Assure-toi que c'est le hook — pas le logo, pas le CTA, pas le nom du produit.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <h4>Palette de couleurs : moins c'est plus</h4>
+          <p>Reste dans <strong>2 couleurs maximum</strong>. Texte blanc sur fond sombre = toujours lisible. Texte noir sur fond clair = fonctionne aussi. Évite les dégradés complexes, les polices décoratives illisibles, les animations inutiles — la simplicité convertit mieux que le "beau".</p>
+          <div class="step-tip">
+            <strong>Conseil niche enfants :</strong> Couleurs douces et chaleureuses (nude, vert sauge, bleu pastel) passent mieux que le rouge vif ou le noir pur. Elles inspirent confiance aux parents.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <h4>Texte overlay : règles non négociables</h4>
+          <p>Le texte sur l'image doit respecter ces contraintes pour être efficace sur mobile :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>Maximum <strong>8 à 10 mots</strong> — si tu en as besoin de plus, raccourcis</li>
+              <li>Police <strong>Bold ou Black</strong> — jamais Regular ou Light</li>
+              <li>Taille suffisamment grande pour être lue <strong>sans zoomer sur mobile</strong></li>
+              <li>Contraste fort : blanc sur sombre, ou fond opaque derrière le texte</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">5</div>
+        <div class="step-body">
+          <h4>Exporter avec les bons paramètres</h4>
+          <p>Canva → Partager → Télécharger → Format : <strong>PNG</strong> pour les visuels statiques. Résolution maximale disponible. Nommer les fichiers clairement pour t'y retrouver :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>angle-probleme-1x1.png</li>
+              <li>angle-benefice-1x1.png</li>
+              <li>angle-preuve-9x16.png</li>
+            </ul>
+          </div>
+          <div class="step-tip">
+            <strong>Si tu crées une animation Canva :</strong> Exporte en MP4 (Vidéo). Mais garde les visuels statiques en priorité — ils sont plus faciles à tester et à modifier rapidement.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert">
+      <strong>Erreur fréquente :</strong> Passer 3h sur Canva pour faire "le visuel parfait". L'objectif de la semaine 3 est de créer 3 angles différents, pas de perfectionner un seul visuel. Vitesse d'exécution > perfectionnisme au stade du test.
+    </div>
+  </section>
+
+  <!-- SECTION 3 : CAPCUT -->
+  <section class="guide-section">
+    <div class="section-label">
+      <div class="section-num">3</div>
+      <div>
+        <h2>Créer la vidéo avec CapCut</h2>
+        <p>1 vidéo de 25-30 secondes avec sous-titres — structure obligatoire</p>
+      </div>
+      <span class="time-badge">⏱ 60 min</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-body">
+          <h4>Ouvrir CapCut et créer un nouveau projet</h4>
+          <p>CapCut est disponible en app mobile (iOS/Android) et en version desktop. Les deux fonctionnent pour cet usage.</p>
+          <div class="path">App : CapCut — Desktop : desktop.capcut.com</div>
+          <p style="margin-top:8px;">Nouveau projet → Importer tes vidéos et photos produit. Commence par importer tout ton matériel — tu feras le tri ensuite sur la timeline.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <h4>Structure obligatoire des 30 secondes</h4>
+          <p>Chaque seconde compte sur une pub. Cette structure est validée sur la niche enfants :</p>
+          <div class="timeline">
+            <div class="timeline-row">
+              <span class="timeline-time">0 — 3s</span>
+              <div class="timeline-body">
+                <h5>La scène du problème</h5>
+                <p>Montre le problème — pas le produit. Bébé qui pleure, parent épuisé, situation de chaos familier. Texte hook en overlay grand format, visible dès la première image (les 3 premières secondes décident si le scroll continue).</p>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-time">4 — 12s</span>
+              <div class="timeline-body">
+                <h5>Produit en action</h5>
+                <p>Montre CE QU'IL FAIT, pas ce qu'il est. Pas un plan fixe du produit posé sur une table. Montre l'utilisation : la main qui l'installe, l'enfant qui réagit, le résultat visible. Plusieurs séquences courtes (2-3s chacune).</p>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-time">13 — 22s</span>
+              <div class="timeline-body">
+                <h5>Preuve + bénéfice principal</h5>
+                <p>Avis client en texte overlay, chiffre ("4 847 mamans"), résultat visible à l'écran. Suivi du bénéfice principal formulé clairement. C'est le moment de lever les objections.</p>
+              </div>
+            </div>
+            <div class="timeline-row">
+              <span class="timeline-time">23 — 30s</span>
+              <div class="timeline-body">
+                <h5>CTA clair à l'écran</h5>
+                <p>Texte en gros : "Commander maintenant → [nom boutique]" ou "Lien en bio". Le CTA doit rester à l'écran au moins 4 secondes. Pas de fond animé complexe à ce moment — le texte doit être lisible sans effort.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <h4>Ajouter les sous-titres automatiques</h4>
+          <p><strong>60% des vues se font sans le son</strong> — les sous-titres ne sont pas optionnels. Dans CapCut :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>CapCut → onglet <strong>Texte</strong> → <strong>Auto-sous-titres</strong></li>
+              <li>Langue : <strong>Français</strong></li>
+              <li>Appliquer → attendre la génération</li>
+              <li>Vérifier et corriger les erreurs manuellement</li>
+              <li>Police Bold, couleur blanche, contour noir pour la lisibilité</li>
+            </ul>
+          </div>
+          <div class="step-tip">
+            <strong>Si ta vidéo n'a pas de voix :</strong> Ajoute quand même les textes overlay manuellement sur les moments clés. L'absence de son ne doit pas empêcher la compréhension du message.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <h4>Choisir la musique de fond</h4>
+          <p>CapCut → <strong>Bibliothèque de sons</strong> → filtre <strong>"Libre de droits"</strong>. Pour la niche enfants : musique douce, positive, chaleureuse. Pas de trap, pas de hip-hop agressif, pas de musique électronique rapide — ça ne correspond pas à l'émotion que tu veux créer.</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>Volume musique : <strong>20 à 30%</strong> maximum</li>
+              <li>La voix ou le texte doit toujours être en avant</li>
+              <li>Fade in au début, fade out sur le CTA final</li>
+              <li>Vérifie que la musique est marquée "libre de droits" avant d'utiliser</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">5</div>
+        <div class="step-body">
+          <h4>Format d'export : 9:16 en priorité</h4>
+          <p>Export prioritaire en <strong>9:16 (1080×1920)</strong> pour Stories et Reels — c'est le format qui prend le plus de place à l'écran sur mobile = meilleur impact. Ensuite tu peux recadrer en 1:1 pour le feed. CapCut le fait automatiquement depuis "Recadrage".</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">6</div>
+        <div class="step-body">
+          <h4>Vérification avant export</h4>
+          <p>Passe cette checklist avant d'exporter :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>Pas de visage d'enfant reconnaissable sans flou si les parents n'ont pas consenti</li>
+              <li>Pas de mise en danger ou scène pouvant inquiéter (chute, risque physique)</li>
+              <li>Tout le texte lisible sur mobile (teste en zoomant à 50%)</li>
+              <li>Le CTA est bien visible sur les 4-5 dernières secondes</li>
+              <li>La durée totale est entre 25 et 30 secondes</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Note sur les droits :</strong> N'utilise jamais de musique commerciale connue (Spotify, YouTube) dans tes pubs META. Utilise uniquement la bibliothèque CapCut filtrée "libre de droits" ou des sons de la bibliothèque Meta Ads Manager.
+    </div>
+  </section>
+
+  <!-- SECTION 4 : META ADS MANAGER -->
+  <section class="guide-section">
+    <div class="section-label">
+      <div class="section-num">4</div>
+      <div>
+        <h2>Importer dans Meta Ads Manager</h2>
+        <p>Configuration complète en Brouillon — activation en Semaine 4</p>
+      </div>
+      <span class="time-badge">⏱ 30 min</span>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-circle">1</div>
+        <div class="step-body">
+          <h4>Accéder au Gestionnaire de publicités</h4>
+          <p>Va sur <strong>business.facebook.com</strong> → Gestionnaire de publicités → Créer.</p>
+          <div class="path">business.facebook.com → Gestionnaire de publicités → Créer</div>
+          <p style="margin-top:8px;">Objectif de la campagne : choisir <strong>"Ventes"</strong>. C'est l'objectif qui optimise pour les achats — pas pour les clics, pas pour la portée.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">2</div>
+        <div class="step-body">
+          <h4>Configurer l'ensemble de publicités</h4>
+          <p>Dans l'ensemble de publicités (niveau intermédiaire entre campagne et publicité) :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>Connecter le <strong>pixel Shopify</strong> (doit être déjà installé depuis S2)</li>
+              <li>Événement d'optimisation : <strong>Achat</strong></li>
+              <li>Budget : <strong>laisser vide pour l'instant</strong> — on configure en S4</li>
+              <li>Audience : large pour l'instant (France, 25-45 ans, femmes)</li>
+              <li>Placements : automatiques (Meta choisit le meilleur)</li>
+            </ul>
+          </div>
+          <div class="step-tip">
+            <strong>Si le pixel n'est pas encore installé :</strong> Retourne dans Shopify → Applications → recherche "Meta" → installe l'app officielle Meta → suis le processus de connexion. C'est bloquant pour la suite.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">3</div>
+        <div class="step-body">
+          <h4>Créer les publicités — une créa par pub</h4>
+          <p>Dans la section "Publicité" → Ajouter les créas. Règle absolue : <strong>chaque créa = une publicité séparée</strong> dans le même ensemble. Ne mélange pas les formats dans la même publicité.</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li>Publicité 1 : Visuel angle problème (1:1 ou 9:16)</li>
+              <li>Publicité 2 : Visuel angle bénéfice (1:1 ou 9:16)</li>
+              <li>Publicité 3 : Visuel angle preuve (1:1 ou 9:16)</li>
+              <li>Publicité 4 : Vidéo 9:16 (30 secondes)</li>
+            </ul>
+          </div>
+          <div class="step-tip">
+            <strong>Pourquoi une pub par créa ?</strong> Pour pouvoir couper la moins performante après 3 jours et laisser tourner la meilleure — impossible si elles sont mélangées.
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">4</div>
+        <div class="step-body">
+          <h4>Rédiger le texte de la publicité</h4>
+          <p>Pour chaque publicité, remplis les champs suivants :</p>
+          <div class="info-card" style="margin-top:10px;">
+            <ul>
+              <li><strong>Texte principal :</strong> colle ton hook correspondant à l'angle de la créa</li>
+              <li><strong>URL de destination :</strong> ton lien Shopify (page produit ou home)</li>
+              <li><strong>CTA :</strong> "Acheter maintenant"</li>
+              <li><strong>Titre (optionnel) :</strong> nom du produit court ou bénéfice clé</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-circle">5</div>
+        <div class="step-body">
+          <h4>Passer en Brouillon et vérifier</h4>
+          <p>Statut de toutes les publicités : <strong>Brouillon</strong>. On active tout en Semaine 4 — pas maintenant. Mais tout doit être configuré et prêt à l'activation en 1 clic.</p>
+          <div class="step-tip">
+            <strong>Avant de fermer :</strong> Clique sur l'onglet <strong>"Vérification"</strong> de Meta Ads Manager. Si tu vois des erreurs de validation (politique, pixel non détecté, image avec trop de texte), corrige-les maintenant. Une erreur non corrigée bloquera l'activation en S4.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert">
+      <strong>Attention politique META :</strong> Les publicités pour produits enfants sont scrutées. Évite tout visuel suggérant une mise en danger, tout texte avec une promesse de résultat médical ("favorise le développement cérébral", "traite les coliques"), et toute image avec un ratio texte/image élevé.
+    </div>
+  </section>
+
+  <!-- SECTION 5 : CHECKLIST RENDU S3 -->
+  <section class="guide-section">
+    <div class="section-label">
+      <div class="section-num" style="font-size:0.9rem;">✓</div>
+      <div>
+        <h2>Checklist de rendu — Semaine 3</h2>
+        <p>Vérifie que tu as tout avant de poster sur Circle</p>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>3 visuels créés (formats 1:1 et 9:16)</strong>
+          <p>Un par angle : problème, bénéfice, preuve. Exportés en PNG, nommés clairement.</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>1 vidéo de 25 à 30 secondes avec sous-titres</strong>
+          <p>Structure 4 temps respectée. Sous-titres automatiques CapCut activés. Musique libre de droits à 20-30%.</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>3 hooks distincts (un par angle)</strong>
+          <p>Angle problème / angle bénéfice / angle preuve. Chacun en une phrase de 8-10 mots maximum.</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>Aucun contenu haram</strong>
+          <p>Pas de nudité, pas de mise en danger d'enfant, musique libre de droits vérifiée.</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>Aucune fausse promesse médicale</strong>
+          <p>Les mots "guérit", "traite", "soigne", "développement garanti" sont interdits dans les publicités META. Remplace par "aide à", "contribue à", "facilite".</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>Importés dans Meta Ads Manager en statut Brouillon</strong>
+          <p>4 publicités configurées (3 visuels + 1 vidéo), onglet Vérification sans erreur.</p>
+        </div>
+      </div>
+      <div class="checklist-item">
+        <div class="check-box"></div>
+        <div>
+          <strong>Prompt IA utilisé — screenshot sauvegardé</strong>
+          <p>Screenshot du prompt + réponse de l'IA (au moins la partie hooks et structure créas).</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:20px;">
+      <strong>Rendu :</strong> Poste dans le fil "📝 Rendu Semaine 3" sur Circle avant vendredi. Inclus : screenshots des créas + screenshot Meta Ads Manager (statut Brouillon) + hooks écrits + prompt IA utilisé.
+    </div>
+
+    <!-- PROMPT IA -->
+    <div style="margin-top:28px;">
+      <span class="prompt-label">Prompt IA — Générateur de hooks et structure créas (copie-colle dans ChatGPT ou Claude)</span>
+      <div class="prompt-box" id="promptBox">Tu es un expert en publicité Facebook/Instagram pour l'e-commerce niche enfants. Je vends [NOM DU PRODUIT] dans la niche [SOUS-NICHE].
+
+Mon persona cible : [PRÉNOM PERSONA], [ÂGE] ans, [SITUATION], émotion dominante : [ÉMOTION], déclencheur : [MOMENT DÉCLENCHEUR].
+
+Génère pour moi :
+
+1. TROIS HOOKS PUBLICITAIRES (un par angle) :
+   - Angle Problème : une phrase qui nomme exactement la douleur, en 8-10 mots max
+   - Angle Bénéfice : une phrase qui formule le résultat positif, en 8-10 mots max
+   - Angle Preuve sociale : une phrase avec un chiffre ou un témoignage crédible, 8-10 mots
+
+2. STRUCTURE DE LA VIDÉO 30 SECONDES :
+   - 0-3s : scène d'ouverture (description précise de ce qu'on voit + texte hook exact)
+   - 4-12s : séquences produit en action (3 plans différents, décris chacun)
+   - 13-22s : preuve + bénéfice (texte exact à afficher)
+   - 23-30s : CTA exact mot pour mot
+
+3. TEXTE PRINCIPAL de la publicité META (150-200 mots) pour l'angle problème :
+   - Commence par le hook problème
+   - Développe la douleur en 2 phrases
+   - Présente le produit comme solution
+   - Preuve sociale
+   - CTA
+
+Réponds en français. Adapte le ton à une mère de famille de 25-40 ans, pas à un marketeur.</div>
+      <button class="copy-btn" onclick="copyPrompt()">Copier</button>
+    </div>
+  </section>
+
+  <!-- CTA PROCHAINE ÉTAPE -->
+  <section style="margin-top:28px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;margin-bottom:80px;">
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 4</div>
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Créas prêtes et importées. Le stock arrive. Il est temps d'activer la campagne.</h3>
+    <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px;">Le guide lancement META S4 te guide étape par étape pour configurer le ciblage, lire tes métriques J+3 et diagnostiquer les résultats. Tu ne devines plus — tu lis les chiffres et tu décides.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le guide lancement META S4</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+function copyPrompt() {
+  var text = document.getElementById('promptBox').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.querySelector('.copy-btn');
+    btn.textContent = 'Copie ✓';
+    setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>

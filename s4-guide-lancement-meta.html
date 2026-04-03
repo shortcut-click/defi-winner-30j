@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide Lancement META — S4 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75; --green-dim: #1D9E7515; --green-border: #1D9E7540;
+  --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222; --border: #2a2a2a;
+  --text: #f0f0f0; --muted: #888; --muted2: #555;
+  --red: #f87171; --red-dim: #dc262615; --red-border: #dc262640;
+  --orange: #fb923c; --orange-dim: #ea580c15; --orange-border: #ea580c40;
+  --purple: #a78bfa; --purple-dim: #7c3aed15; --purple-border: #7c3aed40;
+  --blue: #60a5fa; --blue-dim: #2563eb15; --blue-border: #2563eb40;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 0; position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 860px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag { background: var(--blue-dim); border: 1px solid var(--blue-border); color: var(--blue); border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; }
+.print-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 7px 16px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.print-btn:hover { border-color: var(--green); color: var(--green); }
+.main { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 10px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+.page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 36px; max-width: 560px; }
+
+.tabs { display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; }
+.tab-btn { background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.tab-btn.active { background: #fff; color: #111; border-color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-top: 28px; }
+.section-title:first-child { margin-top: 0; }
+
+/* Steps */
+.steps { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; display: flex; gap: 14px; }
+.step-num { width: 28px; height: 28px; border-radius: 8px; background: var(--blue-dim); border: 1px solid var(--blue-border); color: var(--blue); display: flex; align-items: center; justify-content: center; font-size: 0.75rem; font-weight: 800; flex-shrink: 0; margin-top: 1px; }
+.step-body h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.step-body p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+.step-tip { background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 8px; padding: 9px 12px; font-size: 0.78rem; color: #bbb; margin-top: 8px; line-height: 1.5; }
+.step-tip strong { color: var(--text); }
+.step-path { display: inline-block; background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 3px 10px; font-family: monospace; font-size: 0.75rem; color: #aaa; margin-top: 6px; }
+
+/* Metrics grid */
+.metrics-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+.metric-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 18px; }
+.metric-name { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.metric-value { font-size: 1.3rem; font-weight: 800; color: var(--green); margin-bottom: 4px; }
+.metric-desc { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+.metric-card.warn .metric-value { color: var(--orange); }
+.metric-card.bad .metric-value { color: var(--red); }
+
+/* Diagnostic table */
+.diag-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; margin-bottom: 24px; }
+.diag-table th { background: var(--surface); padding: 10px 14px; text-align: left; font-size: 0.72rem; color: var(--muted); font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid var(--border); }
+.diag-table td { padding: 12px 14px; border-bottom: 1px solid #1d1d1d; vertical-align: top; color: #ccc; }
+.diag-table tr:last-child td { border-bottom: none; }
+.symptom { font-weight: 700; color: var(--red); }
+.cause { color: var(--orange); }
+.action { color: var(--green); }
+
+/* Budget calc */
+.budget-calc { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px 22px; margin-bottom: 24px; }
+.budget-calc h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 16px; }
+.budget-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; flex-wrap: wrap; }
+.budget-row label { font-size: 0.8rem; color: var(--muted); width: 150px; flex-shrink: 0; }
+.budget-row input { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); font-size: 0.87rem; font-family: inherit; outline: none; width: 100px; transition: border-color 0.2s; }
+.budget-row input:focus { border-color: var(--green); }
+.budget-result { background: var(--green-dim); border: 1px solid var(--green-border); border-radius: 10px; padding: 14px 18px; margin-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+.budget-result span { font-size: 0.82rem; color: var(--muted); }
+.budget-result strong { font-size: 1.3rem; font-weight: 800; color: var(--green); }
+
+/* Bilan form */
+.bilan-section { margin-bottom: 24px; }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 0.8rem; font-weight: 700; color: #ccc; margin-bottom: 5px; }
+.field .hint { font-size: 0.74rem; color: var(--muted); margin-bottom: 5px; }
+.field input, .field textarea, .field select { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 0.87rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+.field input:focus, .field textarea:focus { border-color: var(--green); }
+.field textarea { min-height: 72px; resize: vertical; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.six-col { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+
+/* Note/alert */
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--blue); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+.note strong { color: var(--text); }
+.alert { background: var(--orange-dim); border: 1px solid var(--orange-border); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: #ccc; line-height: 1.6; margin-top: 14px; }
+.alert strong { color: var(--orange); }
+
+@media (max-width: 640px) { .metrics-grid { grid-template-columns: 1fr 1fr; } .two-col, .three-col, .six-col { grid-template-columns: 1fr; } }
+@media print { .header { position: static; } .print-btn { display: none; } .tabs { display: none; } .tab-panel { display: block !important; } body { background: #fff; color: #111; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">S4 — Lancement META</span>
+    <button class="print-btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Semaine 4 — Lancement</div>
+  <h1 class="page-title">Guide Lancement META</h1>
+  <p class="page-sub">Pas à pas pour créer ta première campagne. Grille de lecture des métriques J+3. Diagnostic rapide. Template bilan final.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('setup')">Setup Campagne</button>
+    <button class="tab-btn" onclick="switchTab('budget')">Budget &amp; Ciblage</button>
+    <button class="tab-btn" onclick="switchTab('metriques')">Métriques J+3</button>
+    <button class="tab-btn" onclick="switchTab('diagnostic')">Diagnostic</button>
+    <button class="tab-btn" onclick="switchTab('bilan')">Bilan Final</button>
+  </div>
+
+  <!-- TAB 1 : SETUP CAMPAGNE -->
+  <div class="tab-panel active" id="tab-setup">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Suis ces étapes dans l'ordre dans Meta Ads Manager. Prends des screenshots à chaque étape — c'est ton livrable.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h4>Ouvre Meta Ads Manager</h4>
+          <p>Va sur business.facebook.com → Ads Manager. Assure-toi d'être connecté au bon compte publicitaire lié à ta page Facebook de boutique.</p>
+          <div class="step-path">business.facebook.com/adsmanager</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h4>Crée une nouvelle campagne — Objectif : Ventes</h4>
+          <p>Clique "Créer" → Sélectionne l'objectif <strong>"Ventes"</strong> → Nom de campagne : "Test S4 — [Nom produit] — [Date]"</p>
+          <div class="step-tip"><strong>Pourquoi "Ventes" ?</strong> META optimise pour les personnes les plus susceptibles d'acheter. C'est l'objectif pour le dropshipping. Pas "Trafic", pas "Notoriété".</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h4>Configure l'ensemble de publicités (Ad Set)</h4>
+          <p>Emplacement de conversion : <strong>Site web</strong> — sélectionne ton pixel Shopify. Événement d'optimisation : <strong>Achat</strong> (si tu n'as pas encore de données pixel, sélectionne "Afficher le contenu" pour les 1ers jours).</p>
+          <div class="step-tip"><strong>Pixel Shopify :</strong> Shopify → Applications → Meta → Connecter. Le pixel doit être actif AVANT de lancer les pubs. Vérifie avec le Meta Pixel Helper (extension Chrome).</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h4>Importe les créas de Semaine 3</h4>
+          <p>Publicités → Créer → Importe tes 3 visuels + 1 vidéo. Crée une publicité distincte pour chaque créa. Même Ad Set, créas différentes → META les teste automatiquement.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <h4>Vérifie l'aperçu et publie</h4>
+          <p>Vérifie l'aperçu mobile → Confirme le pixel actif → Publie. La campagne passe en revue META (quelques heures). Status "Actif" = livrable prêt.</p>
+          <div class="step-tip"><strong>Screenshot obligatoire :</strong> Screenshot de la campagne avec le statut "Actif" affiché. C'est le livrable principal de la semaine 4.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert"><strong>Avant de publier :</strong> Fais un achat test sur ton propre site pour vérifier que le pixel enregistre bien l'événement "Achat". Si le pixel ne fonctionne pas, tes pubs seront mal optimisées.</div>
+  </div>
+
+  <!-- TAB 2 : BUDGET & CIBLAGE -->
+  <div class="tab-panel" id="tab-budget">
+
+    <div class="section-title">Calcul du budget de test</div>
+    <div class="budget-calc">
+      <h4>Simule ton budget test</h4>
+      <div class="budget-row">
+        <label>Budget journalier (€)</label>
+        <input type="number" id="budgetJour" value="10" min="5" step="1" oninput="calcBudget()">
+      </div>
+      <div class="budget-row">
+        <label>Nombre de jours</label>
+        <input type="number" id="nbJours" value="5" min="3" step="1" oninput="calcBudget()">
+      </div>
+      <div class="budget-result">
+        <span>Budget total estimé</span>
+        <strong id="budgetTotal">€50</strong>
+      </div>
+    </div>
+
+    <div class="note"><strong>Recommandation :</strong> €10–15/jour × 5 jours = €50–75 minimum pour que l'algorithme META ait assez de données. En dessous de €50 total, les résultats seront difficiles à interpréter.</div>
+
+    <div class="section-title">Stratégie de ciblage</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-body">
+          <h4>Option 1 — Audience large (recommandée pour débuter)</h4>
+          <p>France + Belgique — 25-45 ans — Femmes — Aucun intérêt spécifique. Laisse META trouver les acheteurs tout seul. L'algo est plus efficace que le ciblage manuel en 2025.</p>
+          <div class="step-tip"><strong>Pourquoi ça marche :</strong> META a des données de comportement d'achat incroyablement précises. Une audience large avec une créa forte surpasse systématiquement une audience étroite avec une créa faible.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-body">
+          <h4>Option 2 — Intérêts parentalité (si tu veux guider l'algo)</h4>
+          <p>France — 25-40 ans — Femmes — 2 ou 3 intérêts max : "Bébés et enfants", "Parentalité", "Grossesse et maternité".</p>
+          <div class="step-tip"><strong>Ne cumule pas trop d'intérêts</strong> — ça réduit l'audience et limite l'apprentissage de l'algorithme. Max 3 intérêts.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="alert"><strong>Saisonnalité niche enfants :</strong> Novembre-décembre = forte saison (cadeaux de Noël). Rentrée septembre = peak jouets éducatifs. Printemps = naissance (bébés de l'été). Adapte tes angles de créas selon la période.</div>
+  </div>
+
+  <!-- TAB 3 : MÉTRIQUES J+3 -->
+  <div class="tab-panel" id="tab-metriques">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Lis ces métriques dans Meta Ads Manager à J+3 minimum. Ne prends aucune décision avant J+3 — l'algorithme a besoin de temps pour apprendre.</p>
+
+    <div class="section-title">Métriques clés — benchmarks niche enfants</div>
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-name">CPM</div>
+        <div class="metric-value">€8–15</div>
+        <div class="metric-desc">Coût pour 1000 impressions. Normal en France pour la niche enfants.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">CTR</div>
+        <div class="metric-value">≥ 1%</div>
+        <div class="metric-desc">% de clics sur impressions. En dessous de 1% = problème de créa ou d'audience.</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">CPC</div>
+        <div class="metric-value">≤ €1</div>
+        <div class="metric-desc">Coût par clic. Au-dessus de €1 = créa trop faible ou ciblage trop large/étroit.</div>
+      </div>
+      <div class="metric-card warn">
+        <div class="metric-name">Taux de conversion</div>
+        <div class="metric-value">1–3%</div>
+        <div class="metric-desc">% de visiteurs qui achètent. En dessous = problème sur le site (prix, confiance, copy).</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">ATC Rate</div>
+        <div class="metric-value">≥ 5%</div>
+        <div class="metric-desc">Ajout au panier / visiteurs. Signal fort qu'il y a de l'intérêt pour le produit.</div>
+      </div>
+      <div class="metric-card warn">
+        <div class="metric-name">ROAS cible</div>
+        <div class="metric-value">≥ 2×</div>
+        <div class="metric-desc">Revenu / dépenses pub. Le minimum pour que le test soit prometteur.</div>
+      </div>
+    </div>
+
+    <div class="section-title">Grille de lecture interactive</div>
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:16px;">Entre tes métriques réelles pour obtenir une analyse rapide.</p>
+    <div class="three-col" style="margin-bottom:16px;">
+      <div class="field">
+        <label>CPM réel (€)</label>
+        <input type="number" id="mCpm" placeholder="Ex : 12" min="0" step="0.1" oninput="analyseMetrics()">
+      </div>
+      <div class="field">
+        <label>CTR réel (%)</label>
+        <input type="number" id="mCtr" placeholder="Ex : 1.2" min="0" step="0.01" oninput="analyseMetrics()">
+      </div>
+      <div class="field">
+        <label>CPC réel (€)</label>
+        <input type="number" id="mCpc" placeholder="Ex : 0.85" min="0" step="0.01" oninput="analyseMetrics()">
+      </div>
+    </div>
+    <div id="metricsAnalysis" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+      <div id="mCpmResult" style="margin-bottom:8px;font-size:0.83rem;"></div>
+      <div id="mCtrResult" style="margin-bottom:8px;font-size:0.83rem;"></div>
+      <div id="mCpcResult" style="font-size:0.83rem;"></div>
+    </div>
+  </div>
+
+  <!-- TAB 4 : DIAGNOSTIC -->
+  <div class="tab-panel" id="tab-diagnostic">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Identifie le maillon faible avant de modifier quoi que ce soit. Une seule chose à la fois.</p>
+
+    <table class="diag-table">
+      <thead><tr><th>Symptôme</th><th>Cause probable</th><th>Action à prendre</th></tr></thead>
+      <tbody>
+        <tr>
+          <td class="symptom">CPM très élevé (&gt; €20)</td>
+          <td class="cause">Créa peu engageante ou audience trop petite</td>
+          <td class="action">Teste d'autres hooks ou élargis le ciblage</td>
+        </tr>
+        <tr>
+          <td class="symptom">CTR &lt; 0.5%</td>
+          <td class="cause">Le hook ne retient pas l'attention</td>
+          <td class="action">Change l'angle de la créa — teste le hook Problème en priorité</td>
+        </tr>
+        <tr>
+          <td class="symptom">Beaucoup de clics, peu d'ATC</td>
+          <td class="cause">Page produit peu convaincante ou prix trop élevé</td>
+          <td class="action">Revois le copywriting de la page, ajoute des éléments de confiance, vérifie le prix</td>
+        </tr>
+        <tr>
+          <td class="symptom">Beaucoup d'ATC, pas de vente</td>
+          <td class="cause">Frein à la conversion (prix, livraison, confiance, checkout)</td>
+          <td class="action">Vérifie le checkout, ajoute "Livraison offerte" ou garantie, teste un prix légèrement réduit</td>
+        </tr>
+        <tr>
+          <td class="symptom">Dépenses sans aucune interaction</td>
+          <td class="cause">Problème technique — pixel mal configuré, page hors ligne</td>
+          <td class="action">Vérifie le pixel META, teste l'URL de destination, contacte le support Shopify</td>
+        </tr>
+        <tr>
+          <td class="symptom">1 créa performe, 2 ne font rien</td>
+          <td class="cause">L'angle de la créa gagnante correspond au persona</td>
+          <td class="action">Coupe les créas perdantes, augmente le budget sur la gagnante, teste des variations de la gagnante</td>
+        </tr>
+        <tr>
+          <td class="symptom">Bons résultats semaine 1, ça chute semaine 2</td>
+          <td class="cause">Saturation de l'audience ou fin de la phase d'apprentissage</td>
+          <td class="action">Renouvelle les créas, élargis l'audience ou teste un nouveau pays</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note"><strong>Règle d'or :</strong> Ne change qu'une seule variable à la fois. Si tu changes le ciblage ET la créa en même temps, tu ne sauras jamais ce qui a fonctionné. Une modification → attends 48-72h → analyse → décide.</div>
+  </div>
+
+  <!-- TAB 5 : BILAN FINAL -->
+  <div class="tab-panel" id="tab-bilan">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Remplis ce bilan et poste-le dans le fil "📝 Rendu Semaine 4" sur Circle. C'est ton livrable final du challenge.</p>
+
+    <div class="section-title">Résultats de campagne (J+3 minimum)</div>
+    <div class="six-col" style="margin-bottom:20px;">
+      <div class="field"><label>Dépenses (€)</label><input type="number" placeholder="Ex : 45"></div>
+      <div class="field"><label>Impressions</label><input type="number" placeholder="Ex : 3800"></div>
+      <div class="field"><label>CPM (€)</label><input type="number" placeholder="Ex : 11.8" step="0.1"></div>
+      <div class="field"><label>CTR (%)</label><input type="number" placeholder="Ex : 1.4" step="0.01"></div>
+      <div class="field"><label>Clics</label><input type="number" placeholder="Ex : 53"></div>
+      <div class="field"><label>ATC</label><input type="number" placeholder="Ex : 7"></div>
+    </div>
+    <div class="two-col" style="margin-bottom:20px;">
+      <div class="field"><label>Ventes réalisées</label><input type="number" placeholder="Ex : 2" min="0"></div>
+      <div class="field"><label>Chiffre d'affaires (€)</label><input type="number" placeholder="Ex : 78" min="0"></div>
+    </div>
+
+    <div class="section-title">Analyse — ce que ça m'apprend</div>
+    <div class="field">
+      <label>Quelle créa a le mieux performé et pourquoi ?</label>
+      <div class="hint">Angle, hook, format — qu'est-ce qui a retenu l'attention ?</div>
+      <textarea placeholder="Ex : La créa 'Problème' a eu un CTR de 2.1% contre 0.6% pour les deux autres. Le hook 'Tu te lèves encore 4 fois par nuit ?' a clairement résonné avec le persona."></textarea>
+    </div>
+    <div class="field">
+      <label>Le maillon faible identifié</label>
+      <div class="hint">Créa ? Site ? Prix ? Ciblage ? Un seul maillon — sois honnête.</div>
+      <textarea placeholder="Ex : Beaucoup d'ATC mais seulement 2 ventes sur 7 ATC. Problème probable : le checkout ou la politique de livraison. À retravailler en semaine 5."></textarea>
+    </div>
+    <div class="field">
+      <label>Ce que j'aurais fait différemment</label>
+      <textarea placeholder="Ex : J'aurais testé le hook 'Preuve sociale' plus tôt. J'aurais aussi commandé un sample du produit pour filmer mes propres vidéos au lieu d'utiliser les vidéos fournisseur."></textarea>
+    </div>
+
+    <div class="section-title">Bilan 4 semaines</div>
+    <div class="field">
+      <label>La plus grande difficulté rencontrée</label>
+      <textarea placeholder="Ex : La semaine la plus dure a été S2 — je ne m'attendais pas à passer autant de temps sur les pages légales et la configuration du pixel."></textarea>
+    </div>
+    <div class="field">
+      <label>La plus grande leçon de ce challenge</label>
+      <textarea placeholder="Ex : Le produit n'est pas le plus important — c'est le persona et la créa. J'ai validé un produit moyen mais avec la bonne créa, les résultats étaient corrects."></textarea>
+    </div>
+    <div class="field">
+      <label>Prochaine action — semaine 5 et au-delà</label>
+      <textarea placeholder="Ex : Doubler le budget sur la créa gagnante, retravailler la page produit pour améliorer le taux de conversion, commander 5 samples pour refaire les créas avec mes propres vidéos."></textarea>
+    </div>
+
+    <div class="note"><strong>Rendu :</strong> Screenshot campagne META active + ce bilan rempli (screenshot ou PDF) + métriques J+3. Poste dans le fil "📝 Rendu Semaine 4" sur Circle avant vendredi. C'est la fin du challenge — mais le début de ton business.</div>
+
+    <!-- CONCLUSION FINALE -->
+    <div style="margin-top:32px;border:1px solid rgba(29,158,117,0.4);border-radius:16px;overflow:hidden;">
+      <div style="background:linear-gradient(135deg,rgba(29,158,117,0.15),rgba(29,158,117,0.05));padding:28px 28px 20px;">
+        <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">🏁 Challenge terminé</div>
+        <h3 style="font-size:1.3rem;font-weight:800;margin-bottom:10px;">En 30 jours, tu as fait ce que 95% des gens ne font jamais.</h3>
+        <p style="font-size:0.88rem;color:var(--muted);line-height:1.68;">Tu as trouvé un produit, validé la demande, commandé un stock, construit un site, créé des publicités et lancé une vraie campagne. Que ce soit 0 ou 3 ventes — tu as de la data réelle. C'est ce qui sépare un entrepreneur d'un spectateur.</p>
+      </div>
+      <div style="padding:20px 28px;border-top:1px solid rgba(29,158,117,0.2);">
+        <div style="font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px;">Maintenant, selon tes résultats :</div>
+        <div style="display:grid;gap:10px;">
+          <div style="background:rgba(29,158,117,0.08);border:1px solid rgba(29,158,117,0.2);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.8rem;font-weight:700;color:var(--green);margin-bottom:4px;">✅ ATC ou ventes → Scale</div>
+            <p style="font-size:0.78rem;color:var(--muted);line-height:1.5;">Identifie la créa gagnante, double le budget dessus, retravaile la page produit pour améliorer le taux de conversion. Le produit est validé — il faut optimiser.</p>
+          </div>
+          <div style="background:rgba(96,165,250,0.06);border:1px solid rgba(96,165,250,0.2);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.8rem;font-weight:700;color:#60a5fa;margin-bottom:4px;">⚠️ Clics mais pas d'ATC → Site à retravailler</div>
+            <p style="font-size:0.78rem;color:var(--muted);line-height:1.5;">Le trafic est là, mais le site ne convertit pas. Revois le prix, la preuve sociale, la FAQ, la politique de retour. Commande des samples pour refaire les photos.</p>
+          </div>
+          <div style="background:rgba(251,146,60,0.06);border:1px solid rgba(251,146,60,0.2);border-radius:10px;padding:14px 16px;">
+            <div style="font-size:0.8rem;font-weight:700;color:#fb923c;margin-bottom:4px;">🔄 CTR très bas → Créa à retravailler</div>
+            <p style="font-size:0.78rem;color:var(--muted);line-height:1.5;">Le hook ne retient pas. Teste 2 nouveaux angles avec des hooks différents. Ce n'est pas le produit qui est mauvais — c'est la façon dont tu le présentes.</p>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px 28px;border-top:1px solid rgba(29,158,117,0.2);background:rgba(29,158,117,0.04);">
+        <p style="font-size:0.8rem;color:var(--muted);text-align:center;">Poste ton bilan dans le fil Circle — Hamza note et commente chaque vendredi. 🏆</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function switchTab(id) {
+  var ids = ['setup','budget','metriques','diagnostic','bilan'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', ids[i] === id); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.toggle('active', p.id === 'tab-' + id); });
+}
+function calcBudget() {
+  var j = parseFloat(document.getElementById('budgetJour').value) || 0;
+  var n = parseFloat(document.getElementById('nbJours').value) || 0;
+  document.getElementById('budgetTotal').textContent = '€' + (j * n).toFixed(0);
+}
+function analyseMetrics() {
+  var cpm = parseFloat(document.getElementById('mCpm').value);
+  var ctr = parseFloat(document.getElementById('mCtr').value);
+  var cpc = parseFloat(document.getElementById('mCpc').value);
+  if (isNaN(cpm) && isNaN(ctr) && isNaN(cpc)) { document.getElementById('metricsAnalysis').style.display = 'none'; return; }
+  document.getElementById('metricsAnalysis').style.display = 'block';
+  var cpmEl = document.getElementById('mCpmResult');
+  var ctrEl = document.getElementById('mCtrResult');
+  var cpcEl = document.getElementById('mCpcResult');
+  if (!isNaN(cpm)) {
+    if (cpm <= 15) { cpmEl.textContent = '✅ CPM ' + cpm + '€ — Normal pour la niche enfants en France.'; cpmEl.style.color = '#4ade80'; }
+    else if (cpm <= 25) { cpmEl.textContent = '⚠️ CPM ' + cpm + '€ — Un peu élevé. Teste une créa plus engageante ou élargis l\'audience.'; cpmEl.style.color = '#fb923c'; }
+    else { cpmEl.textContent = '❌ CPM ' + cpm + '€ — Trop élevé. Problème de créa (pas assez engageante) ou audience trop petite.'; cpmEl.style.color = '#f87171'; }
+  } else { cpmEl.textContent = ''; }
+  if (!isNaN(ctr)) {
+    if (ctr >= 1) { ctrEl.textContent = '✅ CTR ' + ctr + '% — Bon. Le hook accroche bien le persona.'; ctrEl.style.color = '#4ade80'; }
+    else if (ctr >= 0.5) { ctrEl.textContent = '⚠️ CTR ' + ctr + '% — Limite. Teste un hook plus direct sur la douleur du persona.'; ctrEl.style.color = '#fb923c'; }
+    else { ctrEl.textContent = '❌ CTR ' + ctr + '% — Trop faible. Le hook ne retient pas l\'attention. Priorité : changer l\'angle de créa.'; ctrEl.style.color = '#f87171'; }
+  } else { ctrEl.textContent = ''; }
+  if (!isNaN(cpc)) {
+    if (cpc <= 1) { cpcEl.textContent = '✅ CPC ' + cpc + '€ — Excellent. Trafic qualifié à bon prix.'; cpcEl.style.color = '#4ade80'; }
+    else if (cpc <= 2) { cpcEl.textContent = '⚠️ CPC ' + cpc + '€ — Acceptable. Surveille le taux de conversion sur le site.'; cpcEl.style.color = '#fb923c'; }
+    else { cpcEl.textContent = '❌ CPC ' + cpc + '€ — Trop cher. Le CTR est trop bas — travaille le hook.'; cpcEl.style.color = '#f87171'; }
+  } else { cpcEl.textContent = ''; }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Défi Winner 30J — Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green: #1D9E75;
+  --green-dim: #1D9E7522;
+  --green-border: #1D9E7544;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+}
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* ── Slides wrapper ── */
+.slides-container {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 48px 40px;
+  opacity: 0;
+  transform: translateX(60px);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+.slide.active {
+  opacity: 1;
+  transform: translateX(0);
+  pointer-events: all;
+}
+.slide.exit-left {
+  opacity: 0;
+  transform: translateX(-60px);
+}
+
+.slide-inner {
+  max-width: 860px;
+  width: 100%;
+}
+
+/* ── Navigation ── */
+.nav {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 100;
+}
+.nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+.nav-btn:hover { border-color: var(--green); color: var(--green); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--muted2);
+  transition: all 0.25s;
+  cursor: pointer;
+}
+.dot.active { background: var(--green); width: 20px; border-radius: 3px; }
+
+/* ── Slide counter ── */
+.slide-counter {
+  position: fixed;
+  top: 24px;
+  right: 28px;
+  font-size: 0.78rem;
+  color: var(--muted2);
+  letter-spacing: 0.05em;
+}
+
+/* ── Logo ── */
+.logo {
+  position: fixed;
+  top: 22px;
+  left: 28px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--green);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Typography ── */
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 16px;
+}
+.hero-title {
+  font-size: clamp(2.2rem, 5vw, 3.8rem);
+  font-weight: 800;
+  line-height: 1.1;
+  color: var(--text);
+  margin-bottom: 20px;
+}
+.hero-title span { color: var(--green); }
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--muted);
+  line-height: 1.65;
+  max-width: 580px;
+  margin-bottom: 36px;
+}
+.slide-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 8px;
+  line-height: 1.15;
+}
+.slide-title span { color: var(--green); }
+.slide-sub {
+  font-size: 0.92rem;
+  color: var(--muted);
+  margin-bottom: 32px;
+}
+
+/* ── Stat pills ── */
+.stats {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+.stat-pill {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 22px;
+  text-align: center;
+}
+.stat-pill .num {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--green);
+  display: block;
+}
+.stat-pill .lbl {
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: block;
+  margin-top: 2px;
+}
+
+/* ── Cards grid ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px 20px;
+}
+.card .card-icon {
+  font-size: 1.4rem;
+  margin-bottom: 10px;
+  display: block;
+}
+.card h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.card p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Week timeline ── */
+.week-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+.week-num {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.week-content { flex: 1; }
+.week-content h4 {
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 3px;
+}
+.week-content p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.week-deliverable {
+  display: inline-block;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 3px 10px;
+  font-size: 0.74rem;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ── Scoring table ── */
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  margin-bottom: 16px;
+}
+.score-table th {
+  background: var(--surface);
+  padding: 10px 16px;
+  text-align: left;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--border);
+}
+.score-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid #1e1e1e;
+  color: #ccc;
+}
+.score-table tr:last-child td { border-bottom: none; }
+.score-table tr:hover td { background: #1c1c1c; }
+.pts {
+  font-weight: 700;
+  color: var(--green);
+}
+
+/* ── Checklist ── */
+.checklist {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.checklist li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 0.88rem;
+  color: #ccc;
+  line-height: 1.5;
+}
+.checklist li .check-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.checklist li.cross .check-icon {
+  background: #dc262622;
+  border-color: #dc262644;
+  color: #f87171;
+}
+
+/* ── Note box ── */
+.note {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--green);
+  border-radius: 10px;
+  padding: 16px 20px;
+  font-size: 0.84rem;
+  color: var(--muted);
+  line-height: 1.65;
+  margin-top: 20px;
+}
+.note strong { color: var(--text); }
+
+/* ── Tools grid ── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 12px;
+}
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 16px;
+  text-align: center;
+}
+.tool-card .tool-icon { font-size: 1.6rem; margin-bottom: 8px; display: block; }
+.tool-card h5 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 4px;
+}
+.tool-card p { font-size: 0.75rem; color: var(--muted); }
+
+/* ── CTA ── */
+.cta-box {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  border-radius: 16px;
+  padding: 32px 36px;
+  text-align: center;
+  margin-top: 8px;
+}
+.cta-box h3 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.cta-box p {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+.cta-btn {
+  display: inline-block;
+  background: var(--green);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  padding: 13px 32px;
+  border-radius: 10px;
+  cursor: pointer;
+  border: none;
+}
+
+/* ── Divider ── */
+.divider {
+  height: 1px;
+  background: var(--border);
+  margin: 24px 0;
+}
+
+/* ── Two col layout ── */
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ── Badge ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.badge span { color: var(--green); font-weight: 700; }
+
+/* ── Phase block ── */
+.phase-block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px 22px;
+  margin-bottom: 12px;
+}
+.phase-block .ph-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.ph-badge {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ph-badge.warn {
+  background: #ea580c22;
+  border-color: #ea580c44;
+  color: #fb923c;
+}
+.phase-block h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+.phase-block p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* ── Keyboard hint ── */
+.kb-hint {
+  position: fixed;
+  bottom: 32px;
+  right: 28px;
+  font-size: 0.72rem;
+  color: var(--muted2);
+}
+
+@media (max-width: 640px) {
+  .slide { padding: 32px 20px 90px; }
+  .two-col { grid-template-columns: 1fr; }
+  .cards-grid { grid-template-columns: 1fr 1fr; }
+  .hero-title { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="logo">Tariqa PRO</div>
+<div class="slide-counter" id="counter">1 / 10</div>
+<div class="kb-hint">← → ou flèches</div>
+
+<div class="slides-container" id="slidesContainer">
+
+  <!-- ── SLIDE 1 : TITRE ── -->
+  <div class="slide active" data-slide="0">
+    <div class="slide-inner">
+      <div class="eyebrow">Challenge CTP × Tariqa PRO</div>
+      <h1 class="hero-title">Le Défi<br><span>Winner 30J</span></h1>
+      <p class="hero-sub">
+        Un mois. Quatre étapes. Un e-commerce réel lancé.<br>
+        Chaque semaine, un livrable concret. Chaque vendredi, un classement public.
+      </p>
+      <div class="stats">
+        <div class="stat-pill">
+          <span class="num">4</span>
+          <span class="lbl">semaines</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">400</span>
+          <span class="lbl">points max</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">1</span>
+          <span class="lbl">niche imposée</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">Shopify</span>
+          <span class="lbl">plateforme</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 2 : LA PROMESSE ── -->
+  <div class="slide" data-slide="1">
+    <div class="slide-inner">
+      <div class="eyebrow">Pourquoi ce challenge</div>
+      <h2 class="slide-title">Dans 30 jours, tu auras <span>un business réel</span></h2>
+      <p class="slide-sub">Pas un projet. Pas "presque terminé". Un e-commerce lancé avec de vraies données publicitaires.</p>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-icon">📦</span>
+          <h4>Un produit validé</h4>
+          <p>Trouvé, filtré, validé par la data. Marge ×4 calculée. Fournisseur contacté. Stock commandé.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🌐</span>
+          <h4>Un site live</h4>
+          <p>Shopify mono-produit opérationnel. Page produit optimisée. Pixel META installé. Prêt à vendre.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">📊</span>
+          <h4>De vraies données pub</h4>
+          <p>CPM, CTR, CPC, ATC réels. Tu sais ce qui fonctionne. Tu sais ce qui ne fonctionne pas. Tu peux scaler.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🏆</span>
+          <h4>Un classement public</h4>
+          <p>Ton score visible de tous chaque vendredi. La compétition est le meilleur accélérateur d'exécution.</p>
+        </div>
+      </div>
+      <div class="note">
+        <strong>L'objectif n'est pas d'apprendre à lancer un e-commerce.</strong> C'est de le lancer vraiment — en 30 jours, avec un groupe qui avance à la même vitesse que toi.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 3 : LE CADRE / RÈGLES ── -->
+  <div class="slide" data-slide="2">
+    <div class="slide-inner">
+      <div class="eyebrow">Le cadre</div>
+      <h2 class="slide-title">Ce qui est <span>imposé</span></h2>
+      <p class="slide-sub">Tout le monde part avec les mêmes contraintes. C'est ce qui rend le jeu équitable et les comparaisons pertinentes.</p>
+      <div class="cards-grid">
+        <div class="card">
+          <span class="card-icon">👶</span>
+          <h4>Niche imposée</h4>
+          <p>Produits pour enfants — 4 sous-niches au choix : sommeil bébé, éveil/éducatif, sécurité enfants, confort/bien-être.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🛍️</span>
+          <h4>Plateforme</h4>
+          <p>Shopify uniquement. Thème et template de page produit fournis pour démarrer vite.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">🤖</span>
+          <h4>IA obligatoire</h4>
+          <p>Chaque étape requiert l'utilisation des outils IA (ChatGPT ou Claude). Les prompts sont fournis dans Circle.</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">📋</span>
+          <h4>Livrables précis</h4>
+          <p>Chaque semaine, des livrables clairs à rendre. Tu sais exactement ce qui est attendu et comment tu seras noté.</p>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Boussole halal.</strong> Chaque produit, chaque créa, chaque angle publicitaire passe par le filtre halal. C'est non-négociable — et c'est aussi un avantage compétitif.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 4 : SCORING ── -->
+  <div class="slide" data-slide="3">
+    <div class="slide-inner">
+      <div class="eyebrow">Les enjeux</div>
+      <h2 class="slide-title">Comment tu seras <span>noté</span></h2>
+      <p class="slide-sub">100 points par semaine. Les critères sont publics dès le départ — tu sais exactement sur quoi jouer.</p>
+      <table class="score-table">
+        <thead>
+          <tr>
+            <th>Critère</th>
+            <th>Points</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Complétude du livrable — tout est rendu, rien ne manque</td>
+            <td class="pts">0 – 40</td>
+          </tr>
+          <tr>
+            <td>Qualité — notation Hamza (pertinence produit, potentiel réel)</td>
+            <td class="pts">0 – 30</td>
+          </tr>
+          <tr>
+            <td>Respect des critères Tariqa PRO (halal, marge ×4, niyyah…)</td>
+            <td class="pts">0 – 20</td>
+          </tr>
+          <tr>
+            <td>Bonus rapidité (1er rendu = +10, 2ème = +7, 3ème = +5)</td>
+            <td class="pts">0 – 10</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="stats" style="margin-top:20px">
+        <div class="stat-pill">
+          <span class="num">400</span>
+          <span class="lbl">pts total max</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">Vendredi</span>
+          <span class="lbl">notation chaque</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">🏆</span>
+          <span class="lbl">Winner / semaine</span>
+        </div>
+        <div class="stat-pill">
+          <span class="num">📌</span>
+          <span class="lbl">Classement public</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 5 : VUE D'ENSEMBLE ── -->
+  <div class="slide" data-slide="4">
+    <div class="slide-inner">
+      <div class="eyebrow">Le programme</div>
+      <h2 class="slide-title">4 semaines,<br><span>4 étapes concrètes</span></h2>
+      <p class="slide-sub">Chaque semaine = une mission + des livrables + un score. Rendu chaque vendredi.</p>
+      <div>
+        <div class="week-row">
+          <div class="week-num">S1</div>
+          <div class="week-content">
+            <h4>Sourcing & Persona</h4>
+            <p>Valider un produit winner avec la data. Identifier ton client idéal. Commander le stock minimum.</p>
+            <span class="week-deliverable">Fiche produit + fiche persona + commande stock</span>
+          </div>
+        </div>
+        <div class="week-row">
+          <div class="week-num">S2</div>
+          <div class="week-content">
+            <h4>Création du site Shopify</h4>
+            <p>Site mono-produit live, professionnel, prêt à convertir. Pixel META installé.</p>
+            <span class="week-deliverable">URL Shopify live + screenshots</span>
+          </div>
+        </div>
+        <div class="week-row">
+          <div class="week-num">S3</div>
+          <div class="week-content">
+            <h4>Créas publicitaires</h4>
+            <p>Pack créas META complet : 3 angles testés, 3 visuels, 1 vidéo 30 secondes.</p>
+            <span class="week-deliverable">Pack créas importé dans META Ads Manager</span>
+          </div>
+        </div>
+        <div class="week-row">
+          <div class="week-num">S4</div>
+          <div class="week-content">
+            <h4>Lancement & Analyse</h4>
+            <p>Campagne META active. Budget €50-75. Premières métriques J+3. Bilan honnête.</p>
+            <span class="week-deliverable">Campagne live + métriques + bilan 4 semaines</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 6 : SEMAINE 1 ── -->
+  <div class="slide" data-slide="5">
+    <div class="slide-inner">
+      <div class="eyebrow">Semaine 1</div>
+      <h2 class="slide-title">Sourcing <span>&</span> Persona</h2>
+      <p class="slide-sub">Tu valides un produit avec des données réelles. Pas d'intuition, pas de passion — du marché.</p>
+      <div class="two-col">
+        <div>
+          <div class="phase-block">
+            <div class="ph-head">
+              <span class="ph-badge">Phase 1 — 5 min</span>
+            </div>
+            <h4>Qualification</h4>
+            <p>5 filtres disqualifiants + score douleur (1/2/3). Un filtre échoué → produit suivant immédiatement.</p>
+          </div>
+          <div class="phase-block">
+            <div class="ph-head">
+              <span class="ph-badge">Phase 2 — 20 min</span>
+            </div>
+            <h4>Validation data</h4>
+            <p>Marge ×4, Google Trends stable/hausse, 5 000+ commandes AliExpress, 3-5 concurrents 30-45j META.</p>
+          </div>
+        </div>
+        <div>
+          <div class="phase-block">
+            <div class="ph-head">
+              <span class="ph-badge warn">Persona — data-driven</span>
+            </div>
+            <h4>4 étapes, pas d'intuition</h4>
+            <p>Amazon reviews 1★/5★, commentaires META Ads, Reddit, TikTok. Le persona = l'angle de ta créa, pas un filtre pub.</p>
+          </div>
+          <div class="phase-block">
+            <div class="ph-head">
+              <span class="ph-badge" style="background:rgba(251,146,60,0.2);color:#fb923c;border-color:rgba(251,146,60,0.4)">📦 Dropshipping 2.0</span>
+            </div>
+            <h4>Commander le stock</h4>
+            <p>Contact fournisseur + MOQ minimum (20-50 unités). Le stock arrive pendant S2-S3. Lancement S4.</p>
+          </div>
+        </div>
+      </div>
+      <div class="note">
+        <strong>Insight clé :</strong> Niches spécialisées = 8,2% de conversion vs 2,3% généralistes. 75% moins de trafic pour le même CA.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 7 : SEMAINE 2 ── -->
+  <div class="slide" data-slide="6">
+    <div class="slide-inner">
+      <div class="eyebrow">Semaine 2</div>
+      <h2 class="slide-title">Ton site <span>Shopify</span></h2>
+      <p class="slide-sub">Un site qui convertit un parent exigeant. Pas besoin qu'il soit beau — il doit inspirer confiance.</p>
+      <ul class="checklist">
+        <li>
+          <span class="check-icon">✓</span>
+          <span><strong>Page produit</strong> — titre bénéfice clair, description IA, 3 photos minimum, prix marge ×4</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span><strong>Confiance</strong> — badge CE/EN71, garantie remboursement, matériaux non toxiques, avis</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span><strong>Pages légales</strong> — CGV, FAQ, À propos, Politique retour — générées par Shopify</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span><strong>Mobile-first</strong> — ton client scrolle Instagram le soir après avoir couché bébé</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span><strong>Pixel META installé</strong> — obligatoire avant les pubs. Shopify → Apps → Meta → connecter</span>
+        </li>
+      </ul>
+      <div class="note">
+        <strong>Pendant ce temps :</strong> Le stock est en transit (2-4 semaines). Tu construis le site et les créas. Tout sera prêt en même temps pour le lancement S4.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 8 : SEMAINE 3 ── -->
+  <div class="slide" data-slide="7">
+    <div class="slide-inner">
+      <div class="eyebrow">Semaine 3</div>
+      <h2 class="slide-title">Créas <span>publicitaires</span></h2>
+      <p class="slide-sub">3 angles, 3 visuels, 1 vidéo. Les 3 premières secondes décident de tout.</p>
+      <div class="cards-grid" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="card">
+          <span class="card-icon">😣</span>
+          <h4>Angle Problème</h4>
+          <p>Montre la douleur avant le produit. "Tu passes tes nuits debout depuis 4 mois ?"</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">✨</span>
+          <h4>Angle Bénéfice</h4>
+          <p>Montre la transformation. "Enfin une nuit complète pour toi et bébé."</p>
+        </div>
+        <div class="card">
+          <span class="card-icon">⭐</span>
+          <h4>Angle Preuve</h4>
+          <p>Résultats réels. "12 847 parents l'ont déjà commandé."</p>
+        </div>
+      </div>
+      <ul class="checklist" style="margin-top:16px">
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Non-négociable : halal, pas de 3awra, pas de fausses promesses médicales</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Structure vidéo : Hook 0-3s → Produit en action 4-15s → Bénéfice + CTA 15-25s</span>
+        </li>
+        <li>
+          <span class="check-icon">✓</span>
+          <span>Outils : Canva (visuels), CapCut (vidéo), Claude/ChatGPT (hooks). Guides fournis dans Circle</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 9 : SEMAINE 4 ── -->
+  <div class="slide" data-slide="8">
+    <div class="slide-inner">
+      <div class="eyebrow">Semaine 4</div>
+      <h2 class="slide-title">On <span>lance</span></h2>
+      <p class="slide-sub">Campagne META active. €50-75 de budget test. Données réelles. Pas d'intuition.</p>
+      <div class="two-col">
+        <div>
+          <div class="phase-block">
+            <h4>Budget de test</h4>
+            <p>€10-15/jour × 5 jours = €50-75 minimum pour que l'algo ait assez de données.</p>
+          </div>
+          <div class="phase-block">
+            <h4>Ciblage post-Andromeda</h4>
+            <p>Audience large (France, 25-45 ans, femmes). L'algo META est plus précis que ton ciblage manuel. Laisse-le travailler.</p>
+          </div>
+        </div>
+        <div>
+          <div class="phase-block">
+            <h4>Métriques J+3</h4>
+            <p>CPM normal : €8-15<br>CTR minimum : ≥ 1%<br>CPC cible : ≤ €1<br>Ne décide rien avant J+3.</p>
+          </div>
+          <div class="phase-block">
+            <h4>Diagnostic</h4>
+            <p>CPM élevé → créa. CTR bas → hook. ATC sans vente → prix ou confiance site.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SLIDE 10 : OUTILS & CTA ── -->
+  <div class="slide" data-slide="9">
+    <div class="slide-inner">
+      <div class="eyebrow">Ce qu'on vous fournit</div>
+      <h2 class="slide-title">Vous avez tout ce qu'il faut pour <span>gagner</span></h2>
+      <p class="slide-sub">Tous les outils, templates et guides sont dans Circle. Aucune excuse.</p>
+      <div class="tools-grid">
+        <div class="tool-card">
+          <span class="tool-icon">🎯</span>
+          <h5>Framework Produit</h5>
+          <p>3 phases interactives — filtres, validation, score douleur</p>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">👤</span>
+          <h5>Template Persona</h5>
+          <p>Scoring 3 personas + fiche finale + sources data</p>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">🛒</span>
+          <h5>Template Shopify</h5>
+          <p>Structure page produit + copy IA + checklist lancement</p>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">🎬</span>
+          <h5>Framework Créas</h5>
+          <p>Angles, formats, structure vidéo, hooks IA</p>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">🚀</span>
+          <h5>Guide Lancement META</h5>
+          <p>Campagne pas à pas + grille métriques + diagnostic</p>
+        </div>
+        <div class="tool-card">
+          <span class="tool-icon">📊</span>
+          <h5>Classement live</h5>
+          <p>Scorecard mis à jour chaque vendredi par Hamza</p>
+        </div>
+      </div>
+      <div class="cta-box">
+        <h3>Prêt(e) à lancer ?</h3>
+        <p>Rends-toi dans l'espace "Défi Winner 30J" sur Circle.<br>Semaine 1 commence maintenant.</p>
+        <button class="cta-btn">Accéder au challenge →</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Navigation -->
+<nav class="nav">
+  <button class="nav-btn" id="prevBtn" disabled>←</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="nextBtn">→</button>
+</nav>
+
+<script>
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let current = 0;
+
+const counter = document.getElementById('counter');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const dotsEl = document.getElementById('dots');
+
+// Build dots
+slides.forEach((_, i) => {
+  const d = document.createElement('div');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.addEventListener('click', () => goTo(i));
+  dotsEl.appendChild(d);
+});
+
+function goTo(n) {
+  slides[current].classList.remove('active');
+  slides[current].classList.add('exit-left');
+  setTimeout(() => slides[current].classList.remove('exit-left'), 450);
+  current = n;
+  slides[current].classList.add('active');
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === current));
+  counter.textContent = (current + 1) + ' / ' + total;
+  prevBtn.disabled = current === 0;
+  nextBtn.disabled = current === total - 1;
+}
+
+prevBtn.addEventListener('click', () => { if (current > 0) goTo(current - 1); });
+nextBtn.addEventListener('click', () => { if (current < total - 1) goTo(current + 1); });
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { if (current < total - 1) goTo(current + 1); }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { if (current > 0) goTo(current - 1); }
+});
+
+// Touch swipe
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+document.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 50) {
+    if (dx < 0 && current < total - 1) goTo(current + 1);
+    if (dx > 0 && current > 0) goTo(current - 1);
+  }
+});
+</script>
+</body>
+</html>

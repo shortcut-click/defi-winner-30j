@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiche Persona — Semaine 1 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75;
+  --green-dim: #1D9E7515;
+  --green-border: #1D9E7540;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+  --purple: #a78bfa;
+  --purple-dim: #7c3aed15;
+  --purple-border: #7c3aed40;
+  --orange: #fb923c;
+  --orange-dim: #ea580c15;
+  --orange-border: #ea580c40;
+}
+body {
+  background: var(--bg); color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
+}
+.header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 18px 0; position: sticky; top: 0; z-index: 100;
+}
+.header-inner {
+  max-width: 820px; margin: 0 auto; padding: 0 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; }
+.print-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 7px 16px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.print-btn:hover { border-color: var(--green); color: var(--green); }
+.main { max-width: 820px; margin: 0 auto; padding: 36px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+.page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 36px; max-width: 540px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; padding-bottom: 2px; }
+.tab-btn { background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.tab-btn:hover { border-color: #444; color: #ccc; }
+.tab-btn.active { background: #fff; color: #111; border-color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Form */
+.form-section { margin-bottom: 28px; }
+.section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.field { margin-bottom: 14px; }
+.field label { display: block; font-size: 0.8rem; font-weight: 700; color: #ccc; margin-bottom: 5px; }
+.field .hint { font-size: 0.74rem; color: var(--muted); margin-bottom: 5px; }
+.field input, .field textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 0.87rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+.field input:focus, .field textarea:focus { border-color: var(--green); }
+.field textarea { min-height: 72px; resize: vertical; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+/* Scoring table */
+.score-section { margin-bottom: 28px; }
+.score-grid { display: flex; flex-direction: column; gap: 10px; }
+.score-row {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 14px 18px;
+  display: flex; align-items: center; gap: 16px;
+}
+.score-label { flex: 1; }
+.score-label h4 { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.score-label p { font-size: 0.77rem; color: var(--muted); }
+.score-btns { display: flex; gap: 6px; }
+.score-btn {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: var(--surface2); border: 1.5px solid var(--border);
+  color: var(--muted); cursor: pointer; font-size: 0.88rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.2s; font-family: inherit;
+}
+.score-btn:hover { border-color: #555; }
+.score-btn.sel-1 { background: var(--orange-dim); border-color: var(--orange-border); color: var(--orange); }
+.score-btn.sel-2 { background: var(--purple-dim); border-color: var(--purple-border); color: var(--purple); }
+.score-btn.sel-3 { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.score-total {
+  background: var(--surface2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 12px 18px; margin-top: 12px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.score-total span { font-size: 0.82rem; color: var(--muted); }
+.score-total strong { font-size: 1.4rem; font-weight: 800; color: var(--green); }
+
+/* Comparison panel */
+.comparison { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 28px; }
+.persona-col {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+}
+.persona-col.winner { border-color: var(--green-border); }
+.persona-col-head {
+  background: var(--surface2); padding: 12px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.persona-col.winner .persona-col-head { background: var(--green-dim); }
+.persona-col-head h4 { font-size: 0.85rem; font-weight: 700; }
+.winner-badge { font-size: 0.68rem; font-weight: 700; background: var(--green); color: #fff; border-radius: 6px; padding: 2px 8px; }
+.persona-col-body { padding: 14px 16px; }
+.pc-field { margin-bottom: 10px; }
+.pc-field label { font-size: 0.7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; display: block; }
+.pc-field .pc-score { font-size: 1.1rem; font-weight: 800; color: var(--green); }
+.pc-total { background: var(--surface2); border-radius: 8px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; margin-top: 8px; font-size: 0.8rem; color: var(--muted); }
+.pc-total strong { color: var(--green); font-size: 1rem; }
+.pc-input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 7px 10px; color: var(--text); font-size: 0.78rem; font-family: inherit; outline: none; margin-top: 4px; }
+.pc-input:focus { border-color: var(--green); }
+.pc-score-row { display: flex; gap: 5px; margin-top: 4px; }
+.pc-score-btn { flex: 1; height: 28px; border-radius: 6px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); cursor: pointer; font-size: 0.78rem; font-weight: 800; transition: all 0.15s; font-family: inherit; }
+.pc-score-btn.a1 { background: var(--orange-dim); border-color: var(--orange-border); color: var(--orange); }
+.pc-score-btn.a2 { background: var(--purple-dim); border-color: var(--purple-border); color: var(--purple); }
+.pc-score-btn.a3 { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+
+/* Fiche finale */
+.fiche-finale {
+  background: var(--surface); border: 1.5px solid var(--green-border);
+  border-radius: 16px; overflow: hidden;
+}
+.fiche-head {
+  background: var(--green-dim); padding: 18px 22px;
+  display: flex; align-items: center; gap: 12px;
+}
+.fiche-head h3 { font-size: 1rem; font-weight: 800; }
+.fiche-head p { font-size: 0.8rem; color: var(--muted); }
+.fiche-body { padding: 22px; }
+.fiche-element {
+  display: flex; gap: 16px; align-items: flex-start;
+  padding: 14px 0; border-bottom: 1px solid var(--border);
+}
+.fiche-element:last-child { border-bottom: none; padding-bottom: 0; }
+.fiche-num {
+  width: 28px; height: 28px; border-radius: 8px;
+  background: var(--purple-dim); border: 1px solid var(--purple-border); color: var(--purple);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.78rem; font-weight: 800; flex-shrink: 0; margin-top: 2px;
+}
+.fiche-element-content { flex: 1; }
+.fiche-element-content label { font-size: 0.78rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 5px; display: block; }
+.fiche-element-content input, .fiche-element-content textarea { width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 9px 12px; color: var(--text); font-size: 0.85rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+.fiche-element-content input:focus, .fiche-element-content textarea:focus { border-color: var(--green); }
+.fiche-element-content textarea { min-height: 64px; resize: vertical; }
+
+/* Source data */
+.source-select { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; }
+.source-opt { display: flex; align-items: center; gap: 10px; font-size: 0.83rem; color: #ccc; cursor: pointer; }
+.source-opt input[type="checkbox"] { accent-color: var(--green); }
+
+/* Note */
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 16px; }
+.note strong { color: var(--text); }
+
+@media (max-width: 640px) { .comparison { grid-template-columns: 1fr; } .two-col { grid-template-columns: 1fr; } }
+@media print { .header { position: static; } .print-btn { display: none; } .tabs { display: none; } .tab-panel { display: block !important; } body { background: #fff; color: #111; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">S1 — Fiche Persona</span>
+    <button class="print-btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Template à remplir — Semaine 1</div>
+  <h1 class="page-title">Fiche Persona</h1>
+  <p class="page-sub">Compare tes personas, identifie le gagnant, construis la fiche finale. Basé sur des données réelles — pas des suppositions.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('compare')">1 — Comparaison personas</button>
+    <button class="tab-btn" onclick="switchTab('fiche')">2 — Fiche persona finale</button>
+    <button class="tab-btn" onclick="switchTab('sources')">3 — Sources de données</button>
+  </div>
+
+  <!-- TAB 1 : COMPARAISON -->
+  <div class="tab-panel active" id="tab-compare">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:20px;">Note chaque persona sur les 4 critères (score 1, 2 ou 3). Celui avec le total le plus élevé = ton persona de test.</p>
+
+    <div class="comparison">
+      <!-- PERSONA A -->
+      <div class="persona-col" id="colA">
+        <div class="persona-col-head">
+          <h4>Persona A</h4>
+        </div>
+        <div class="persona-col-body">
+          <div class="pc-field">
+            <label>Profil</label>
+            <input class="pc-input" placeholder="Ex : Mère 31 ans, congé mat, bébé 4 mois">
+          </div>
+          <div class="pc-field">
+            <label>Douleur</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'A','douleur',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','douleur',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','douleur',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Urgence + Budget</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'A','urgence',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','urgence',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','urgence',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Accessibilité META</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'A','acces',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','acces',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','acces',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Déclencheur émotionnel</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'A','decl',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','decl',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'A','decl',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-total">
+            <span>Total</span>
+            <strong id="totalA">0 / 12</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERSONA B -->
+      <div class="persona-col" id="colB">
+        <div class="persona-col-head">
+          <h4>Persona B</h4>
+        </div>
+        <div class="persona-col-body">
+          <div class="pc-field">
+            <label>Profil</label>
+            <input class="pc-input" placeholder="Ex : Grand-mère 58 ans, cherche cadeau naissance">
+          </div>
+          <div class="pc-field">
+            <label>Douleur</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'B','douleur',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','douleur',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','douleur',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Urgence + Budget</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'B','urgence',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','urgence',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','urgence',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Accessibilité META</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'B','acces',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','acces',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','acces',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Déclencheur émotionnel</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'B','decl',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','decl',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'B','decl',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-total">
+            <span>Total</span>
+            <strong id="totalB">0 / 12</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- PERSONA C -->
+      <div class="persona-col" id="colC">
+        <div class="persona-col-head">
+          <h4>Persona C</h4>
+        </div>
+        <div class="persona-col-body">
+          <div class="pc-field">
+            <label>Profil</label>
+            <input class="pc-input" placeholder="Ex : Père 34 ans, veut aider son bébé à dormir">
+          </div>
+          <div class="pc-field">
+            <label>Douleur</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'C','douleur',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','douleur',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','douleur',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Urgence + Budget</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'C','urgence',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','urgence',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','urgence',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Accessibilité META</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'C','acces',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','acces',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','acces',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-field">
+            <label>Déclencheur émotionnel</label>
+            <div class="pc-score-row">
+              <button class="pc-score-btn" onclick="pcScore(this,'C','decl',1)">1</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','decl',2)">2</button>
+              <button class="pc-score-btn" onclick="pcScore(this,'C','decl',3)">3</button>
+            </div>
+          </div>
+          <div class="pc-total">
+            <span>Total</span>
+            <strong id="totalC">0 / 12</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="winnerBanner" style="display:none;background:var(--green-dim);border:1px solid var(--green-border);border-radius:12px;padding:14px 18px;font-size:0.85rem;color:#ccc;">
+      🏆 <strong id="winnerText" style="color:var(--green)"></strong>
+    </div>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Rappel :</strong> Le persona gagnant n'est pas forcément celui qui souffre le plus — c'est celui qui combine douleur + budget + accessibilité + déclencheur émotionnel. Un persona score 3/3/3/3 = 12/12 = cible idéale.
+    </div>
+  </div>
+
+  <!-- TAB 2 : FICHE FINALE -->
+  <div class="tab-panel" id="tab-fiche">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Remplis les 5 éléments de la fiche persona. C'est ce document qui guidera tes créas publicitaires en semaine 3.</p>
+
+    <div class="fiche-finale">
+      <div class="fiche-head">
+        <div>
+          <h3>Fiche Persona Gagnant</h3>
+          <p>Persona de test — Semaine 1 | Challenge Winner 30J</p>
+        </div>
+      </div>
+      <div class="fiche-body">
+
+        <div class="fiche-element">
+          <div class="fiche-num">1</div>
+          <div class="fiche-element-content">
+            <label>Situation de vie</label>
+            <div class="hint" style="font-size:0.74rem;color:var(--muted);margin-bottom:6px;">Contexte précis — pas juste âge/genre. Inclut le mode de vie, la situation familiale, le quotidien.</div>
+            <textarea placeholder="Ex : Fatima, 31 ans, en congé maternité depuis 3 mois. Bébé de 4 mois qui se réveille toutes les 2h la nuit. Mari au travail tôt le matin. Appartement F3 à Lyon. A arrêté de travailler temporairement. Budget modéré mais prête à investir si ça règle le problème."></textarea>
+          </div>
+        </div>
+
+        <div class="fiche-element">
+          <div class="fiche-num">2</div>
+          <div class="fiche-element-content">
+            <label>Moment déclencheur</label>
+            <div class="hint" style="font-size:0.74rem;color:var(--muted);margin-bottom:6px;">Quand exactement cherche-t-elle ce produit ? Contexte précis de l'achat.</div>
+            <textarea placeholder="Ex : Après une nuit à se lever 4 fois, assise dans son canapé à 23h à nourrir bébé, elle scroll Instagram et tombe sur une pub. Elle est épuisée, cherche activement une solution depuis 2 semaines. Elle vient de lire des avis négatifs sur une autre turbulette."></textarea>
+          </div>
+        </div>
+
+        <div class="fiche-element">
+          <div class="fiche-num">3</div>
+          <div class="fiche-element-content">
+            <label>Émotion dominante</label>
+            <div class="hint" style="font-size:0.74rem;color:var(--muted);margin-bottom:6px;">Quelle est la seule émotion principale qui guide sa décision d'achat ?</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;" id="emotionGrid">
+              <span class="emotion-opt" onclick="selectEmotion(this)">😤 Frustration</span>
+              <span class="emotion-opt" onclick="selectEmotion(this)">😰 Peur / Anxiété</span>
+              <span class="emotion-opt" onclick="selectEmotion(this)">😔 Culpabilité</span>
+              <span class="emotion-opt" onclick="selectEmotion(this)">💪 Désir de bien faire</span>
+              <span class="emotion-opt" onclick="selectEmotion(this)">😍 Désir / Envie</span>
+              <span class="emotion-opt" onclick="selectEmotion(this)">😩 Épuisement</span>
+            </div>
+            <input placeholder="Précise ou explique l'émotion en 1 phrase">
+          </div>
+        </div>
+
+        <div class="fiche-element">
+          <div class="fiche-num">4</div>
+          <div class="fiche-element-content">
+            <label>Angle / Hook — première phrase de ta pub</label>
+            <div class="hint" style="font-size:0.74rem;color:var(--muted);margin-bottom:6px;">3 hooks testés — un par angle (problème / bénéfice / preuve sociale)</div>
+            <input placeholder="Hook Problème : Ex : Tu passes tes nuits debout depuis 4 mois ?" style="margin-bottom:8px;">
+            <input placeholder="Hook Bénéfice : Ex : Enfin une nuit complète pour toi et ton bébé." style="margin-bottom:8px;">
+            <input placeholder="Hook Preuve : Ex : 14 000 mamans dorment mieux grâce à ça.">
+          </div>
+        </div>
+
+        <div class="fiche-element">
+          <div class="fiche-num">5</div>
+          <div class="fiche-element-content">
+            <label>Plateforme &amp; moment d'utilisation</label>
+            <div class="hint" style="font-size:0.74rem;color:var(--muted);margin-bottom:6px;">Où est-elle et quand ? Sois précis — ça définit ton ciblage et tes formats.</div>
+            <input placeholder="Ex : Instagram le soir entre 21h-23h (pendant les tétées nocturnes), Facebook dans les groupes de parents le week-end matin.">
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3 : SOURCES -->
+  <div class="tab-panel" id="tab-sources">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Indique où tu as trouvé tes données persona. C'est obligatoire dans le livrable — ça prouve que tu n'as pas tout inventé.</p>
+
+    <div class="form-section">
+      <div class="section-title">Sources utilisées</div>
+      <div class="source-select">
+        <label class="source-opt"><input type="checkbox"> Amazon.fr — avis 1★ et 5★ sur produits similaires</label>
+        <label class="source-opt"><input type="checkbox"> META Ads Library — commentaires sous les pubs concurrentes</label>
+        <label class="source-opt"><input type="checkbox"> Groupes Facebook (parents de bébés, grossesse...)</label>
+        <label class="source-opt"><input type="checkbox"> Reddit (r/Parenting, r/beyondthebump...)</label>
+        <label class="source-opt"><input type="checkbox"> TikTok — commentaires sous vidéos similaires</label>
+        <label class="source-opt"><input type="checkbox"> Maternité.fr / BabyCenter / forums parentalité</label>
+        <label class="source-opt"><input type="checkbox"> Comptes Instagram / TikTok de mamans blogueuses</label>
+        <label class="source-opt"><input type="checkbox"> IA (ChatGPT / Claude) — avec données réelles en entrée</label>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">Verbatims recueillis (expressions exactes trouvées)</div>
+      <div class="field">
+        <label>Avis Amazon / commentaires — expressions exactes</label>
+        <div class="hint">Note les formulations exactes utilisées par les parents. Ce sont tes futurs hooks.</div>
+        <textarea placeholder="Ex : 'Mon bébé se réveille dès qu'il a froid' / 'Enfin des nuits de 6h d'affilée' / 'J'aurais voulu trouver ça plus tôt' / 'Ma fille arrête de pleurer en 5 minutes'"></textarea>
+      </div>
+      <div class="field">
+        <label>Source du prompt IA (si utilisé)</label>
+        <div class="hint">Note le modèle utilisé et confirme que tu as entré des données réelles dans le prompt</div>
+        <input placeholder="Ex : Claude Sonnet — prompt fourni par Tariqa PRO — données Amazon + Reddit en entrée">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="section-title">Objections identifiées</div>
+      <p style="font-size:0.82rem;color:var(--muted);margin-bottom:14px;">Les raisons pour lesquelles ton persona <em>pourrait</em> ne pas acheter — et ta réponse à chacune.</p>
+      <div class="two-col">
+        <div class="field">
+          <label>Objection 1</label>
+          <input placeholder="Ex : C'est trop cher">
+        </div>
+        <div class="field">
+          <label>Réponse 1</label>
+          <input placeholder="Ex : Combien valent une nuit de sommeil pour toute la famille ?">
+        </div>
+        <div class="field">
+          <label>Objection 2</label>
+          <input placeholder="Ex : Est-ce que ça marchera vraiment ?">
+        </div>
+        <div class="field">
+          <label>Réponse 2</label>
+          <input placeholder="Ex : 14 000 familles l'ont déjà adopté + satisfait ou remboursé">
+        </div>
+        <div class="field">
+          <label>Objection 3</label>
+          <input placeholder="Ex : Et si ce n'est pas la bonne taille ?">
+        </div>
+        <div class="field">
+          <label>Réponse 3</label>
+          <input placeholder="Ex : Guide des tailles inclus + échange gratuit">
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Rappel livrable :</strong> Screenshot de ce document rempli + screenshot du prompt IA utilisé (avec les données réelles en entrée). Poste dans le fil "📝 Rendu Semaine 1" sur Circle avant vendredi.
+    </div>
+
+    <!-- PROCHAINE ÉTAPE -->
+    <div style="margin-top:28px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 2</div>
+      <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">Persona construit. Maintenant il parle sur ton site.</h3>
+      <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Le copy de ta page produit Shopify doit être écrit en parlant directement à ce persona — en utilisant ses mots, sa douleur, son émotion. Le template S2 te guide étape par étape.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le template page produit S2</span>
+        <span style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;">Stock commandé ? → Ouvre Shopify</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<style>
+.emotion-opt {
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 8px; padding: 6px 14px; font-size: 0.8rem; cursor: pointer;
+  transition: all 0.2s; user-select: none;
+}
+.emotion-opt:hover { border-color: #444; }
+.emotion-opt.selected { border-color: var(--purple-border); background: var(--purple-dim); color: var(--purple); }
+.hint { font-size: 0.74rem; color: var(--muted); margin-bottom: 5px; }
+</style>
+
+<script>
+var scores = {
+  A: { douleur: 0, urgence: 0, acces: 0, decl: 0 },
+  B: { douleur: 0, urgence: 0, acces: 0, decl: 0 },
+  C: { douleur: 0, urgence: 0, acces: 0, decl: 0 }
+};
+
+function pcScore(btn, persona, crit, val) {
+  var row = btn.parentElement;
+  Array.from(row.children).forEach(function(b) { b.classList.remove('a1','a2','a3'); });
+  btn.classList.add('a' + val);
+  scores[persona][crit] = val;
+  updateTotals();
+}
+
+function updateTotals() {
+  var totals = {};
+  ['A','B','C'].forEach(function(p) {
+    var t = scores[p].douleur + scores[p].urgence + scores[p].acces + scores[p].decl;
+    totals[p] = t;
+    document.getElementById('total' + p).textContent = t + ' / 12';
+  });
+
+  var max = Math.max(totals.A, totals.B, totals.C);
+  var winner = max > 0 ? Object.keys(totals).find(function(k) { return totals[k] === max; }) : null;
+
+  ['A','B','C'].forEach(function(p) {
+    var col = document.getElementById('col' + p);
+    var head = col.querySelector('.persona-col-head');
+    var existingBadge = head.querySelector('.winner-badge');
+    if (existingBadge) existingBadge.remove();
+    col.classList.remove('winner');
+    if (p === winner && max > 0) {
+      col.classList.add('winner');
+      var badge = document.createElement('span');
+      badge.className = 'winner-badge';
+      badge.textContent = '🏆 Gagnant';
+      head.appendChild(badge);
+    }
+  });
+
+  var banner = document.getElementById('winnerBanner');
+  if (winner && max > 0) {
+    banner.style.display = 'block';
+    document.getElementById('winnerText').textContent = 'Persona ' + winner + ' sélectionné comme persona de test (' + max + '/12). Construis sa fiche complète dans l\'onglet suivant.';
+  } else {
+    banner.style.display = 'none';
+  }
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) {
+    var ids = ['compare','fiche','sources'];
+    b.classList.toggle('active', ids[i] === id);
+  });
+  document.querySelectorAll('.tab-panel').forEach(function(p) {
+    p.classList.toggle('active', p.id === 'tab-' + id);
+  });
+}
+
+function selectEmotion(el) {
+  document.querySelectorAll('.emotion-opt').forEach(function(e) { e.classList.remove('selected'); });
+  el.classList.add('selected');
+}
+</script>
+</body>
+</html>

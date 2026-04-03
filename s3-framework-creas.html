@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Créas Publicitaires — S3 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75; --green-dim: #1D9E7515; --green-border: #1D9E7540;
+  --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222; --border: #2a2a2a;
+  --text: #f0f0f0; --muted: #888; --muted2: #555;
+  --red: #f87171; --red-dim: #dc262615; --red-border: #dc262640;
+  --orange: #fb923c; --orange-dim: #ea580c15; --orange-border: #ea580c40;
+  --purple: #a78bfa; --purple-dim: #7c3aed15; --purple-border: #7c3aed40;
+  --blue: #60a5fa; --blue-dim: #2563eb15; --blue-border: #2563eb40;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 0; position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 880px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag { background: var(--purple-dim); border: 1px solid var(--purple-border); color: var(--purple); border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; }
+.print-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 7px 16px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.print-btn:hover { border-color: var(--green); color: var(--green); }
+.main { max-width: 880px; margin: 0 auto; padding: 36px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--purple); margin-bottom: 10px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+.page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 36px; max-width: 560px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; }
+.tab-btn { background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.tab-btn.active { background: #fff; color: #111; border-color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--purple); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); margin-top: 28px; }
+.section-title:first-child { margin-top: 0; }
+
+/* Angle cards */
+.angles-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+.angle-card { background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 20px 18px; }
+.angle-card.prob { border-color: var(--red-border); }
+.angle-card.benef { border-color: var(--green-border); }
+.angle-card.proof { border-color: var(--purple-border); }
+.angle-icon { font-size: 1.5rem; margin-bottom: 10px; display: block; }
+.angle-card h4 { font-size: 0.92rem; font-weight: 800; margin-bottom: 4px; }
+.angle-card.prob h4 { color: var(--red); }
+.angle-card.benef h4 { color: var(--green); }
+.angle-card.proof h4 { color: var(--purple); }
+.angle-card .angle-desc { font-size: 0.8rem; color: var(--muted); margin-bottom: 14px; line-height: 1.5; }
+.angle-card .angle-formula { background: var(--surface2); border-radius: 8px; padding: 10px 12px; font-size: 0.78rem; color: #bbb; margin-bottom: 10px; line-height: 1.5; }
+.angle-card .angle-example { font-size: 0.77rem; color: var(--muted); font-style: italic; }
+.angle-card input { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; color: var(--text); font-size: 0.82rem; font-family: inherit; outline: none; margin-top: 10px; }
+.angle-card input:focus { border-color: var(--green); }
+
+/* Video structure */
+.video-timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 24px; }
+.vt-row { display: flex; gap: 0; }
+.vt-time { width: 80px; text-align: right; padding-right: 16px; padding-top: 14px; flex-shrink: 0; }
+.vt-time .time-badge { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 4px 10px; font-size: 0.75rem; font-weight: 700; color: var(--muted); display: inline-block; }
+.vt-line { width: 2px; background: var(--border); position: relative; flex-shrink: 0; }
+.vt-line::before { content: ''; width: 10px; height: 10px; border-radius: 50%; background: var(--border); position: absolute; left: -4px; top: 18px; }
+.vt-row.critical .vt-line { background: var(--green); }
+.vt-row.critical .vt-line::before { background: var(--green); }
+.vt-row.critical .vt-time .time-badge { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+.vt-content { padding: 10px 0 16px 16px; flex: 1; }
+.vt-content h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 4px; }
+.vt-content p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+.vt-content .vt-tip { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 0.77rem; color: #bbb; margin-top: 8px; line-height: 1.5; }
+.vt-content .vt-tip strong { color: var(--text); }
+
+/* Format cards */
+.formats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+.format-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+.format-card .format-ratio { font-size: 1.3rem; font-weight: 800; color: var(--green); margin-bottom: 6px; }
+.format-card h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+.format-card p { font-size: 0.77rem; color: var(--muted); line-height: 1.5; }
+.format-card .format-dim { font-size: 0.72rem; color: var(--muted2); margin-top: 6px; }
+
+/* Rules list */
+.rules-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 24px; }
+.rule-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; gap: 12px; align-items: flex-start; }
+.rule-icon { font-size: 1rem; flex-shrink: 0; margin-top: 1px; }
+.rule-content h4 { font-size: 0.87rem; font-weight: 700; margin-bottom: 2px; }
+.rule-content p { font-size: 0.79rem; color: var(--muted); }
+.rule-row.ok { border-color: var(--green-border); background: var(--green-dim); }
+.rule-row.nok { border-color: var(--red-border); background: var(--red-dim); }
+
+/* Prompts */
+.prompt-box { background: #111; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.76rem; color: #a8d8b9; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin-top: 10px; position: relative; }
+.prompt-label { font-size: 0.68rem; font-weight: 700; color: var(--purple); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; display: block; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.copy-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* Checklist */
+.check-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.check-row input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; }
+.check-row-content h4 { font-size: 0.87rem; font-weight: 700; margin-bottom: 2px; }
+.check-row-content p { font-size: 0.78rem; color: var(--muted); }
+
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--purple); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+.note strong { color: var(--text); }
+
+@media (max-width: 640px) { .angles-grid, .formats-grid { grid-template-columns: 1fr; } }
+@media print { .header { position: static; } .print-btn { display: none; } .tabs { display: none; } .tab-panel { display: block !important; } body { background: #fff; color: #111; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">S3 — Framework Créas</span>
+    <button class="print-btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Semaine 3 — Créas publicitaires</div>
+  <h1 class="page-title">Framework Créas</h1>
+  <p class="page-sub">3 angles, 3 visuels, 1 vidéo. Règles halal + META. Prompts IA pour les hooks. Tout ce qu'il faut pour créer un pack créas qui convertit.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('angles')">Les 3 Angles</button>
+    <button class="tab-btn" onclick="switchTab('video')">Structure Vidéo</button>
+    <button class="tab-btn" onclick="switchTab('formats')">Formats &amp; Règles</button>
+    <button class="tab-btn" onclick="switchTab('prompts')">Prompts IA Hooks</button>
+    <button class="tab-btn" onclick="switchTab('checklist')">Checklist Rendu</button>
+  </div>
+
+  <!-- TAB 1 : LES 3 ANGLES -->
+  <div class="tab-panel active" id="tab-angles">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:20px;">Chaque créa teste un angle différent. Les 3 premiers jours de campagne te diront lequel résonne le plus avec ton persona.</p>
+
+    <div class="angles-grid">
+      <div class="angle-card prob">
+        <span class="angle-icon">😣</span>
+        <h4>Angle Problème</h4>
+        <p class="angle-desc">Montre la douleur avant le produit. L'acheteur se reconnaît instantanément.</p>
+        <div class="angle-formula">Hook : "Tu [vis cette situation douloureuse] depuis [durée] ?"</div>
+        <p class="angle-example">Ex : "Tu te lèves encore 4 fois par nuit depuis 3 mois ?"</p>
+        <input id="hookProb" placeholder="Ton hook Problème :" oninput="evalHook('hookProb','feedProb')">
+        <div class="hook-feedback" id="feedProb"></div>
+      </div>
+      <div class="angle-card benef">
+        <span class="angle-icon">✨</span>
+        <h4>Angle Bénéfice</h4>
+        <p class="angle-desc">Montre le résultat après. La transformation, pas le produit.</p>
+        <div class="angle-formula">Hook : "Enfin [résultat désiré] — sans [contrainte habituelle]."</div>
+        <p class="angle-example">Ex : "Enfin une nuit complète pour toi et ton bébé — sans se lever 3 fois."</p>
+        <input id="hookBenef" placeholder="Ton hook Bénéfice :" oninput="evalHook('hookBenef','feedBenef')">
+        <div class="hook-feedback" id="feedBenef"></div>
+      </div>
+      <div class="angle-card proof">
+        <span class="angle-icon">⭐</span>
+        <h4>Angle Preuve Sociale</h4>
+        <p class="angle-desc">Montre que d'autres ont déjà résolu le problème. Réduit le risque perçu.</p>
+        <div class="angle-formula">Hook : "[Nombre] [persona] ont déjà [résultat]."</div>
+        <p class="angle-example">Ex : "14 000 mamans dorment enfin la nuit grâce à ça."</p>
+        <input id="hookProof" placeholder="Ton hook Preuve Sociale :" oninput="evalHook('hookProof','feedProof')">
+        <div class="hook-feedback" id="feedProof"></div>
+      </div>
+    </div>
+
+    <div class="section-title">Angles spécifiques niche enfants</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:24px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Angle Parent (acheteur)</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.55;">La pub parle au parent, pas à l'enfant. La douleur est celle du parent épuisé, stressé, qui veut bien faire. Ex : "Tu mérites aussi de dormir."</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Angle Cadeau (acheteur tiers)</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.55;">Si le produit peut être offert : naissance, anniversaire, Noël. Ex : "Le cadeau de naissance que tous les parents attendent vraiment."</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Angle Culpabilité douce</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.55;">Très efficace dans la niche enfants. "Tu ferais n'importe quoi pour que ton bébé soit confortable." Attention : pas de manipulation excessive — rester dans le réel.</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;">
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Angle Comparaison avant/après</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.55;">Montre la vie avant le produit (chaos, épuisement) vs après (calme, sommeil). Format split-screen ou vidéo narrative 30s.</p>
+      </div>
+    </div>
+
+    <div class="note"><strong>Rappel :</strong> En 2025-2026, audiences larges + créas fortes surpassent audiences étroites + créas faibles. Ton énergie va sur les hooks et les angles — pas sur la segmentation. L'algo fait le reste.</div>
+  </div>
+
+  <!-- TAB 2 : STRUCTURE VIDÉO -->
+  <div class="tab-panel" id="tab-video">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:24px;">La structure recommandée pour une vidéo de 25-30 secondes. Les 3 premières secondes décident si la personne continue à regarder.</p>
+
+    <div class="video-timeline">
+      <div class="vt-row critical">
+        <div class="vt-time"><span class="time-badge">0 – 3s</span></div>
+        <div class="vt-line"></div>
+        <div class="vt-content">
+          <h4>🎯 Le Hook — la chose la plus importante</h4>
+          <p>La première image ET la première phrase doivent accrocher. C'est la seule chose qui décide si la personne continue ou scrolle.</p>
+          <div class="vt-tip">
+            <strong>Techniques qui fonctionnent :</strong> Question directe au persona ("Tu passes tes nuits debout depuis...?") / Chiffre surprenant ("14 000 familles ont...") / Situation reconnaissable (montre la scène de la nuit blanche, pas le produit) / Texte en overlay grand format.
+          </div>
+        </div>
+      </div>
+      <div class="vt-row">
+        <div class="vt-time"><span class="time-badge">4 – 12s</span></div>
+        <div class="vt-line"></div>
+        <div class="vt-content">
+          <h4>📦 Le Produit en action</h4>
+          <p>Montre le produit utilisé dans la vraie vie. Pas un studio blanc — une chambre d'enfant réelle, des mains de parent qui utilisent le produit.</p>
+          <div class="vt-tip">
+            <strong>Pour la niche enfants :</strong> Montre bébé confortable (pas en danger), le parent soulagé, le produit utilisé naturellement. Si tu n'as pas de stock : vidéos fournisseur + texte overlay descriptif.
+          </div>
+        </div>
+      </div>
+      <div class="vt-row">
+        <div class="vt-time"><span class="time-badge">13 – 22s</span></div>
+        <div class="vt-line"></div>
+        <div class="vt-content">
+          <h4>✅ La Preuve + Le Bénéfice</h4>
+          <p>Renforce la décision. Avis client (texte overlay), chiffre de satisfaction, bénéfice principal récapitulé.</p>
+          <div class="vt-tip">
+            <strong>Format :</strong> "4.8/5 étoiles — 14 000 familles satisfaites" + montre le résultat (bébé qui dort, parent qui sourit).
+          </div>
+        </div>
+      </div>
+      <div class="vt-row critical">
+        <div class="vt-time"><span class="time-badge">23 – 30s</span></div>
+        <div class="vt-line"></div>
+        <div class="vt-content">
+          <h4>🛒 Le CTA — Call to Action</h4>
+          <p>Clair, simple, unique. Une seule action possible.</p>
+          <div class="vt-tip">
+            <strong>Formules qui fonctionnent :</strong> "Commande maintenant — livraison offerte" / "Découvre [nom produit] — lien en bio" / "Stock limité — commande avant ce soir"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note" style="margin-top:8px;"><strong>Outil recommandé :</strong> CapCut (gratuit, mobile + desktop). Importe les vidéos du fournisseur AliExpress + tes propres clips + texte overlay. Exporte en 9:16 pour Reels/Stories et en 1:1 pour Feed.</div>
+  </div>
+
+  <!-- TAB 3 : FORMATS & RÈGLES -->
+  <div class="tab-panel" id="tab-formats">
+
+    <div class="section-title">Formats requis</div>
+    <div class="formats-grid">
+      <div class="format-card">
+        <div class="format-ratio">1:1</div>
+        <h4>Feed Facebook &amp; Instagram</h4>
+        <p>Format carré, affiché dans le fil d'actualité. Bonne visibilité sur desktop et mobile.</p>
+        <p class="format-dim">1080 × 1080 px — max 30 Mo</p>
+      </div>
+      <div class="format-card">
+        <div class="format-ratio">9:16</div>
+        <h4>Stories &amp; Reels</h4>
+        <p>Plein écran vertical. Plus immersif. Idéal pour la vidéo et le contenu dynamique.</p>
+        <p class="format-dim">1080 × 1920 px — max 250 Mo (vidéo)</p>
+      </div>
+      <div class="format-card">
+        <div class="format-ratio">4:5</div>
+        <h4>Feed vertical (optionnel)</h4>
+        <p>Prend plus de place dans le feed que le 1:1. Bon complément si tu as le temps.</p>
+        <p class="format-dim">1080 × 1350 px</p>
+      </div>
+    </div>
+
+    <div class="section-title">Règles non-négociables</div>
+    <div class="rules-list">
+      <div class="rule-row nok">
+        <span class="rule-icon">❌</span>
+        <div class="rule-content"><h4>Pas de nudité — 3awra</h4><p>Aucune zone intime visible (homme ou femme). Dans la niche enfants : évite les bébés nus. Bébé en pyjama ou body = acceptable.</p></div>
+      </div>
+      <div class="rule-row nok">
+        <span class="rule-icon">❌</span>
+        <div class="rule-content"><h4>Pas de fausses promesses</h4><p>"Garantit 12h de sommeil" = interdit (affirm. médicale invérifiable). "Aide bébé à mieux dormir" = acceptable.</p></div>
+      </div>
+      <div class="rule-row nok">
+        <span class="rule-icon">❌</span>
+        <div class="rule-content"><h4>Pas de mise en danger visible</h4><p>Bébé dans une position dangereuse, sans surveillance, ou dans un contexte risqué = refus META + impact image de marque.</p></div>
+      </div>
+      <div class="rule-row nok">
+        <span class="rule-icon">❌</span>
+        <div class="rule-content"><h4>Pas de contenu haram</h4><p>Alcool, musique à contenu illicite, contenu sexualisé. Même si c'est "juste de la pub".</p></div>
+      </div>
+      <div class="rule-row ok">
+        <span class="rule-icon">✅</span>
+        <div class="rule-content"><h4>Texte overlay : pas de règle des 20% (supprimée par META en 2021)</h4><p>La règle des 20% n'existe plus. Ce qui compte : la qualité visuelle globale et l'engagement. Reste lisible et concis — du texte surchargé nuit au visuel, pas à la "portée".</p></div>
+      </div>
+      <div class="rule-row ok">
+        <span class="rule-icon">✅</span>
+        <div class="rule-content"><h4>Musique — utilise des sons libres de droits</h4><p>CapCut propose une bibliothèque intégrée. Évite les musiques populaires = risque de désactivation de la pub.</p></div>
+      </div>
+      <div class="rule-row ok">
+        <span class="rule-icon">✅</span>
+        <div class="rule-content"><h4>Sous-titres recommandés</h4><p>60-70% des vidéos sont regardées sans le son. CapCut génère les sous-titres automatiquement.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4 : PROMPTS IA HOOKS -->
+  <div class="tab-panel" id="tab-prompts">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:24px;">Utilise ces prompts pour générer tes hooks et tes variantes copy. Remplace les parties entre crochets.</p>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 1 — Générateur de hooks (10 variations)</span>
+      <div class="prompt-box" id="ph1">Tu es un expert en copywriting publicitaire Facebook/Instagram pour la niche enfants/bébés.
+
+Mon persona : [COLLE LA FICHE PERSONA COMPLÈTE — situation de vie, émotion dominante, moment déclencheur]
+Mon produit : [NOM DU PRODUIT + description en 1 phrase]
+
+Génère 10 hooks publicitaires (premières 3 secondes d'une vidéo ou première ligne d'un visuel) en variant les angles :
+- 3 hooks "Problème" (reconnaître la douleur)
+- 3 hooks "Bénéfice" (montrer la transformation)
+- 2 hooks "Preuve sociale" (chiffres, témoignages)
+- 2 hooks "Curiosité / Surprise" (brise les attentes)
+
+Format : chaque hook en 1 ligne, max 10 mots. Percutant, direct. Pas de superlatif vide.
+Écris en français.</div>
+      <button class="copy-btn" onclick="copyPrompt('ph1', this)">Copier</button>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 2 — Script vidéo 30 secondes</span>
+      <div class="prompt-box" id="ph2">Tu es expert en scripting vidéo publicitaire (Facebook Reels / Instagram Stories).
+
+Mon persona : [PROFIL + ÉMOTION DOMINANTE]
+Mon produit : [NOM + bénéfice principal]
+Mon angle : [PROBLÈME / BÉNÉFICE / PREUVE — choisis 1]
+Mon hook choisi : [COLLE TON HOOK]
+
+Écris le script complet d'une vidéo de 25-30 secondes :
+- 0-3s : Hook visuel + texte overlay (décris la scène ET le texte)
+- 4-12s : Produit en action (décris ce qu'on voit)
+- 13-22s : Preuve + bénéfice (avis, chiffre, résultat)
+- 23-30s : CTA clair (texte exact)
+
+Pour chaque partie : indique le visuel ET le texte overlay.
+Ton : direct, émotionnel, honnête. Pas de langue de bois.</div>
+      <button class="copy-btn" onclick="copyPrompt('ph2', this)">Copier</button>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 3 — Copy visuel statique (3 variations)</span>
+      <div class="prompt-box" id="ph3">Tu es copywriter expert en publicité e-commerce niche parentalité/enfants.
+
+Mon produit : [NOM + bénéfice en 1 phrase]
+Mon persona : [SITUATION DE VIE]
+
+Pour un visuel statique Facebook/Instagram, génère 3 versions de texte overlay :
+Version 1 — angle Problème (hook + sous-titre)
+Version 2 — angle Bénéfice (résultat + promo)
+Version 3 — angle Preuve sociale (chiffre + avis court)
+
+Format pour chaque version :
+- Titre principal : max 6 mots, en MAJUSCULES
+- Sous-titre : max 12 mots
+- CTA bouton : max 4 mots
+
+Règles : pas de nudité, pas de fausses promesses médicales, halal.</div>
+      <button class="copy-btn" onclick="copyPrompt('ph3', this)">Copier</button>
+    </div>
+
+    <div class="note"><strong>Conseil :</strong> Génère 10 hooks, sélectionne les 3 meilleurs sur la base de : est-ce que ça parle directement à l'émotion dominante du persona ? Est-ce qu'un parent qui vit cette situation s'arrêterait sur ce hook en scrollant à 23h ?</div>
+  </div>
+
+  <!-- TAB 5 : CHECKLIST RENDU -->
+  <div class="tab-panel" id="tab-checklist">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Coche chaque élément avant de poster ton rendu sur Circle.</p>
+
+    <div style="margin-bottom:20px;">
+      <div class="section-title">Livrables obligatoires</div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>3 visuels statiques créés</h4><p>Un par angle (Problème / Bénéfice / Preuve sociale) — formats 1:1 et/ou 9:16</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>1 vidéo 25-30 secondes minimum</h4><p>Structure en 4 parties respectée : Hook → Produit → Preuve → CTA</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>3 hooks copywriting distincts</h4><p>Un par créa, angles clairement différents. Rédigés avec le prompt IA ou manuellement.</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Screenshot créas importées dans Meta Ads Manager</h4><p>Ads Manager → Créer → Importer les créas → Statut "Brouillon" (ne pas lancer encore)</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Screenshot du prompt IA utilisé</h4><p>Prompt + réponse partielle visible. Prouve l'utilisation des outils fournis.</p></div></div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div class="section-title">Conformité règles</div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>✅ Pas de nudité dans aucune créa</h4><p>Bébés habillés, adultes habillés, aucune zone intime visible</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>✅ Pas de fausses promesses médicales</h4><p>Pas de "guérit", "traite", "garantit" — utilise "aide", "facilite", "améliore"</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>✅ Musique libre de droits (si vidéo)</h4><p>Bibliothèque CapCut ou sons libres de droits uniquement</p></div></div>
+      <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>✅ Sous-titres sur la vidéo</h4><p>60% des vues se font sans le son — les sous-titres augmentent l'engagement</p></div></div>
+    </div>
+
+    <div class="note"><strong>Rendu :</strong> Poste dans le fil "📝 Rendu Semaine 3" sur Circle avant vendredi. Inclus les 4 créas (screenshots ou fichiers) + les 3 hooks + le screenshot Meta Ads Manager + le prompt IA utilisé.</div>
+  </div>
+
+  <!-- PROCHAINE ÉTAPE -->
+  <div style="margin-top:40px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;">
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 4</div>
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Tes créas sont prêtes. Il est temps de lancer.</h3>
+    <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px;">Tu as 3 angles testés, 3 visuels et 1 vidéo importés dans Meta Ads Manager. La semaine 4, tu actives la campagne, tu lis tes métriques à J+3, et tu identifies quelle créa résonne le plus avec ton persona.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le guide S4 — Lancement META</span>
+      <span style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;">Budget test : 50–75€ sur 5 jours</span>
+    </div>
+  </div>
+
+</main>
+
+<style>
+.hook-feedback {
+  font-size: 0.74rem;
+  margin-top: 5px;
+  min-height: 16px;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+</style>
+
+<script>
+function switchTab(id) {
+  var ids = ['angles','video','formats','prompts','checklist'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', ids[i] === id); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.toggle('active', p.id === 'tab-' + id); });
+}
+function copyPrompt(id, btn) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copié ✓';
+    setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
+  });
+}
+function evalHook(inputId, feedId) {
+  var val = document.getElementById(inputId).value.trim();
+  var feed = document.getElementById(feedId);
+  if (!val) { feed.textContent = ''; return; }
+  var words = val.split(/\s+/).filter(Boolean).length;
+  if (words <= 3) {
+    feed.textContent = 'Trop court — un hook doit créer une tension ou une question en 5-10 mots.';
+    feed.style.color = '#fb923c';
+  } else if (words <= 12) {
+    feed.textContent = '✓ Bonne longueur (' + words + ' mots). Vérifie qu\'il parle directement à l\'émotion du persona.';
+    feed.style.color = '#4ade80';
+  } else {
+    feed.textContent = 'Trop long (' + words + ' mots) — un hook doit tenir en 10 mots max sur un visuel.';
+    feed.style.color = '#f87171';
+  }
+}
+</script>
+</body>
+</html>

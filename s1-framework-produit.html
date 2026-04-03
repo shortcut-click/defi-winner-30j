@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Framework Produit Winner — Semaine 1 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75;
+  --green-dim: #1D9E7518;
+  --green-border: #1D9E7540;
+  --bg: #0f0f0f;
+  --surface: #1a1a1a;
+  --surface2: #222;
+  --border: #2a2a2a;
+  --text: #f0f0f0;
+  --muted: #888;
+  --muted2: #555;
+  --red: #f87171;
+  --red-dim: #dc262618;
+  --red-border: #dc262640;
+  --orange: #fb923c;
+  --orange-dim: #ea580c18;
+  --orange-border: #ea580c40;
+  --purple: #a78bfa;
+  --purple-dim: #7c3aed18;
+  --purple-border: #7c3aed40;
+}
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  min-height: 100vh;
+  line-height: 1.6;
+}
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.header-inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag {
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+.main { max-width: 880px; margin: 0 auto; padding: 40px 24px 80px; }
+
+.hero { margin-bottom: 48px; }
+.eyebrow {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 12px;
+}
+.hero h1 { font-size: 2rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+.hero h1 span { color: var(--green); }
+.hero p { font-size: 0.92rem; color: var(--muted); max-width: 560px; }
+
+.phase-section { margin-bottom: 40px; }
+.phase-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+.phase-num {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+.ph1 { background: var(--purple-dim); border: 1px solid var(--purple-border); color: var(--purple); }
+.ph2 { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+.ph3 { background: var(--orange-dim); border: 1px solid var(--orange-border); color: var(--orange); }
+.phase-header-text h2 { font-size: 1.15rem; font-weight: 800; }
+.phase-header-text p { font-size: 0.82rem; color: var(--muted); }
+.phase-duration { margin-left: auto; font-size: 0.75rem; color: var(--muted2); white-space: nowrap; }
+
+.filter-list { display: flex; flex-direction: column; gap: 8px; }
+.filter-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  user-select: none;
+}
+.filter-item:hover { border-color: #3a3a3a; }
+.filter-item.checked { border-color: var(--green-border); background: var(--green-dim); }
+.filter-item.failed { border-color: var(--red-border); background: var(--red-dim); }
+.filter-check {
+  width: 22px; height: 22px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 1px;
+  font-size: 0.7rem;
+  transition: all 0.2s;
+}
+.filter-item.checked .filter-check { background: var(--green); border-color: var(--green); color: #fff; }
+.filter-item.failed .filter-check { background: var(--red); border-color: var(--red); color: #fff; }
+.filter-content { flex: 1; }
+.filter-content h4 { font-size: 0.9rem; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+.filter-content p { font-size: 0.8rem; color: var(--muted); }
+.filter-type { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; flex-shrink: 0; margin-top: 3px; }
+.disq { color: var(--red); }
+
+.pain-scorer {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 22px;
+  margin-top: 16px;
+}
+.pain-scorer h4 { font-size: 0.9rem; font-weight: 700; margin-bottom: 16px; }
+.pain-levels { display: flex; flex-direction: column; gap: 8px; }
+.pain-level {
+  border: 1.5px solid var(--border);
+  border-radius: 10px; padding: 12px 16px;
+  cursor: pointer; display: flex; align-items: center; gap: 12px;
+  transition: all 0.2s;
+}
+.pain-level:hover { border-color: #444; }
+.pain-level.sel-1 { border-color: var(--orange-border); background: var(--orange-dim); }
+.pain-level.sel-2 { border-color: var(--purple-border); background: var(--purple-dim); }
+.pain-level.sel-3 { border-color: var(--green-border); background: var(--green-dim); }
+.pain-badge {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.85rem; font-weight: 800; flex-shrink: 0;
+  background: var(--surface2); border: 1px solid var(--border); color: var(--muted);
+  transition: all 0.2s;
+}
+.pain-level.sel-1 .pain-badge { background: var(--orange-dim); color: var(--orange); border-color: var(--orange-border); }
+.pain-level.sel-2 .pain-badge { background: var(--purple-dim); color: var(--purple); border-color: var(--purple-border); }
+.pain-level.sel-3 .pain-badge { background: var(--green-dim); color: var(--green); border-color: var(--green-border); }
+.pain-level h5 { font-size: 0.88rem; font-weight: 700; color: var(--text); margin-bottom: 1px; }
+.pain-level p { font-size: 0.77rem; color: var(--muted); }
+
+.verdict-box {
+  border-radius: 14px; padding: 20px 22px; margin-top: 20px;
+  background: var(--green-dim); border: 1px solid var(--green-border);
+  display: none;
+}
+.verdict-box.fail { background: var(--red-dim); border-color: var(--red-border); }
+.verdict-box.show { display: block; }
+.verdict-box h3 { font-size: 1rem; font-weight: 800; margin-bottom: 6px; }
+.verdict-box p { font-size: 0.84rem; color: var(--muted); }
+
+.validation-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+.val-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 18px 16px;
+}
+.val-card .val-icon { font-size: 1.3rem; margin-bottom: 10px; display: block; }
+.val-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 6px; }
+.val-card .val-std { font-size: 0.78rem; color: var(--green); font-weight: 700; margin-bottom: 8px; }
+.val-card p { font-size: 0.78rem; color: var(--muted); line-height: 1.5; }
+
+.children-filters {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 14px; padding: 18px 20px; margin-top: 16px;
+}
+.children-filters h4 {
+  font-size: 0.72rem; font-weight: 700; color: var(--orange);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px;
+}
+.children-filters ul { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.children-filters li {
+  font-size: 0.83rem; color: #bbb;
+  padding-left: 16px; position: relative;
+}
+.children-filters li::before { content: '→'; position: absolute; left: 0; color: var(--orange); font-size: 0.7rem; top: 2px; }
+
+.persona-steps { display: flex; flex-direction: column; gap: 12px; }
+.persona-step { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
+.persona-step-head {
+  display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; cursor: pointer;
+}
+.persona-step-head:hover { background: #1e1e1e; }
+.step-num {
+  width: 26px; height: 26px; border-radius: 7px;
+  background: var(--purple-dim); border: 1px solid var(--purple-border);
+  color: var(--purple); display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 800; flex-shrink: 0;
+}
+.persona-step-head h4 { font-size: 0.92rem; font-weight: 700; flex: 1; }
+.toggle-icon { color: var(--muted2); font-size: 0.8rem; }
+.persona-step-body {
+  padding: 0 18px; max-height: 0; overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.2s;
+}
+.persona-step-body.open { max-height: 800px; padding: 0 18px 18px; }
+.persona-step-body p { font-size: 0.83rem; color: var(--muted); margin-bottom: 10px; line-height: 1.6; }
+.persona-step-body ul { list-style: none; display: flex; flex-direction: column; gap: 5px; padding-left: 4px; }
+.persona-step-body li {
+  font-size: 0.83rem; color: #bbb; padding-left: 16px;
+  position: relative; line-height: 1.5;
+}
+.persona-step-body li::before { content: '—'; position: absolute; left: 0; color: var(--muted2); }
+.hl { color: var(--text); font-weight: 600; }
+
+.score-table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+.score-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+.score-table th {
+  background: var(--surface); padding: 10px 14px; text-align: left;
+  font-size: 0.72rem; color: var(--muted); font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid var(--border);
+}
+.score-table td { padding: 10px 14px; border-bottom: 1px solid #1d1d1d; color: #ccc; vertical-align: top; }
+.score-table tr:last-child td { border-bottom: none; }
+.pts { color: var(--green); font-weight: 700; }
+
+.note {
+  background: var(--surface); border: 1px solid var(--border);
+  border-left: 3px solid var(--green); border-radius: 10px;
+  padding: 14px 18px; font-size: 0.83rem; color: var(--muted);
+  line-height: 1.65; margin-top: 16px;
+}
+.note strong { color: var(--text); }
+.insight {
+  background: var(--purple-dim); border: 1px solid var(--purple-border);
+  border-radius: 12px; padding: 16px 20px; font-size: 0.84rem;
+  color: #ccc; line-height: 1.65; margin-top: 16px;
+}
+.insight strong { color: var(--purple); }
+
+@media (max-width: 640px) { .validation-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">Semaine 1 — Sourcing &amp; Persona</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="eyebrow">Framework Produit Winner</div>
+    <h1>Trouve et valide ton<br><span>produit winner</span></h1>
+    <p>3 phases. Des données, pas de l'intuition. Si le marché dit non, tu passes au suivant — sans hésiter.</p>
+  </div>
+
+  <!-- PHASE 1 -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num ph1">1</div>
+      <div class="phase-header-text">
+        <h2>Phase 1 — Qualification</h2>
+        <p>Élimine les mauvais produits sans perdre de temps</p>
+      </div>
+      <span class="phase-duration">⏱ 5 min</span>
+    </div>
+
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:16px;">Coche chaque filtre en cliquant. Si un filtre disqualifiant échoue → produit suivant immédiatement.</p>
+
+    <div class="filter-list" id="filterList">
+      <div class="filter-item" onclick="toggleFilter(this)">
+        <div class="filter-check"></div>
+        <div class="filter-content">
+          <h4>Halal</h4>
+          <p>Le produit est-il conforme ? Pas de haram explicite (alcool, tabac, jeu, nudité, riba)</p>
+        </div>
+        <span class="filter-type disq">❌ Disqualifiant</span>
+      </div>
+      <div class="filter-item" onclick="toggleFilter(this)">
+        <div class="filter-check"></div>
+        <div class="filter-content">
+          <h4>Pas de nudité (3awra)</h4>
+          <p>Peut-on présenter ce produit sans exposer la 3awra dans les créas ?</p>
+        </div>
+        <span class="filter-type disq">❌ Disqualifiant</span>
+      </div>
+      <div class="filter-item" onclick="toggleFilter(this)">
+        <div class="filter-check"></div>
+        <div class="filter-content">
+          <h4>Pas de fausses promesses</h4>
+          <p>Les affirmations sur le produit sont-elles réalistes et prouvables ? (pas de gharar)</p>
+        </div>
+        <span class="filter-type disq">❌ Disqualifiant</span>
+      </div>
+      <div class="filter-item" onclick="toggleFilter(this)">
+        <div class="filter-check"></div>
+        <div class="filter-content">
+          <h4>Compris en 3 secondes sans le son</h4>
+          <p>TikTok test : en regardant une vidéo sans audio, comprend-on immédiatement ce que fait le produit ?</p>
+        </div>
+        <span class="filter-type disq">❌ Disqualifiant</span>
+      </div>
+      <div class="filter-item" onclick="toggleFilter(this)">
+        <div class="filter-check"></div>
+        <div class="filter-content">
+          <h4>Déjà validé ailleurs</h4>
+          <p>Le marché US, UK ou asiatique a déjà acheté ce produit ? (tu surfes sur une demande prouvée)</p>
+        </div>
+        <span class="filter-type disq">❌ Disqualifiant</span>
+      </div>
+    </div>
+
+    <div class="children-filters">
+      <h4>Filtres spécifiques niche enfants</h4>
+      <ul>
+        <li>Tranche d'âge précise ? (0-6 mois / 6-24 mois / 2-6 ans / 6-12 ans)</li>
+        <li>Normes de sécurité européennes ? (marquage CE, norme EN71 pour les jouets)</li>
+        <li>Achat pour l'enfant ou pour offrir ? (cadeau = angle marketing différent)</li>
+        <li>Le produit génère-t-il de la culpabilité si on ne l'achète pas ? (signal fort d'angle émotionnel)</li>
+      </ul>
+    </div>
+
+    <div class="pain-scorer">
+      <h4>Score douleur — filtre à pondérer ⚠️ (non disqualifiant)</h4>
+      <div class="pain-levels">
+        <div class="pain-level" onclick="selectPain(this, 1)">
+          <div class="pain-badge">1</div>
+          <div>
+            <h5>Désir d'amélioration</h5>
+            <p>Produit confort — "ce serait bien d'avoir". Viable, mais les créas seront plus difficiles à cranter.</p>
+          </div>
+        </div>
+        <div class="pain-level" onclick="selectPain(this, 2)">
+          <div class="pain-badge">2</div>
+          <div>
+            <h5>Problème réel, non urgent</h5>
+            <p>Ex : jouet éducatif. Le parent y pense mais ce n'est pas une urgence.</p>
+          </div>
+        </div>
+        <div class="pain-level" onclick="selectPain(this, 3)">
+          <div class="pain-badge">3</div>
+          <div>
+            <h5>Problème urgent et douloureux</h5>
+            <p>Ex : enfant qui ne dort pas → parents épuisés. La pub est quasi naturelle.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Verdict statique — affiché/masqué par JS sans innerHTML dynamique -->
+    <div class="verdict-box" id="verdictOK">
+      <h3>✅ Phase 1 validée — passage en Phase 2</h3>
+      <p id="verdictPainMsg">Direction : META Ads Library + Google Trends + AliExpress.</p>
+    </div>
+    <div class="verdict-box fail" id="verdictFAIL">
+      <h3>❌ Produit éliminé</h3>
+      <p>Un filtre disqualifiant a échoué. Ce produit ne convient pas. Passe au produit suivant — sans hésitation ni regret.</p>
+    </div>
+  </section>
+
+  <!-- PHASE 2 -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num ph2">2</div>
+      <div class="phase-header-text">
+        <h2>Phase 2 — Validation</h2>
+        <p>Confirme avec des données avant d'investir</p>
+      </div>
+      <span class="phase-duration">⏱ 20 min</span>
+    </div>
+
+    <div class="validation-grid">
+      <div class="val-card">
+        <span class="val-icon">💰</span>
+        <h4>Marge ×4 minimum</h4>
+        <div class="val-std">Prix fournisseur + livraison × 4</div>
+        <p>Ticket cible : €35–150. En dessous de ×4, les coûts pub absorbent la marge.</p>
+      </div>
+      <div class="val-card">
+        <span class="val-icon">📈</span>
+        <h4>Demande prouvée</h4>
+        <div class="val-std">Google Trends stable/hausse + 5 000 cmd AliExpress 4.5★+</div>
+        <p>Les gens cherchent et achètent déjà. Tu surfes sur une vague existante.</p>
+      </div>
+      <div class="val-card">
+        <span class="val-icon">🎯</span>
+        <h4>Compétition sweet spot</h4>
+        <div class="val-std">3 à 5 concurrents actifs, pubs 30–45 jours+</div>
+        <p>Trop peu = marché inexistant. Trop = océan rouge. Sweet spot = preuve + espace.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>Comment vérifier les concurrents :</strong> META Ads Library → filtre "Actif" → recherche du produit → note les annonceurs dont les pubs tournent depuis 30-45 jours ou plus.
+    </div>
+    <div class="insight">
+      <strong>Insight clé :</strong> Niches spécialisées = 8,2% de conversion vs 2,3% pour les généralistes — 75% moins de trafic pour le même CA.
+    </div>
+  </section>
+
+  <!-- PHASE 3 -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num ph3">3</div>
+      <div class="phase-header-text">
+        <h2>Phase 3 — Test</h2>
+        <p>Budget réduit, données réelles, décision rapide</p>
+      </div>
+      <span class="phase-duration">€50–100 / 5 jours</span>
+    </div>
+    <div class="validation-grid">
+      <div class="val-card">
+        <span class="val-icon">💸</span>
+        <h4>Budget</h4>
+        <div class="val-std">€50–100 sur 5 jours</div>
+        <p>€10–15/jour minimum pour que l'algorithme META ait des données suffisantes.</p>
+      </div>
+      <div class="val-card">
+        <span class="val-icon">⏱️</span>
+        <h4>Durée</h4>
+        <div class="val-std">5 jours minimum</div>
+        <p>Lire les métriques à J+3 en priorité. Une décision avant J+3 est prématurée.</p>
+      </div>
+      <div class="val-card">
+        <span class="val-icon">📊</span>
+        <h4>Signaux</h4>
+        <div class="val-std">ATC = bon signal / vente = validation</div>
+        <p>CPM, CTR, CPC indicateurs de la qualité des créas et du ciblage.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTHODE PERSONA -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num" style="background:var(--orange-dim);border-color:var(--orange-border);color:var(--orange);">P</div>
+      <div class="phase-header-text">
+        <h2>Méthode Persona — 4 étapes</h2>
+        <p>Des données, pas des suppositions</p>
+      </div>
+    </div>
+
+    <div class="persona-steps">
+      <div class="persona-step">
+        <div class="persona-step-head" onclick="toggleStep(this)">
+          <div class="step-num">1</div>
+          <h4>Lister tous les acheteurs potentiels</h4>
+          <span class="toggle-icon">▲</span>
+        </div>
+        <div class="persona-step-body open">
+          <p>3 questions à se poser pour chaque produit :</p>
+          <ul>
+            <li>"Qui souffre directement de ce problème ?"</li>
+            <li>"Qui achète pour quelqu'un d'autre ?" (cadeau, parent, conjoint)</li>
+            <li>"Qui est l'utilisateur vs qui est l'acheteur ?" — souvent deux personnes différentes</li>
+          </ul>
+          <p style="margin-top:10px;"><span class="hl">Spécifique niche enfants :</span> Mère, père, ou proche qui achète ? Contexte (naissance imminente, problème de sommeil, anniversaire) ? Achat pour soi ou pour offrir ?</p>
+        </div>
+      </div>
+
+      <div class="persona-step">
+        <div class="persona-step-head" onclick="toggleStep(this)">
+          <div class="step-num">2</div>
+          <h4>Scorer chaque persona sur 4 critères (1 à 3)</h4>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="persona-step-body">
+          <div class="score-table-wrap" style="margin-bottom:10px;">
+            <table class="score-table">
+              <thead><tr><th>Critère</th><th>Question</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Douleur</strong></td><td>À quel point ce problème lui pourrit la vie ?</td></tr>
+                <tr><td><strong>Urgence + budget</strong></td><td>Est-ce qu'il cherche une solution maintenant et a les moyens ?</td></tr>
+                <tr><td><strong>Accessibilité</strong></td><td>Est-il facile à toucher sur META ou TikTok ?</td></tr>
+                <tr><td><strong>Déclencheur émotionnel</strong></td><td>Est-ce qu'il achète avec le cœur ou la tête ?</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>→ Le persona avec le <span class="hl" style="color:var(--green)">score total le plus élevé</span> = ton persona de test.</p>
+        </div>
+      </div>
+
+      <div class="persona-step">
+        <div class="persona-step-head" onclick="toggleStep(this)">
+          <div class="step-num">3</div>
+          <h4>Trouver les données (pas dans ta tête)</h4>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="persona-step-body">
+          <ul>
+            <li><span class="hl">Amazon reviews 1★ et 5★</span> — plaintes des concurrents → tes angles marketing</li>
+            <li><span class="hl">Commentaires pubs META Ads Library</span> — qui tague, qui dit "j'en veux un"</li>
+            <li><span class="hl">Reddit + groupes Facebook</span> — insights bruts non filtrés</li>
+            <li><span class="hl">Commentaires TikTok</span> — qui demande "où est-ce que j'achète ça ?"</li>
+            <li><span class="hl">Google "produit + avis"</span> — profil démographique réel</li>
+          </ul>
+          <p style="margin-top:10px;"><span class="hl">Sources niche enfants :</span> Groupes Facebook "parents de bébés" / Maternité.fr, BabyCenter / Reddit r/Parenting / Mamans blogueuses TikTok/Instagram.</p>
+        </div>
+      </div>
+
+      <div class="persona-step">
+        <div class="persona-step-head" onclick="toggleStep(this)">
+          <div class="step-num">4</div>
+          <h4>Construire la fiche persona (5 éléments)</h4>
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="persona-step-body">
+          <ul>
+            <li><span class="hl">Situation de vie</span> — contexte précis. Ex : "Mère 31 ans, bébé 4 mois, congé mat, dort 4h/nuit"</li>
+            <li><span class="hl">Moment déclencheur</span> — quand cherche-t-elle le produit ? Ex : "Après une nuit blanche, Instagram à 23h"</li>
+            <li><span class="hl">Émotion dominante</span> — frustration, peur, culpabilité, désir de bien faire ?</li>
+            <li><span class="hl">Angle / hook</span> — la première phrase de ta publicité</li>
+            <li><span class="hl">Plateforme</span> — où est-elle et à quel moment ?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="insight">
+      <strong>Nuance 2025-2026 :</strong> Le persona n'est pas un filtre technique dans le gestionnaire de pubs — c'est <strong>l'angle de ta créa</strong>. Tu parles à une personne précise dans ta vidéo. L'algo trouve les autres tout seul.
+    </div>
+  </section>
+
+  <!-- SCORING S1 -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num" style="background:#1a2a3a;border-color:#1e3a5a;color:#60a5fa;">S</div>
+      <div class="phase-header-text">
+        <h2>Grille de scoring — Semaine 1</h2>
+        <p>Comment tu seras noté cette semaine</p>
+      </div>
+    </div>
+    <div class="score-table-wrap">
+      <table class="score-table">
+        <thead><tr><th>Critère d'évaluation</th><th style="text-align:right">Points</th></tr></thead>
+        <tbody>
+          <tr><td>Phase 1 — 5 filtres justifiés + score douleur</td><td class="pts" style="text-align:right">10</td></tr>
+          <tr><td>Fiche produit complète — marge ×4, fournisseur, tranche d'âge</td><td class="pts" style="text-align:right">10</td></tr>
+          <tr><td>Phase 2 avec screenshots — Google Trends + AliExpress + META Ads Library</td><td class="pts" style="text-align:right">15</td></tr>
+          <tr><td>Tableau de scoring personas — 2 personas comparés sur 4 critères</td><td class="pts" style="text-align:right">10</td></tr>
+          <tr><td>Fiche persona — 5 éléments + source de données citée</td><td class="pts" style="text-align:right">15</td></tr>
+          <tr><td><strong>Bonus qualité Hamza</strong> — pertinence du produit, potentiel réel</td><td class="pts" style="text-align:right">30</td></tr>
+          <tr><td><strong>Bonus rapidité</strong> — 1er = +10, 2ème = +7, 3ème = +5</td><td class="pts" style="text-align:right">10</td></tr>
+          <tr><td style="font-weight:800;color:var(--text)">TOTAL</td><td style="font-weight:800;color:var(--green);text-align:right">100</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <strong>Rendu :</strong> Poste ton livrable dans le fil "Rendu Semaine 1" sur Circle avant vendredi. Inclus tous les screenshots et le prompt IA utilisé.
+    </div>
+  </section>
+
+  <!-- ÉTAPE STOCK — PONT S1 → S2 -->
+  <section class="phase-section">
+    <div class="phase-header">
+      <div class="phase-num" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);color:#fb923c;">📦</div>
+      <div class="phase-header-text">
+        <h2>Avant de passer à S2 — Commander le stock</h2>
+        <p>Dropshipping 2.0 : tu vends du stock que tu possèdes, pas du blind dropshipping</p>
+      </div>
+    </div>
+    <div class="insight" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.06);">
+      <strong>Pourquoi le stock d'abord ?</strong> Le modèle Tariqa PRO n'est pas du dropshipping traditionnel (aveugle, long délai, produit jamais touché). Tu commandes un stock minimum à ton fournisseur, tu maîtrises la qualité et les délais de livraison — c'est ce qui crée la confiance client et te protège légalement.
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:18px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">1️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Contacter l'agent / fournisseur</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Présente-toi, envoie le lien du produit AliExpress ou le brief, demande le prix pour X unités + coût de livraison vers la France.</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">2️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Négocier le MOQ minimum</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">MOQ = Minimum Order Quantity. Commence petit : 20 à 50 unités pour le test. Vérifie que la marge ×4 tient toujours avec ce prix unitaire.</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">3️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Passer la commande</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Une fois le prix validé : commande le stock. Pendant que le colis est en transit (2–4 semaines), tu construis ton site Shopify et tes créas.</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">4️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Réceptionner + contrôler</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Quand le stock arrive : vérifie la conformité (qualité, marquage CE si applicable), prends des vraies photos produit. Elles serviront pour Shopify et les créas.</p>
+      </div>
+    </div>
+    <div class="note" style="margin-top:16px;">
+      <strong>Timing :</strong> Commande le stock pendant la semaine 1 (pas après). Le délai de livraison fournisseur (2–4 semaines) doit coïncider avec la fin de la semaine 3 pour que tout soit prêt pour le lancement S4.
+    </div>
+  </section>
+
+  <!-- PROCHAINE ÉTAPE -->
+  <section style="margin-top:32px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;margin-bottom:80px;">
+    <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 2</div>
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Tu as ton produit validé. La commande est passée. Construis ton site.</h3>
+    <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px;">Produit ✓ — Marge ×4 ✓ — Persona ✓ — Stock commandé ✓. La semaine 2, tu crées ton Shopify mono-produit, tu rédiges ton copy avec l'IA, et tu ajoutes tous les éléments de confiance. Le site doit être prêt avant que le stock arrive.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le template page produit S2</span>
+      <span style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;">→ Remplis la fiche persona avant de rédiger le copy</span>
+    </div>
+  </section>
+
+</main>
+
+<script>
+var painScore = 0;
+
+function toggleFilter(el) {
+  var states = ['', 'checked', 'failed'];
+  var cur = el.classList.contains('checked') ? 1 : el.classList.contains('failed') ? 2 : 0;
+  el.classList.remove('checked', 'failed');
+  var next = (cur + 1) % 3;
+  if (next === 1) el.classList.add('checked');
+  if (next === 2) el.classList.add('failed');
+  var check = el.querySelector('.filter-check');
+  check.textContent = next === 1 ? '✓' : next === 2 ? '✕' : '';
+  updateVerdict();
+}
+
+function selectPain(el, score) {
+  document.querySelectorAll('.pain-level').forEach(function(l) {
+    l.classList.remove('sel-1', 'sel-2', 'sel-3');
+  });
+  el.classList.add('sel-' + score);
+  painScore = score;
+  updateVerdict();
+}
+
+function updateVerdict() {
+  var items = document.querySelectorAll('.filter-item');
+  var hasFailed = false;
+  var allChecked = true;
+  items.forEach(function(i) {
+    if (i.classList.contains('failed')) hasFailed = true;
+    if (!i.classList.contains('checked')) allChecked = false;
+  });
+
+  var ok = document.getElementById('verdictOK');
+  var fail = document.getElementById('verdictFAIL');
+  ok.classList.remove('show');
+  fail.classList.remove('show');
+
+  if (hasFailed) {
+    fail.classList.add('show');
+  } else if (allChecked && painScore > 0) {
+    var msg = document.getElementById('verdictPainMsg');
+    var msgs = [
+      '',
+      '⚠️ Score 1 — Viable mais difficile. Des créas très fortes seront nécessaires pour déclencher l\'achat.',
+      '⚡ Score 2 — Correct. Travaille bien tes angles pour créer l\'urgence.',
+      '🔥 Score 3 — Excellent. La douleur est urgente. Tes créas vont accrocher naturellement.'
+    ];
+    msg.textContent = msgs[painScore] + ' Direction : META Ads Library + Google Trends + AliExpress.';
+    ok.classList.add('show');
+  }
+}
+
+function toggleStep(head) {
+  var body = head.nextElementSibling;
+  var icon = head.querySelector('.toggle-icon');
+  if (body.classList.contains('open')) {
+    body.classList.remove('open');
+    icon.textContent = '▼';
+  } else {
+    body.classList.add('open');
+    icon.textContent = '▲';
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Template Page Produit Shopify — S2 | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75; --green-dim: #1D9E7515; --green-border: #1D9E7540;
+  --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222; --border: #2a2a2a;
+  --text: #f0f0f0; --muted: #888; --muted2: #555;
+  --purple: #a78bfa; --purple-dim: #7c3aed15; --purple-border: #7c3aed40;
+  --orange: #fb923c; --orange-dim: #ea580c15; --orange-border: #ea580c40;
+  --blue: #60a5fa; --blue-dim: #2563eb15; --blue-border: #2563eb40;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 0; position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 860px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; }
+.print-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 8px; padding: 7px 16px; font-size: 0.78rem; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+.print-btn:hover { border-color: var(--green); color: var(--green); }
+.main { max-width: 860px; margin: 0 auto; padding: 36px 24px 80px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+.page-title { font-size: 1.7rem; font-weight: 800; margin-bottom: 6px; }
+.page-sub { font-size: 0.88rem; color: var(--muted); margin-bottom: 36px; max-width: 560px; }
+
+/* Tabs */
+.tabs { display: flex; gap: 8px; margin-bottom: 28px; overflow-x: auto; }
+.tab-btn { background: transparent; border: 1px solid var(--border); border-radius: 999px; padding: 8px 18px; font-size: 0.82rem; font-weight: 600; color: var(--muted); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-family: inherit; }
+.tab-btn.active { background: #fff; color: #111; border-color: #fff; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+.section-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--green); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+.field { margin-bottom: 16px; }
+.field label { display: block; font-size: 0.8rem; font-weight: 700; color: #ccc; margin-bottom: 5px; }
+.field .hint { font-size: 0.74rem; color: var(--muted); margin-bottom: 5px; }
+.field input, .field textarea { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 10px 14px; color: var(--text); font-size: 0.87rem; font-family: inherit; outline: none; transition: border-color 0.2s; }
+.field input:focus, .field textarea:focus { border-color: var(--green); }
+.field textarea { min-height: 80px; resize: vertical; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* Block copy */
+.copy-block { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; margin-bottom: 20px; }
+.copy-block-head { background: var(--surface2); padding: 12px 18px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid var(--border); }
+.copy-block-num { width: 24px; height: 24px; border-radius: 7px; background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 800; flex-shrink: 0; }
+.copy-block-head h4 { font-size: 0.9rem; font-weight: 700; }
+.copy-block-head .purpose { margin-left: auto; font-size: 0.72rem; color: var(--muted); }
+.copy-block-body { padding: 18px 20px; }
+.copy-block-body p { font-size: 0.82rem; color: var(--muted); margin-bottom: 12px; line-height: 1.55; }
+
+/* Formula */
+.formula { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; }
+.formula .f-label { font-size: 0.68rem; font-weight: 700; color: var(--purple); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+.formula .f-example { font-size: 0.82rem; color: #bbb; font-style: italic; margin-top: 6px; }
+.formula .f-structure { font-size: 0.85rem; color: var(--text); font-weight: 600; }
+
+/* Prompt box */
+.prompt-box { background: #111; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; font-family: 'SF Mono', 'Consolas', monospace; font-size: 0.76rem; color: #a8d8b9; line-height: 1.7; white-space: pre-wrap; word-break: break-word; margin-top: 10px; position: relative; }
+.prompt-label { font-size: 0.68rem; font-weight: 700; color: var(--green); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; display: block; }
+.copy-btn { position: absolute; top: 12px; right: 12px; background: var(--surface2); border: 1px solid var(--border); color: var(--muted); border-radius: 6px; padding: 4px 10px; font-size: 0.7rem; cursor: pointer; font-family: inherit; transition: all 0.2s; }
+.copy-btn:hover { border-color: var(--green); color: var(--green); }
+
+/* Checklist */
+.checklist-block { display: flex; flex-direction: column; gap: 8px; }
+.check-row { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 16px; display: flex; align-items: flex-start; gap: 12px; }
+.check-row input[type="checkbox"] { accent-color: var(--green); width: 15px; height: 15px; flex-shrink: 0; margin-top: 2px; }
+.check-row-content h4 { font-size: 0.87rem; font-weight: 700; margin-bottom: 2px; }
+.check-row-content p { font-size: 0.78rem; color: var(--muted); }
+
+/* Note */
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: var(--muted); line-height: 1.6; margin-top: 14px; }
+.note strong { color: var(--text); }
+.alert { background: var(--orange-dim); border: 1px solid var(--orange-border); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: #ccc; line-height: 1.6; margin-top: 14px; }
+.alert strong { color: var(--orange); }
+
+@media (max-width: 580px) { .two-col { grid-template-columns: 1fr; } }
+@media print { .header { position: static; } .print-btn { display: none; } .tabs { display: none; } .tab-panel { display: block !important; } body { background: #fff; color: #111; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <span class="logo">Tariqa PRO</span>
+    <span class="week-tag">S2 — Template Page Produit</span>
+    <button class="print-btn" onclick="window.print()">Imprimer / PDF</button>
+  </div>
+</header>
+
+<main class="main">
+  <div class="eyebrow">Semaine 2 — Shopify</div>
+  <h1 class="page-title">Template Page Produit</h1>
+  <p class="page-sub">Structure copy complète pour ta page produit Shopify. Remplis chaque section, utilise les prompts IA fournis. Copie-colle directement dans Shopify.</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('copy')">Structure Copy</button>
+    <button class="tab-btn" onclick="switchTab('prompts')">Prompts IA</button>
+    <button class="tab-btn" onclick="switchTab('checklist')">Checklist Lancement</button>
+  </div>
+
+  <!-- TAB 1 : STRUCTURE COPY -->
+  <div class="tab-panel active" id="tab-copy">
+
+    <!-- TITRE -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">1</div>
+        <h4>Titre du produit</h4>
+        <span class="purpose">Première chose lue — doit accrocher immédiatement</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Le titre doit contenir : <strong>le bénéfice principal</strong> + le nom du produit. Pas juste "Turbulette bébé" — mais "La turbulette qui permet à ton bébé de dormir toute la nuit".</p>
+        <div class="formula">
+          <div class="f-label">Formule</div>
+          <div class="f-structure">[Bénéfice principal] + [Nom du produit] + [Caractéristique différenciante]</div>
+          <div class="f-example">Ex : "Enfin des nuits complètes — Turbulette TOG 2.5 avec manches amovibles (0–6 mois)"</div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Ton titre</label>
+          <input placeholder="Écris ton titre produit ici...">
+        </div>
+      </div>
+    </div>
+
+    <!-- ACCROCHE -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">2</div>
+        <h4>Accroche (sous-titre / tagline)</h4>
+        <span class="purpose">1–2 phrases — renforce l'émotion du titre</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Parle directement à la douleur du persona. L'accroche doit faire dire "c'est exactement mon problème".</p>
+        <div class="formula">
+          <div class="f-label">Formule</div>
+          <div class="f-structure">[Reconnaissance de la douleur] + [Promesse de solution]</div>
+          <div class="f-example">Ex : "Tu te lèves 3 fois par nuit depuis des semaines ? Cette turbulette a aidé 14 000 familles à retrouver le sommeil."</div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Ton accroche</label>
+          <textarea placeholder="Écris ton accroche ici..."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">3</div>
+        <h4>Description principale</h4>
+        <span class="purpose">Répond aux 3 questions clés de l'acheteur</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Ta description doit répondre dans l'ordre à ces 3 questions que se pose tout visiteur :</p>
+        <div class="two-col" style="margin-bottom:14px;">
+          <div class="formula">
+            <div class="f-label">Question 1</div>
+            <div class="f-structure">Qu'est-ce que c'est exactement ?</div>
+          </div>
+          <div class="formula">
+            <div class="f-label">Question 2</div>
+            <div class="f-structure">Est-ce que c'est fait pour moi / mon enfant ?</div>
+          </div>
+          <div class="formula" style="grid-column: 1 / -1;">
+            <div class="f-label">Question 3</div>
+            <div class="f-structure">Pourquoi l'acheter maintenant ? (urgence ou différenciation)</div>
+          </div>
+        </div>
+        <div class="field" style="margin-bottom:0">
+          <label>Paragraphe 1 — Ce que c'est</label>
+          <textarea placeholder="Ex : La [Nom produit] est [description concrète]. Fabriquée en [matière] certifiée CE, elle [bénéfice concret 1] et [bénéfice concret 2]."></textarea>
+        </div>
+        <div class="field" style="margin-bottom:0;margin-top:10px;">
+          <label>Paragraphe 2 — Pour qui</label>
+          <textarea placeholder="Ex : Idéale pour les bébés de [tranche d'âge] et les parents qui [situation du persona]. Recommandée par [référence ou preuve sociale si disponible]."></textarea>
+        </div>
+        <div class="field" style="margin-bottom:0;margin-top:10px;">
+          <label>Paragraphe 3 — Pourquoi maintenant</label>
+          <textarea placeholder="Ex : [Différenciation vs concurrents] + [Garantie] + [Stock limité / délai si applicable]."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- BÉNÉFICES EN BULLET POINTS -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">4</div>
+        <h4>Bénéfices clés (bullet points)</h4>
+        <span class="purpose">Scannable — 5 à 7 points max</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Format : <strong>Bénéfice direct</strong> — explication courte. Le bénéfice avant le feature.</p>
+        <div class="alert"><strong>Règle :</strong> "Aide bébé à rester chaud toute la nuit" (bénéfice) — pas "Tissu TOG 2.5" (feature). L'acheteur achète un résultat, pas une spec technique.</div>
+        <div style="margin-top:14px;display:flex;flex-direction:column;gap:8px;">
+          <div class="field" style="margin-bottom:0"><input placeholder="✓ Bénéfice 1 — explication courte"></div>
+          <div class="field" style="margin-bottom:0"><input placeholder="✓ Bénéfice 2 — explication courte"></div>
+          <div class="field" style="margin-bottom:0"><input placeholder="✓ Bénéfice 3 — explication courte"></div>
+          <div class="field" style="margin-bottom:0"><input placeholder="✓ Bénéfice 4 — explication courte"></div>
+          <div class="field" style="margin-bottom:0"><input placeholder="✓ Bénéfice 5 — explication courte (sécurité CE/EN71 si applicable)"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">5</div>
+        <h4>FAQ — 5 questions fréquentes</h4>
+        <span class="purpose">Élimine les objections avant l'achat</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Les questions sont tirées des vraies objections du persona (identifiées en S1). Elles rassurent et déclenchent l'achat.</p>
+        <div style="display:flex;flex-direction:column;gap:12px;">
+          <div class="field" style="margin-bottom:0">
+            <label>Q1 (sécurité produit)</label>
+            <input placeholder="Ex : Ce produit est-il certifié CE ? Quels matériaux sont utilisés ?" style="margin-bottom:6px;">
+            <textarea placeholder="Réponse : Oui, notre produit est certifié CE et répond à la norme EN71. Fabriqué en [matière] BPA-free et testés sans substances nocives."></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Q2 (taille / compatibilité)</label>
+            <input placeholder="Ex : Comment choisir la bonne taille ?" style="margin-bottom:6px;">
+            <textarea placeholder="Réponse : Consulte notre guide des tailles inclus dans la fiche produit. En cas de doute, contacte-nous — on t'aide à choisir."></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Q3 (livraison)</label>
+            <input placeholder="Ex : Quel est le délai de livraison ?" style="margin-bottom:6px;">
+            <textarea placeholder="Réponse : Livraison en [X-Y] jours ouvrés en France. Suivi inclus par email dès l'expédition."></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Q4 (retours)</label>
+            <input placeholder="Ex : Puis-je retourner le produit ?" style="margin-bottom:6px;">
+            <textarea placeholder="Réponse : Oui, retour accepté sous 14 jours si le produit est en état d'origine. Satisfait ou remboursé."></textarea>
+          </div>
+          <div class="field" style="margin-bottom:0">
+            <label>Q5 (objection principale du persona)</label>
+            <input placeholder="Ex : Est-ce que ça fonctionne vraiment ?" style="margin-bottom:6px;">
+            <textarea placeholder="Réponse : Plus de 14 000 familles ont amélioré le sommeil de leur bébé avec ce produit. Regarde les avis ci-dessous."></textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ÉLÉMENTS DE CONFIANCE -->
+    <div class="copy-block">
+      <div class="copy-block-head">
+        <div class="copy-block-num">6</div>
+        <h4>Éléments de confiance</h4>
+        <span class="purpose">Critique pour la niche enfants — les parents sont exigeants</span>
+      </div>
+      <div class="copy-block-body">
+        <p>Ces éléments doivent être visibles dès le début de la page, pas en bas.</p>
+        <div class="two-col">
+          <div class="field">
+            <label>Badge sécurité</label>
+            <input placeholder="Ex : ✓ Certifié CE — Testé sans BPA">
+          </div>
+          <div class="field">
+            <label>Garantie</label>
+            <input placeholder="Ex : 🔒 Satisfait ou remboursé 14 jours">
+          </div>
+          <div class="field">
+            <label>Preuve sociale</label>
+            <input placeholder="Ex : ⭐ 4.8/5 — 847 avis vérifiés">
+          </div>
+          <div class="field">
+            <label>Livraison</label>
+            <input placeholder="Ex : 🚚 Livraison suivie — France et Belgique">
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- TAB 2 : PROMPTS IA -->
+  <div class="tab-panel" id="tab-prompts">
+
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:24px;">Copie-colle ces prompts dans ChatGPT ou Claude. Remplace les parties entre crochets par tes informations.</p>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 1 — Titre + Accroche + Description</span>
+      <div class="prompt-box" id="p1">Tu es un expert en copywriting e-commerce spécialisé niche enfants/bébés. Mon persona est :
+- Profil : [COLLE ICI LA SITUATION DE VIE DU PERSONA]
+- Émotion dominante : [COLLE L'ÉMOTION]
+- Hook identifié : [COLLE LE HOOK]
+
+Mon produit : [NOM DU PRODUIT]
+Description fournisseur : [COLLE LA DESC ALIEXPRESS]
+Prix de vente : [PRIX]€
+
+Génère-moi :
+1. UN TITRE produit (formule : bénéfice + nom + différenciation, max 80 caractères)
+2. UNE ACCROCHE sous-titre (1-2 phrases, reconnait la douleur + promet la solution)
+3. DESCRIPTION en 3 paragraphes (ce que c'est / pour qui / pourquoi maintenant)
+4. 5 BÉNÉFICES en bullet points (bénéfice avant feature, jamais l'inverse)
+
+Écris en français. Ton direct, bénéfices concrets. Pas de superlatifs vides.</div>
+      <button class="copy-btn" onclick="copyPrompt('p1', this)">Copier</button>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 2 — FAQ 5 questions</span>
+      <div class="prompt-box" id="p2">Tu es expert en copywriting e-commerce. Mon persona principal est [PROFIL PERSONA]. Il hésite avant d'acheter [NOM PRODUIT] à cause de ces objections : [LISTE DES 3 OBJECTIONS IDENTIFIÉES EN S1].
+
+Génère une FAQ de 5 questions-réponses pour ma page produit Shopify :
+- Question 1 : sur la sécurité du produit (certification CE, matériaux)
+- Question 2 : sur le choix de la taille ou la compatibilité
+- Question 3 : sur la livraison (délai, suivi)
+- Question 4 : sur les retours et la garantie
+- Question 5 : sur l'objection principale de mon persona
+
+Chaque réponse : 2-4 phrases. Ton rassurant mais direct. Pas de langue de bois.</div>
+      <button class="copy-btn" onclick="copyPrompt('p2', this)">Copier</button>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <span class="prompt-label">Prompt 3 — Page "À Propos"</span>
+      <div class="prompt-box" id="p3">Écris la page "À propos" de ma boutique e-commerce dans la niche [SOUS-NICHE ENFANTS]. Ma boutique s'appelle [NOM BOUTIQUE].
+
+Contexte : Je suis un entrepreneur qui a créé cette boutique pour aider les parents [DOULEUR PRINCIPALE DU PERSONA]. Je propose des produits soigneusement sélectionnés selon des critères de qualité, de sécurité (certifiés CE) et de rapport qualité-prix.
+
+Structure de la page :
+1. Pourquoi cette boutique existe (2-3 phrases — l'histoire courte, sincère)
+2. Notre engagement (sécurité des produits, sélection rigoureuse, service client)
+3. Notre promesse client (satisfaction, retours, contact)
+
+Ton : chaleureux, sincère, professionnel. 200-300 mots max. En français.</div>
+      <button class="copy-btn" onclick="copyPrompt('p3', this)">Copier</button>
+    </div>
+
+    <div class="note">
+      <strong>Conseil :</strong> Après avoir obtenu les réponses de l'IA, relis et ajuste avec tes propres mots. L'IA donne la structure — toi tu donnes l'authenticité.
+    </div>
+  </div>
+
+  <!-- TAB 3 : CHECKLIST LANCEMENT -->
+  <div class="tab-panel" id="tab-checklist">
+    <p style="font-size:0.84rem;color:var(--muted);margin-bottom:22px;">Vérifie chaque point avant de lancer tes publicités. Un site incomplet = pubs inutiles.</p>
+
+    <div style="margin-bottom:20px;">
+      <div class="section-title">Page produit</div>
+      <div class="checklist-block">
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Titre avec bénéfice clair</h4><p>Pas juste le nom du produit — un bénéfice pour le client</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Description en 3 parties (ce que c'est / pour qui / pourquoi)</h4><p>Rédigée avec le prompt IA + relue et personnalisée</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Minimum 3 photos produit propres</h4><p>Fond blanc ou lifestyle — pas de filigrane fournisseur visible</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Prix affiché avec marge ×4 respectée</h4><p>Dans la fourchette €35–150</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>5 bénéfices en bullet points</h4><p>Bénéfice avant feature — pas de jargon technique</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>FAQ 5 questions</h4><p>Inclut sécurité CE, taille, livraison, retours, objection principale</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Éléments de confiance visibles</h4><p>Badge CE, garantie, preuve sociale, livraison</p></div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div class="section-title">Pages obligatoires</div>
+      <div class="checklist-block">
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>CGV (Conditions Générales de Vente)</h4><p>Shopify : Paramètres → Juridique → générateur automatique</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Politique de remboursement</h4><p>Minimum 14 jours — obligatoire légalement en France</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Mentions légales / Confidentialité</h4><p>Générateur Shopify + adapter avec ton nom/adresse</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Page À propos</h4><p>Rédigée avec le prompt IA fourni dans l'onglet Prompts</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Page Contact ou email visible</h4><p>Les parents vont écrire — prévoir une adresse de contact</p></div></div>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <div class="section-title">Technique &amp; Mobile</div>
+      <div class="checklist-block">
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Testé sur mobile (iPhone + Android)</h4><p>Ouvre l'URL sur ton téléphone — vérifie que tout s'affiche bien</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Bouton "Ajouter au panier" visible sans scroller</h4><p>Sur mobile, le CTA doit être dans le premier écran</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Pixel META installé</h4><p>Shopify → Applications → Meta → connecter le pixel. Obligatoire pour les pubs S4.</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Email de confirmation de commande configuré</h4><p>Shopify → Paramètres → Notifications → personnaliser l'email</p></div></div>
+        <div class="check-row"><input type="checkbox"><div class="check-row-content"><h4>Domaine ou sous-domaine Shopify configuré</h4><p>yourstore.myshopify.com ou domaine custom</p></div></div>
+      </div>
+    </div>
+
+    <div class="note"><strong>Avant de lancer les pubs :</strong> Fais une commande test sur ton propre site. Vérifie que le parcours fonctionne de bout en bout : clic pub → page produit → ajout panier → paiement → email confirmation.</div>
+
+    <!-- PROCHAINE ÉTAPE -->
+    <div style="margin-top:28px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;">
+      <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 3</div>
+      <h3 style="font-size:1.05rem;font-weight:800;margin-bottom:8px;">Site live, pixel installé. Il faut maintenant des créas qui convertissent.</h3>
+      <p style="font-size:0.84rem;color:var(--muted);line-height:1.6;margin-bottom:14px;">Un bon site sans créas fortes ne vend rien. La semaine 3, tu crées 3 angles publicitaires distincts, 3 visuels et 1 vidéo. Tout est guidé dans le framework créas — chaque angle utilise la fiche persona que tu as construite en S1.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <span style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;">→ Ouvre le framework créas S3</span>
+        <span style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;">Outil : Canva + CapCut</span>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<script>
+function switchTab(id) {
+  var ids = ['copy','prompts','checklist'];
+  document.querySelectorAll('.tab-btn').forEach(function(b, i) { b.classList.toggle('active', ids[i] === id); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.toggle('active', p.id === 'tab-' + id); });
+}
+function copyPrompt(id, btn) {
+  var text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    btn.textContent = 'Copié ✓';
+    setTimeout(function() { btn.textContent = 'Copier'; }, 2000);
+  });
+}
+</script>
+</body>
+</html>
