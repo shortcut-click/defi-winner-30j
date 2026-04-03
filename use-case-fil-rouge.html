@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Use Case Fil Rouge — Veilleuse Projecteur Etoiles | Tariqa PRO</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --green: #1D9E75; --green-dim: #1D9E7515; --green-border: #1D9E7540;
+  --bg: #0f0f0f; --surface: #1a1a1a; --surface2: #222; --border: #2a2a2a;
+  --text: #f0f0f0; --muted: #888; --muted2: #555;
+  --red: #f87171; --orange: #fb923c; --purple: #a78bfa; --blue: #60a5fa;
+}
+body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; }
+.header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 0; position: sticky; top: 0; z-index: 100; }
+.header-inner { max-width: 880px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.logo { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 0.1em; text-transform: uppercase; }
+.week-tag { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); border-radius: 999px; padding: 4px 14px; font-size: 0.75rem; font-weight: 700; }
+.main { max-width: 880px; margin: 0 auto; padding: 36px 24px 80px; }
+.hero { margin-bottom: 40px; }
+.eyebrow { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green); margin-bottom: 10px; }
+h1 { font-size: 1.8rem; font-weight: 800; line-height: 1.2; margin-bottom: 10px; }
+h1 span { color: var(--green); }
+.week-block { margin-bottom: 48px; }
+.week-header { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+.week-num { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 800; flex-shrink: 0; }
+.w1 { background: #7c3aed15; border: 1px solid #7c3aed40; color: var(--purple); }
+.w2 { background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); }
+.w3 { background: #2563eb15; border: 1px solid #2563eb40; color: var(--blue); }
+.w4 { background: #ea580c15; border: 1px solid #ea580c40; color: var(--orange); }
+.week-header h2 { font-size: 1.1rem; font-weight: 800; }
+.week-header p { font-size: 0.82rem; color: var(--muted); }
+.phase-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 18px 20px; margin-bottom: 12px; }
+.phase-card h3 { font-size: 0.9rem; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.phase-card p { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.phase-card .val { color: var(--green); font-weight: 700; }
+.phase-card .warn { color: var(--orange); font-weight: 600; }
+.phase-card .fail { color: var(--red); font-weight: 600; }
+.data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+.data-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; }
+.data-item .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; margin-bottom: 2px; }
+.data-item .value { font-size: 0.88rem; font-weight: 700; }
+.note { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--green); border-radius: 10px; padding: 14px 18px; font-size: 0.82rem; color: var(--muted); line-height: 1.65; margin-top: 16px; }
+.note strong { color: var(--text); }
+.ref-link { display: inline-block; margin-top: 12px; background: var(--green-dim); border: 1px solid var(--green-border); color: var(--green); padding: 5px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; text-decoration: none; }
+.ref-link:hover { background: var(--green-border); }
+.persona-box { background: var(--surface); border: 1px solid var(--purple); border-radius: 12px; padding: 18px 20px; margin-top: 14px; }
+.persona-box h4 { font-size: 0.85rem; font-weight: 700; color: var(--purple); margin-bottom: 10px; }
+.persona-box ul { list-style: none; }
+.persona-box li { font-size: 0.82rem; color: #bbb; padding: 4px 0; padding-left: 16px; position: relative; }
+.persona-box li::before { content: '—'; position: absolute; left: 0; color: var(--muted2); }
+.metric-row { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.metric-pill { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px; flex: 1; min-width: 80px; text-align: center; }
+.metric-pill .m-val { font-size: 1rem; font-weight: 800; color: var(--green); }
+.metric-pill .m-label { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.copy-example { background: #111; border: 1px solid var(--border); border-radius: 10px; padding: 16px 18px; margin-top: 12px; font-size: 0.82rem; color: #ccc; line-height: 1.7; font-style: italic; }
+@media (max-width: 640px) { .data-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a href="index.html" class="logo" style="text-decoration:none;">← Tariqa PRO</a>
+    <span class="week-tag">Use Case — Fil Rouge</span>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="hero">
+    <div class="eyebrow">Exemple complet — de A a Z</div>
+    <h1>Veilleuse Projecteur<br><span>Etoiles Bebe</span></h1>
+    <p style="font-size:0.9rem;color:var(--muted);max-width:560px;">Cet exemple fictif suit un participant qui applique chaque etape du Defi Winner 30J sur un seul produit. A chaque phase, tu vois exactement ce qui a ete fait, les donnees collectees, et les decisions prises.</p>
+    <div style="margin-top:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:0.8rem;color:var(--orange);">
+      <strong>Ceci est un exemple fictif.</strong> Les chiffres, metriques et resultats sont realistes mais inventes pour illustrer la methode. Ton produit aura des resultats differents.
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SEMAINE 1 ═══════════════════ -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num w1">S1</div>
+      <div>
+        <h2>Semaine 1 — Sourcing & Persona</h2>
+        <p>Trouver le produit, valider le marche, configurer l'agent, definir le client</p>
+      </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase-card">
+      <h3>Phase 1 — Qualification <span class="val">✅ Passe</span></h3>
+      <p>Les 5 filtres disqualifiants ont ete verifies :</p>
+      <div style="margin-top:10px;font-size:0.82rem;color:#bbb;line-height:1.8;">
+        ✅ <strong style="color:var(--text)">Halal</strong> — Veilleuse, aucun element haram<br>
+        ✅ <strong style="color:var(--text)">Pas de nudite</strong> — Produit pour bebe, creas faciles a produire sans 3awra<br>
+        ✅ <strong style="color:var(--text)">Pas de fausses promesses</strong> — Projette des etoiles, pas de claim medical<br>
+        ✅ <strong style="color:var(--text)">Compris en 3 secondes</strong> — La projection d'etoiles au plafond se comprend visuellement en 1 seconde<br>
+        ✅ <strong style="color:var(--text)">Deja valide ailleurs</strong> — Bestseller aux US/UK depuis 2023, multiples marques actives
+      </div>
+      <p style="margin-top:12px;"><strong>Score douleur : <span class="val">3/3</span></strong> — Parents epuises par le manque de sommeil du bebe. Probleme urgent et douloureux. La pub est quasi naturelle.</p>
+      <p style="margin-top:8px;"><strong>Normes CE/EN71 :</strong> <span class="warn">Obligatoire</span> — l'enfant est a proximite directe du produit. Le certificat EN71 a ete demande au fournisseur <span class="val">avant</span> de continuer.</p>
+      <a href="s1-framework-produit.html" class="ref-link">→ Fait avec le Framework Produit S1</a>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase-card">
+      <h3>Phase 2 — Validation marche <span class="val">✅ Validee</span></h3>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">Marge</div>
+          <div class="value" style="color:var(--green);">x4.36</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Agent : 8€ produit + 4€ livraison = 12€ cout total. Prix de vente : 34,90€ → x2.9 brut. Apres frais Shopify (2,9%) + frais bancaires = marge nette suffisante.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Demande prouvee</div>
+          <div class="value" style="color:var(--green);">12 400+ commandes</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">AliExpress : 12 400 commandes, 4.7★. Google Trends : demande stable/hausse depuis 2023.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Competition</div>
+          <div class="value" style="color:var(--green);">Sweet spot</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">META Ads Library : 4 annonceurs actifs avec pubs qui tournent depuis 30+ jours. Pas trop, pas trop peu.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Ticket cible</div>
+          <div class="value">34,90€</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Dans la fourchette 25-60€ ideale pour la niche enfants. Prix psychologique sous la barre des 35€.</p>
+        </div>
+      </div>
+      <a href="s1-guide-methode.html" class="ref-link">→ Fait avec le Guide Methode S1</a>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-card">
+      <h3>Phase 3 — Agent sourcing <span class="val">✅ Configure</span></h3>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">Agent</div>
+          <div class="value">Sourcing Box</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Agent specialise dropshipping, repond en 24h, fulfillment direct Chine → client.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">MOQ</div>
+          <div class="value" style="color:var(--green);">Aucun</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Commande a l'unite. Pas de minimum impose. Ideal pour le test.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Prix unitaire</div>
+          <div class="value">8€ + 4€ livraison</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Total 12€ par unite livree en France. Marge maintenue.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Delai livraison</div>
+          <div class="value">7-12 jours</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Annonce au client : "5 a 15 jours ouvres". Tracking fourni par l'agent.</p>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:0.82rem;color:var(--muted);">Process : commande Shopify → transmission WhatsApp a l'agent → agent expedie sous 48h → tracking envoye par email au client.</p>
+      <p style="margin-top:8px;font-size:0.82rem;color:var(--muted);">Test unitaire commande a ma propre adresse — recu en 9 jours, qualite OK, emballage correct.</p>
+      <a href="s1-framework-produit.html" class="ref-link">→ Fait avec Phase 3 du Framework Produit S1</a>
+    </div>
+
+    <!-- Persona -->
+    <div class="phase-card">
+      <h3>Persona — Julie, 31 ans <span class="val">Score 11/12</span></h3>
+      <div class="persona-box">
+        <h4>Fiche Persona</h4>
+        <ul>
+          <li><strong style="color:var(--text)">Situation de vie :</strong> Mere de 31 ans, bebe de 6 mois, conge maternite, dort 4h par nuit</li>
+          <li><strong style="color:var(--text)">Moment declencheur :</strong> Apres une nuit blanche, scroll Instagram a 23h, cherche "comment endormir bebe"</li>
+          <li><strong style="color:var(--text)">Emotion dominante :</strong> Epuisement + culpabilite de ne pas "reussir" a endormir son enfant</li>
+          <li><strong style="color:var(--text)">Angle / hook :</strong> "Ton bebe ne dort toujours pas a 3h du matin ?"</li>
+          <li><strong style="color:var(--text)">Plateforme :</strong> Instagram/Facebook — entre 21h et minuit, depuis le canape ou le lit</li>
+        </ul>
+      </div>
+      <p style="margin-top:10px;font-size:0.82rem;color:var(--muted);">Scoring : Douleur 3/3, Urgence+budget 3/3, Accessibilite 3/3, Declencheur emotionnel 2/3. Total : 11/12 → persona retenu.</p>
+      <a href="s1-template-persona.html" class="ref-link">→ Fait avec le Template Persona S1</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SEMAINE 2 ═══════════════════ -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num w2">S2</div>
+      <div>
+        <h2>Semaine 2 — Site Shopify</h2>
+        <p>Creer la boutique mono-produit, rediger le copy, installer le pixel</p>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <h3>Page produit — Copy base sur le persona</h3>
+      <p>Le copy est directement derive de la fiche persona de Julie :</p>
+      <div class="data-grid" style="margin-top:10px;">
+        <div class="data-item">
+          <div class="label">Persona → Copy</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            Situation → Paragraphe "Pour qui"<br>
+            Declencheur → Accroche produit<br>
+            Emotion → Titre principal<br>
+            Hook → Premiere ligne description<br>
+            Plateforme → Format des visuels
+          </div>
+        </div>
+        <div class="data-item">
+          <div class="label">Elements de confiance</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            ✅ Garantie 30 jours satisfait ou rembourse<br>
+            ✅ Livraison suivie 5-15 jours ouvres<br>
+            ✅ Certifie CE / EN71<br>
+            ✅ FAQ complete (4 questions)<br>
+            ✅ Page "A propos" authentique
+          </div>
+        </div>
+      </div>
+      <div class="copy-example" style="margin-top:14px;">
+        <strong style="color:var(--text);font-style:normal;">Titre :</strong> "Offre-lui des nuits etoilees — et retrouve les tiennes"<br><br>
+        <strong style="color:var(--text);font-style:normal;">Accroche :</strong> "Tu passes tes nuits debout depuis des mois. Ton bebe pleure, tu berces, tu recommences. Cette veilleuse projette un ciel etoile apaisant qui aide bebe a s'endormir — et toi a respirer."<br><br>
+        <strong style="color:var(--text);font-style:normal;">Prix :</strong> 34,90€ (prix psychologique sous 35€)
+      </div>
+      <a href="s2-template-page-produit.html" class="ref-link">→ Fait avec le Template Page Produit S2</a>
+    </div>
+
+    <div class="phase-card">
+      <h3>Configuration technique <span class="val">✅ Complete</span></h3>
+      <div style="font-size:0.82rem;color:#bbb;line-height:1.8;margin-top:6px;">
+        ✅ Theme Dawn installe et personnalise (couleurs douces, tons bleu nuit)<br>
+        ✅ Pixel META installe et verifie (Pixel Helper = vert, PageView + ViewContent OK)<br>
+        ✅ 4 pages legales generees et completees (CGV, confidentialite, retours 30j, mentions)<br>
+        ✅ Page "A propos" et FAQ ajoutees au footer<br>
+        ✅ App Track123 installee pour le suivi commande client<br>
+        ✅ Test mobile OK — pas de bug, scroll fluide, bouton "Ajouter au panier" visible<br>
+        ✅ Emails transactionnels Shopify actifs (confirmation, expedition, panier abandonne)
+      </div>
+      <a href="s2-guide-methode.html" class="ref-link">→ Fait avec le Guide Methode S2</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SEMAINE 3 ═══════════════════ -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num w3">S3</div>
+      <div>
+        <h2>Semaine 3 — Creas Publicitaires</h2>
+        <p>3 videos + 3 statiques, strategie 3-2 Dynamic Creative</p>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <h3>3 angles × 3 videos + 3 statiques</h3>
+      <div class="data-grid">
+        <div class="data-item" style="border-color:var(--red);">
+          <div class="label" style="color:var(--red);">Angle 1 — Probleme</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            <strong style="color:var(--text)">Hook :</strong> "3h du matin. Ton bebe pleure. Tu n'en peux plus."<br>
+            <strong style="color:var(--text)">Video :</strong> Scene nuit blanche (lumiere sombre, parent epuise) → decouverte produit → bebe s'endort sous les etoiles<br>
+            <strong style="color:var(--text)">Statique :</strong> Split avant/apres — gauche : parent epuise, droite : bebe paisible sous les etoiles
+          </div>
+        </div>
+        <div class="data-item" style="border-color:var(--green);">
+          <div class="label" style="color:var(--green);">Angle 2 — Benefice</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            <strong style="color:var(--text)">Hook :</strong> "Il s'est endormi en 12 minutes. Premiere fois en 6 mois."<br>
+            <strong style="color:var(--text)">Video :</strong> Chambre bebe avec projection etoiles, musique douce, bebe calme → parent sourit depuis la porte<br>
+            <strong style="color:var(--text)">Statique :</strong> Photo bebe endormi sous projection + texte overlay chiffre ("12 min")
+          </div>
+        </div>
+        <div class="data-item" style="border-color:var(--purple);grid-column:span 2;">
+          <div class="label" style="color:var(--purple);">Angle 3 — Preuve sociale</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            <strong style="color:var(--text)">Hook :</strong> "14 000 familles l'utilisent deja chaque soir."<br>
+            <strong style="color:var(--text)">Video :</strong> Compilation rapide : 3-4 scenes de familles differentes utilisant le produit (videos fournisseur + texte overlay)<br>
+            <strong style="color:var(--text)">Statique :</strong> Produit en gros plan + etoiles "4.7/5 — 12 400 avis" + "Satisfait ou rembourse 30j"
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <h3>Strategie 3-2 — Dynamic Creative</h3>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">Ad Set 1 — Video</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            3 videos (Probleme / Benefice / Preuve)<br>
+            × 2 headings<br>
+            × 2 textes principaux<br>
+            = <span class="val">12 combinaisons</span>
+          </div>
+        </div>
+        <div class="data-item">
+          <div class="label">Ad Set 2 — Statique</div>
+          <div class="value" style="font-size:0.82rem;font-weight:400;color:#bbb;">
+            3 statiques (Probleme / Benefice / Preuve)<br>
+            × 2 headings<br>
+            × 2 textes principaux<br>
+            = <span class="val">12 combinaisons</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:12px;font-size:0.82rem;color:#bbb;">
+        <strong style="color:var(--text);">Heading 1 :</strong> "Offre-lui des nuits etoilees"<br>
+        <strong style="color:var(--text);">Heading 2 :</strong> "Bebe s'endort en 12 minutes"<br>
+        <strong style="color:var(--text);">Texte 1 :</strong> Axe emotion/douleur (parle du probleme du parent)<br>
+        <strong style="color:var(--text);">Texte 2 :</strong> Axe solution/benefice (parle du resultat produit)
+      </div>
+      <a href="s3-framework-creas.html" class="ref-link">→ Fait avec le Framework Creas S3</a>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ SEMAINE 4 ═══════════════════ -->
+  <div class="week-block">
+    <div class="week-header">
+      <div class="week-num w4">S4</div>
+      <div>
+        <h2>Semaine 4 — Lancement META</h2>
+        <p>Lancer la campagne, lire les metriques, decider</p>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <h3>Configuration campagne</h3>
+      <div class="data-grid">
+        <div class="data-item">
+          <div class="label">Objectif</div>
+          <div class="value">Ventes (Achat)</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Pixel deja nourri par les visiteurs S2+S3. Sinon : commencer par "Afficher le contenu" J1-J2.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Budget</div>
+          <div class="value">10€/jour × 5 jours = 50€</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Test de creatifs, pas test produit complet. Objectif : identifier la crea gagnante.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Audience</div>
+          <div class="value">Large — France + Belgique</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Femmes 25-45 ans, aucun interet specifique. L'algo optimise tout seul avec les creatifs.</p>
+        </div>
+        <div class="data-item">
+          <div class="label">Structure</div>
+          <div class="value">1 CBO × 2 Ad Sets</div>
+          <p style="font-size:0.75rem;color:var(--muted);margin-top:2px;">Ad Set 1 = 3 videos DC. Ad Set 2 = 3 statiques DC. META distribue le budget sur le meilleur.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase-card">
+      <h3>Metriques J+3 <span class="val">(fictives)</span></h3>
+      <div class="metric-row">
+        <div class="metric-pill">
+          <div class="m-val">€11.80</div>
+          <div class="m-label">CPM</div>
+        </div>
+        <div class="metric-pill">
+          <div class="m-val">1.8%</div>
+          <div class="m-label">CTR</div>
+        </div>
+        <div class="metric-pill">
+          <div class="m-val">€0.67</div>
+          <div class="m-label">CPC</div>
+        </div>
+        <div class="metric-pill">
+          <div class="m-val">4.2%</div>
+          <div class="m-label">ATC</div>
+        </div>
+        <div class="metric-pill">
+          <div class="m-val">1</div>
+          <div class="m-label">Vente</div>
+        </div>
+        <div class="metric-pill">
+          <div class="m-val">1.16x</div>
+          <div class="m-label">ROAS</div>
+        </div>
+      </div>
+      <p style="margin-top:14px;font-size:0.82rem;color:var(--muted);">Depense totale : 30€ (J+3 sur 5 jours). 1 vente a 34,90€ = ROAS 1.16x. Pas encore rentable, mais des signaux positifs : bon CTR (1.8%), bon ATC (4.2%), 1 conversion sur budget minimal.</p>
+    </div>
+
+    <div class="phase-card">
+      <h3>Diagnostic — Decision</h3>
+      <p><strong style="color:var(--text)">Crea gagnante :</strong> Video "Probleme" (nuit blanche) — 2.4% CTR, meilleur CPM, seule a generer l'ATC et la vente.</p>
+      <p style="margin-top:8px;"><strong style="color:var(--text)">Creatifs coupes :</strong> Statique "Preuve sociale" — CTR 0.6%, aucun ATC. Budget gaspille.</p>
+      <p style="margin-top:12px;"><strong style="color:var(--green)">Verdict :</strong> Produit prometteur. L'angle "douleur parentale" resonne fortement. Pas assez de budget pour conclure, mais les signaux sont positifs.</p>
+      <div class="note" style="margin-top:14px;">
+        <strong>Plan d'action post-test :</strong><br>
+        1. Doubler le budget sur la video "Probleme" uniquement (15€/jour)<br>
+        2. Creer 2 variations de cette video avec des hooks differents<br>
+        3. Retravailler la page produit : ajouter un timer de livraison + plus de photos lifestyle<br>
+        4. Negocier le MOQ avec l'agent maintenant que le produit montre des signaux
+      </div>
+      <a href="s4-guide-lancement-meta.html" class="ref-link">→ Fait avec le Guide Lancement META S4</a>
+    </div>
+  </div>
+
+  <!-- RECAP FINAL -->
+  <div style="background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;">
+    <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--green);margin-bottom:12px;">Bilan du use case</div>
+    <div class="data-grid">
+      <div class="data-item" style="background:transparent;border:none;padding:0;">
+        <div class="label">Investissement total</div>
+        <div class="value">~92€</div>
+        <p style="font-size:0.75rem;color:var(--muted);">Shopify 1€ (mois d'essai) + test unitaire 12€ + budget pub 50€ + domaine 14€ + Canva gratuit + CapCut gratuit</p>
+      </div>
+      <div class="data-item" style="background:transparent;border:none;padding:0;">
+        <div class="label">Temps investi</div>
+        <div class="value">~40h sur 30 jours</div>
+        <p style="font-size:0.75rem;color:var(--muted);">S1 : 8h / S2 : 12h / S3 : 10h / S4 : 10h</p>
+      </div>
+      <div class="data-item" style="background:transparent;border:none;padding:0;">
+        <div class="label">Resultat</div>
+        <div class="value" style="color:var(--green);">1 vente + data reel</div>
+        <p style="font-size:0.75rem;color:var(--muted);">Pas rentable sur ce test, mais les signaux indiquent un produit viable a scaler.</p>
+      </div>
+      <div class="data-item" style="background:transparent;border:none;padding:0;">
+        <div class="label">Decision</div>
+        <div class="value" style="color:var(--green);">Continuer</div>
+        <p style="font-size:0.75rem;color:var(--muted);">Doubler le budget sur la crea gagnante, tester 2 variations, optimiser la page produit.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+</body>
+</html>
