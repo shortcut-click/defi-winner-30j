@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>META Ads Library — 150 Mots-Clefs | Tariqa PRO</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0a0a0a; color: #f0f0f0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; min-height: 100vh; }
+
+/* Header */
+.header { background: #111; border-bottom: 1px solid #222; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; position: sticky; top: 0; z-index: 100; }
+.header-left .logo { font-size: 0.7rem; font-weight: 700; color: #1D9E75; letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 4px; }
+.header-left h1 { font-size: 1.1rem; font-weight: 800; }
+.header-left h1 span { color: #1D9E75; }
+.btn-ads-library { display: inline-flex; align-items: center; gap: 6px; background: #1877F2; color: #fff; font-weight: 700; font-size: 0.8rem; padding: 8px 16px; border-radius: 8px; text-decoration: none; letter-spacing: 0.03em; transition: opacity 0.2s; }
+.btn-ads-library:hover { opacity: 0.85; }
+
+/* Strategy box */
+.strategy { background: #111; border: 1px solid #1D9E7540; border-radius: 12px; margin: 24px; padding: 20px 24px; }
+.strategy h2 { font-size: 0.85rem; font-weight: 700; color: #1D9E75; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 16px; }
+.strategy-steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; }
+.step { background: #0f0f0f; border: 1px solid #2a2a2a; border-radius: 8px; padding: 14px 16px; }
+.step-num { font-size: 0.65rem; font-weight: 700; color: #1D9E75; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px; }
+.step-title { font-size: 0.85rem; font-weight: 700; margin-bottom: 4px; }
+.step-desc { font-size: 0.75rem; color: #666; line-height: 1.5; }
+
+/* Rappel */
+.rappel { background: #1a1600; border: 1px solid #5a4a0040; border-radius: 8px; margin: 0 24px 20px; padding: 12px 16px; font-size: 0.78rem; color: #c8a800; line-height: 1.5; }
+.rappel strong { color: #f0d000; }
+
+/* Controls */
+.controls { padding: 0 24px 20px; display: flex; flex-direction: column; gap: 14px; }
+.search-wrap { position: relative; }
+.search-input { width: 100%; background: #1a1a1a; border: 1px solid #333; border-radius: 10px; padding: 12px 16px 12px 44px; font-size: 0.9rem; color: #f0f0f0; outline: none; transition: border-color 0.2s; }
+.search-input::placeholder { color: #555; }
+.search-input:focus { border-color: #1D9E75; }
+.search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #555; font-size: 1.1rem; pointer-events: none; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-btn { border: 1px solid #333; background: #1a1a1a; color: #aaa; font-size: 0.75rem; font-weight: 600; padding: 6px 14px; border-radius: 20px; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+.filter-btn:hover { border-color: #555; color: #f0f0f0; }
+.filter-btn.active { color: #0a0a0a; border-color: transparent; font-weight: 700; }
+
+/* Stats bar */
+.stats-bar { display: flex; gap: 20px; align-items: center; flex-wrap: wrap; padding: 0 24px 20px; }
+.stat { display: flex; flex-direction: column; }
+.stat-val { font-size: 1.4rem; font-weight: 800; color: #1D9E75; line-height: 1; }
+.stat-label { font-size: 0.65rem; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+.stat-divider { width: 1px; height: 32px; background: #222; }
+
+/* Clusters grid */
+.clusters { padding: 0 24px 40px; display: flex; flex-direction: column; gap: 20px; }
+
+/* Cluster card */
+.cluster-card { background: #111; border: 1px solid #222; border-radius: 12px; overflow: hidden; }
+.cluster-header { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; gap: 12px; flex-wrap: wrap; }
+.cluster-title-group { display: flex; align-items: center; gap: 10px; }
+.cluster-badge { font-size: 1rem; }
+.cluster-name { font-size: 0.9rem; font-weight: 800; }
+.cluster-desc { font-size: 0.72rem; color: #777; margin-top: 2px; font-style: italic; }
+.cluster-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+.cluster-count { font-size: 0.7rem; color: #555; }
+.btn-copy-all { border: none; cursor: pointer; font-size: 0.72rem; font-weight: 700; padding: 5px 12px; border-radius: 6px; transition: opacity 0.2s; letter-spacing: 0.03em; }
+.btn-copy-all:hover { opacity: 0.8; }
+
+/* Keywords grid */
+.keywords-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px, 1fr)); gap: 6px; padding: 0 16px 16px; }
+.kw-pill { display: flex; align-items: center; justify-content: space-between; gap: 6px; background: #0f0f0f; border: 1px solid #252525; border-radius: 8px; padding: 8px 12px; cursor: pointer; transition: all 0.15s; font-size: 0.78rem; }
+.kw-pill:hover { border-color: #444; background: #1a1a1a; }
+.kw-pill.copied { border-color: #1D9E75; background: #0d2218; }
+.kw-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.kw-copy-icon { font-size: 0.7rem; color: #555; flex-shrink: 0; transition: color 0.15s; }
+.kw-pill:hover .kw-copy-icon { color: #aaa; }
+.kw-pill.copied .kw-copy-icon { color: #1D9E75; }
+.kw-pill.hidden { display: none; }
+
+/* No results */
+.no-results { text-align: center; padding: 32px; color: #555; font-size: 0.85rem; display: none; }
+
+/* Toast */
+.toast { position: fixed; bottom: 24px; right: 24px; background: #1D9E75; color: #fff; font-size: 0.8rem; font-weight: 700; padding: 10px 18px; border-radius: 8px; opacity: 0; transform: translateY(8px); transition: all 0.25s; pointer-events: none; z-index: 9999; }
+.toast.show { opacity: 1; transform: translateY(0); }
+
+/* Empty cluster (all hidden) */
+.cluster-card.all-hidden { display: none; }
+
+@media (max-width: 600px) {
+  .header { padding: 16px; }
+  .strategy, .rappel, .controls, .stats-bar, .clusters { padding-left: 16px; padding-right: 16px; }
+  .strategy { margin: 16px; }
+  .rappel { margin: 0 16px 16px; }
+  .keywords-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-left">
+    <div class="logo">Tariqa PRO — Semaine 1</div>
+    <h1>META Ads Library — <span>150 Mots-Clefs</span></h1>
+  </div>
+  <a class="btn-ads-library" href="https://www.facebook.com/ads/library" target="_blank" rel="noopener">
+    📌 Ouvrir Meta Ads Library
+  </a>
+</div>
+
+<!-- Strategy -->
+<div class="strategy">
+  <h2>🧠 Stratégie d'utilisation — 3 étapes</h2>
+  <div class="strategy-steps">
+    <div class="step">
+      <div class="step-num">Étape 1</div>
+      <div class="step-title">Scan large</div>
+      <div class="step-desc">Commence par les clusters Douleurs + Produits phares. Tu cherches des pubs avec beaucoup de variantes créatives = marque qui scale.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Étape 2</div>
+      <div class="step-title">Espionnage marques</div>
+      <div class="step-desc">Tape directement les noms des marques winners connues (Cluster 8). Analyse leur angle créatif, leur hook, leur audience implicite.</div>
+    </div>
+    <div class="step">
+      <div class="step-num">Étape 3</div>
+      <div class="step-title">Validation inverse</div>
+      <div class="step-desc">Pour chaque produit identifié : vérifie sur Amazon (avis + BSR), AliExpress (volume ventes) et Google Trends (courbe montante).</div>
+    </div>
+  </div>
+</div>
+
+<!-- Rappel -->
+<div class="rappel">
+  ⚠️ <strong>Rappel winner :</strong> Un winner = une pub qui tourne depuis <strong>+30 jours</strong> avec un volume de variantes créatives élevé (signe que la marque scale). Filtre par pays cible <strong>FR/BE/CA</strong>, type "Toutes les publicités", trie par date.
+</div>
+
+<!-- Controls -->
+<div class="controls">
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input class="search-input" id="searchInput" type="text" placeholder="Rechercher un mot-clef…" autocomplete="off" spellcheck="false">
+  </div>
+  <div class="filters" id="filtersContainer"></div>
+</div>
+
+<!-- Stats -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat">
+    <div class="stat-val" id="statVisible">150</div>
+    <div class="stat-label">Mots visibles</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val" id="statClusters">8</div>
+    <div class="stat-label">Clusters</div>
+  </div>
+  <div class="stat-divider"></div>
+  <div class="stat">
+    <div class="stat-val" id="statCopied">0</div>
+    <div class="stat-label">Copiés</div>
+  </div>
+</div>
+
+<!-- Clusters container -->
+<div class="clusters" id="clustersContainer"></div>
+
+<!-- No results -->
+<div class="no-results" id="noResults">Aucun mot-clef ne correspond à votre recherche.</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ─── DATA ─────────────────────────────────────────────────────────────────
+  var CLUSTERS = [
+    {
+      id: 'c1',
+      emoji: '🔴',
+      name: 'Douleurs Universelles',
+      subtitle: 'CLUSTER 1 — Pain points directs',
+      desc: 'Les frustrations que TOUS les parents expriment. Potentiel viral maximal.',
+      color: '#e74c3c',
+      bg: '#2a0a0a',
+      keywords: [
+        'sommeil bébé', 'baby sleep', 'nuit complète bébé', 'bébé qui ne dort pas',
+        'coliques bébé', 'baby crying solution', 'bébé qui pleure', 'reflux bébé',
+        'dents bébé nuit', 'bébé qui se réveille', 'sécurité bébé maison', 'baby proofing',
+        'bébé mange pas', 'diversification alimentaire', 'baby led weaning',
+        'allaitement douloureux', 'tire-lait mains libres', 'wearable breast pump',
+        'bébé trop chaud nuit', 'température chambre bébé'
+      ]
+    },
+    {
+      id: 'c2',
+      emoji: '🟠',
+      name: 'Produits Phares en Scaling',
+      subtitle: 'CLUSTER 2 — Catégories winners historiques',
+      desc: 'Dépense publicitaire chroniquement élevée = concurrence = preuve de marché.',
+      color: '#e67e22',
+      bg: '#2a1500',
+      keywords: [
+        'baby monitor', 'moniteur bébé', 'smart baby monitor', 'babyphone vidéo',
+        'porte-bébé', 'baby carrier', 'écharpe de portage', 'poussette compacte',
+        'travel stroller', 'poussette légère', 'siège auto bébé', 'convertible car seat',
+        'lit bébé voyage', 'baby bassinet', 'berceau électrique', 'transat bébé',
+        'baby bouncer', 'balancelle bébé', 'trotteur bébé', 'baby walker'
+      ]
+    },
+    {
+      id: 'c3',
+      emoji: '🟡',
+      name: 'Tendances 2025-2026',
+      subtitle: 'CLUSTER 3 — Marchés en croissance rapide',
+      desc: 'Niches sous-saturées avec demande montante — parfait pour trouver un winner early.',
+      color: '#f1c40f',
+      bg: '#1e1a00',
+      keywords: [
+        'Montessori bébé', 'jouet Montessori', 'montessori toy', 'écran-libre enfant',
+        'screen free kids', 'Yoto player', 'jouet sensoriel', 'sensory toy baby',
+        'coffret jouets éveil', 'play gym bébé', 'tapis éveil', 'activity mat baby',
+        'Lovevery', 'jouet en bois bébé', 'wooden baby toy', 'bébé connecté',
+        'smart crib', 'berceau intelligent', 'couverture lestée bébé', 'weighted blanket baby'
+      ]
+    },
+    {
+      id: 'c4',
+      emoji: '🟢',
+      name: 'Alimentation & Nutrition Bébé',
+      subtitle: 'CLUSTER 4 — Niche récurrente',
+      desc: 'Achat répété = LTV élevée. Idéal pour FB Ads.',
+      color: '#2ecc71',
+      bg: '#0a1f12',
+      keywords: [
+        'lait infantile bio', 'organic baby formula', 'lait de chèvre bébé', 'goat milk formula',
+        'purée bébé maison', 'baby food maker', 'blender bébé', 'robot cuiseur bébé',
+        'chauffe-biberon portable', 'bottle warmer car', 'biberon anti-colique', 'anti-colic bottle',
+        'tasse sippy', 'sippy cup toddler', 'bavoirs silicone', 'silicone bib',
+        'chaise haute bébé', 'high chair baby', 'rehausseur table', 'toddler booster seat'
+      ]
+    },
+    {
+      id: 'c5',
+      emoji: '🔵',
+      name: 'Soins & Hygiène Bébé',
+      subtitle: 'CLUSTER 5 — Pain point quotidien',
+      desc: 'Volume de recherche constant = audiences larges disponibles.',
+      color: '#3498db',
+      bg: '#0a1525',
+      keywords: [
+        'couches bio', 'organic diapers', 'couche lavable', 'cloth diaper',
+        'poubelle couches odeur', 'diaper pail', 'lingettes bébé naturelles',
+        'crème érythème fessier', 'diaper rash cream', 'coupe-ongles bébé',
+        'baby nail file', 'thermomètre bébé', 'baby thermometer', 'savon bébé naturel',
+        'shampoing bébé', 'baignoire bébé pliable', 'foldable baby tub',
+        'mouche-bébé nasal', 'nasal aspirator baby', 'humidificateur chambre bébé'
+      ]
+    },
+    {
+      id: 'c6',
+      emoji: '🟣',
+      name: 'Développement Enfant & Éducation',
+      subtitle: 'CLUSTER 6 — Segment émotionnel fort',
+      desc: 'Les parents paient PLUS pour le développement de leur enfant.',
+      color: '#9b59b6',
+      bg: '#180d28',
+      keywords: [
+        'développement moteur bébé', 'fine motor skills toddler', 'éveil sensoriel nourrisson',
+        'tummy time', 'forme de tête bébé', 'plagiocéphalie casque', 'baby helmet plagiocephaly',
+        'musique bébé cerveau', 'langage bébé stimuler', 'baby sign language',
+        'lecture bébé', 'flashcards bébé', 'apprentissage couleurs bébé', 'puzzle bébé 1 an',
+        'livres éveil bébé', 'baby book soft', 'jeu de rôle enfant', 'imagination play toddler',
+        'flash card alphabet enfant', 'application bébé cerveau'
+      ]
+    },
+    {
+      id: 'c7',
+      emoji: '🩷',
+      name: 'Bien-être Maman / Parentalité',
+      subtitle: 'CLUSTER 7 — Cible principale : la mère',
+      desc: 'La mère est souvent la décideuse ET la cible principale. Cibler la douleur parentale = conversions élevées.',
+      color: '#e91e8c',
+      bg: '#200a15',
+      keywords: [
+        'postpartum recovery', 'récupération post-partum', 'ceinture post-partum',
+        'soutien-gorge allaitement', 'nursing bra', 'coussin allaitement', 'nursing pillow',
+        'sac à langer stylé', 'diaper bag backpack', 'vêtements maternité',
+        'robe allaitement', 'feeding dress', 'fatigue parentale', 'burn out maternel',
+        'application suivi bébé', 'baby tracker app', 'journal de bord bébé',
+        'self-care new mom', 'box cadeau naissance', 'baby shower gift'
+      ]
+    },
+    {
+      id: 'c8',
+      emoji: '⚫',
+      name: 'Marques à Espionner',
+      subtitle: 'CLUSTER 8 — Brands à chercher directement',
+      desc: 'Tape ces noms dans la FB Ads Library pour voir leurs créatifs actifs — reverse-engineer leurs winners.',
+      color: '#888',
+      bg: '#141414',
+      keywords: [
+        'Owlet', 'Nanit', 'Hatch Baby', 'Momcozy',
+        'Frida Mom', 'Little Sleepies', 'Cradlewise', 'Lovevery',
+        'BabyBjorn', 'Elvie'
+      ]
+    }
+  ];
+
+  // ─── STATE ────────────────────────────────────────────────────────────────
+  var activeFilter = 'all';
+  var copiedCount = 0;
+  var toastTimer = null;
+
+  // ─── HELPERS ──────────────────────────────────────────────────────────────
+  function el(tag, cls) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    return e;
+  }
+
+  function showToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 1800);
+  }
+
+  function updateStats() {
+    var pills = document.querySelectorAll('.kw-pill:not(.hidden)');
+    document.getElementById('statVisible').textContent = pills.length;
+
+    var visibleClusters = document.querySelectorAll('.cluster-card:not(.all-hidden)').length;
+    document.getElementById('statClusters').textContent = visibleClusters;
+
+    document.getElementById('statCopied').textContent = copiedCount;
+
+    var noResults = document.getElementById('noResults');
+    noResults.style.display = pills.length === 0 ? 'block' : 'none';
+  }
+
+  function copyText(text, pillEl) {
+    navigator.clipboard.writeText(text).then(function() {
+      pillEl.classList.add('copied');
+      var icon = pillEl.querySelector('.kw-copy-icon');
+      if (icon) icon.textContent = '✓';
+      copiedCount++;
+      updateStats();
+      showToast('Copié : ' + text);
+      setTimeout(function() {
+        pillEl.classList.remove('copied');
+        if (icon) icon.textContent = '📋';
+      }, 2000);
+    }).catch(function() {
+      showToast('Erreur copie');
+    });
+  }
+
+  function copyAll(cluster) {
+    var card = document.getElementById(cluster.id);
+    if (!card) return;
+    var visible = [];
+    card.querySelectorAll('.kw-pill:not(.hidden) .kw-text').forEach(function(t) {
+      visible.push(t.textContent);
+    });
+    if (!visible.length) return;
+    navigator.clipboard.writeText(visible.join('\n')).then(function() {
+      copiedCount += visible.length;
+      updateStats();
+      showToast(visible.length + ' mots copiés — ' + cluster.name);
+    }).catch(function() {
+      showToast('Erreur copie');
+    });
+  }
+
+  // ─── BUILD CLUSTER CARD ───────────────────────────────────────────────────
+  function buildClusterCard(cluster) {
+    var card = el('div', 'cluster-card');
+    card.id = cluster.id;
+
+    // Header
+    var header = el('div', 'cluster-header');
+    card.appendChild(header);
+
+    // Title group
+    var titleGroup = el('div', 'cluster-title-group');
+    header.appendChild(titleGroup);
+
+    var badge = el('span', 'cluster-badge');
+    badge.textContent = cluster.emoji;
+    titleGroup.appendChild(badge);
+
+    var titleWrap = el('div');
+    titleGroup.appendChild(titleWrap);
+
+    var nameEl = el('div', 'cluster-name');
+    nameEl.textContent = cluster.name;
+    nameEl.style.color = cluster.color;
+    titleWrap.appendChild(nameEl);
+
+    var subtitleEl = el('div', 'cluster-desc');
+    subtitleEl.textContent = cluster.subtitle;
+    titleWrap.appendChild(subtitleEl);
+
+    // Actions
+    var actions = el('div', 'cluster-actions');
+    header.appendChild(actions);
+
+    var countEl = el('span', 'cluster-count');
+    countEl.textContent = cluster.keywords.length + ' mots';
+    actions.appendChild(countEl);
+
+    var copyAllBtn = el('button', 'btn-copy-all');
+    copyAllBtn.textContent = 'Tout copier';
+    copyAllBtn.style.background = cluster.color;
+    copyAllBtn.style.color = '#fff';
+    copyAllBtn.addEventListener('click', function() { copyAll(cluster); });
+    actions.appendChild(copyAllBtn);
+
+    // Desc strip
+    var descStrip = el('div');
+    descStrip.style.cssText = 'padding: 0 20px 12px; font-size: 0.72rem; color: #666; font-style: italic;';
+    descStrip.textContent = cluster.desc;
+    card.appendChild(descStrip);
+
+    // Keywords grid
+    var grid = el('div', 'keywords-grid');
+    card.appendChild(grid);
+
+    cluster.keywords.forEach(function(kw) {
+      var pill = el('div', 'kw-pill');
+      pill.setAttribute('data-kw', kw.toLowerCase());
+      pill.setAttribute('data-cluster', cluster.id);
+      pill.title = 'Cliquer pour copier';
+
+      var kwText = el('span', 'kw-text');
+      kwText.textContent = kw;
+      pill.appendChild(kwText);
+
+      var icon = el('span', 'kw-copy-icon');
+      icon.textContent = '📋';
+      pill.appendChild(icon);
+
+      pill.addEventListener('click', function() { copyText(kw, pill); });
+      grid.appendChild(pill);
+    });
+
+    return card;
+  }
+
+  // ─── BUILD FILTER BUTTONS ─────────────────────────────────────────────────
+  function buildFilters() {
+    var container = document.getElementById('filtersContainer');
+
+    var allBtn = el('button', 'filter-btn active');
+    allBtn.textContent = 'Tous les clusters';
+    allBtn.setAttribute('data-filter', 'all');
+    allBtn.style.borderColor = '#1D9E75';
+    allBtn.style.background = '#1D9E75';
+    allBtn.style.color = '#fff';
+    allBtn.addEventListener('click', function() { setFilter('all', allBtn); });
+    container.appendChild(allBtn);
+
+    CLUSTERS.forEach(function(cluster) {
+      var btn = el('button', 'filter-btn');
+      btn.textContent = cluster.emoji + ' ' + cluster.name;
+      btn.setAttribute('data-filter', cluster.id);
+      btn.addEventListener('click', function() { setFilter(cluster.id, btn); });
+      container.appendChild(btn);
+    });
+  }
+
+  function setFilter(filterId, clickedBtn) {
+    activeFilter = filterId;
+
+    // Update button styles
+    document.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.remove('active');
+      b.style.background = '';
+      b.style.color = '';
+      b.style.borderColor = '';
+    });
+    clickedBtn.classList.add('active');
+
+    // Determine cluster color for styling
+    var clusterColor = '#1D9E75';
+    if (filterId !== 'all') {
+      var found = CLUSTERS.find(function(c) { return c.id === filterId; });
+      if (found) clusterColor = found.color;
+    }
+    clickedBtn.style.background = clusterColor;
+    clickedBtn.style.color = '#fff';
+    clickedBtn.style.borderColor = 'transparent';
+
+    applyFilters();
+  }
+
+  // ─── APPLY SEARCH + CLUSTER FILTER ───────────────────────────────────────
+  function applyFilters() {
+    var query = document.getElementById('searchInput').value.toLowerCase().trim();
+
+    CLUSTERS.forEach(function(cluster) {
+      var card = document.getElementById(cluster.id);
+      if (!card) return;
+
+      // Show/hide card based on cluster filter
+      var clusterVisible = (activeFilter === 'all' || activeFilter === cluster.id);
+      if (!clusterVisible) {
+        card.classList.add('all-hidden');
+        return;
+      }
+
+      // Show/hide individual pills based on search
+      var visibleCount = 0;
+      card.querySelectorAll('.kw-pill').forEach(function(pill) {
+        var kwData = pill.getAttribute('data-kw') || '';
+        var matches = !query || kwData.indexOf(query) !== -1;
+        if (matches) {
+          pill.classList.remove('hidden');
+          visibleCount++;
+        } else {
+          pill.classList.add('hidden');
+        }
+      });
+
+      if (visibleCount === 0) {
+        card.classList.add('all-hidden');
+      } else {
+        card.classList.remove('all-hidden');
+      }
+    });
+
+    updateStats();
+  }
+
+  // ─── INIT ─────────────────────────────────────────────────────────────────
+  function init() {
+    // Build filter buttons
+    buildFilters();
+
+    // Build cluster cards
+    var container = document.getElementById('clustersContainer');
+    CLUSTERS.forEach(function(cluster) {
+      container.appendChild(buildClusterCard(cluster));
+    });
+
+    // Search input
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+
+    // Initial stats
+    updateStats();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+})();
+</script>
+</body>
+</html>
