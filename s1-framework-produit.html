@@ -272,9 +272,31 @@ body {
 <main class="main">
 
   <div class="hero">
-    <div class="eyebrow">Framework Produit Winner</div>
-    <h1>Trouve et valide ton<br><span>produit winner</span></h1>
-    <p>3 phases. Des données, pas de l'intuition. Si le marché dit non, tu passes au suivant — sans hésiter.</p>
+    <div class="eyebrow">Semaine 1 — Framework Produit Winner</div>
+    <h1>Valide ton produit,<br>configure ton agent,<br><span>définis ton client.</span></h1>
+    <p>Des données, pas de l'intuition. Chaque phase est une décision : avancer ou changer de produit.</p>
+    <div style="display:flex;flex-wrap:wrap;margin-top:22px;border:1px solid var(--border);border-radius:12px;overflow:hidden;">
+      <div style="flex:1;min-width:110px;padding:12px 16px;border-right:1px solid var(--border);background:var(--purple-dim);">
+        <div style="font-size:0.65rem;font-weight:700;color:var(--purple);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Phase 1</div>
+        <div style="font-size:0.82rem;font-weight:700;">Qualifier</div>
+        <div style="font-size:0.7rem;color:var(--muted);">5 min</div>
+      </div>
+      <div style="flex:1;min-width:110px;padding:12px 16px;border-right:1px solid var(--border);background:var(--green-dim);">
+        <div style="font-size:0.65rem;font-weight:700;color:var(--green);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Phase 2</div>
+        <div style="font-size:0.82rem;font-weight:700;">Valider</div>
+        <div style="font-size:0.7rem;color:var(--muted);">20 min</div>
+      </div>
+      <div style="flex:1;min-width:110px;padding:12px 16px;border-right:1px solid var(--border);background:var(--orange-dim);">
+        <div style="font-size:0.65rem;font-weight:700;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Phase 3</div>
+        <div style="font-size:0.82rem;font-weight:700;">Agent sourcing</div>
+        <div style="font-size:0.7rem;color:var(--muted);">30 min</div>
+      </div>
+      <div style="flex:1;min-width:110px;padding:12px 16px;background:var(--surface);">
+        <div style="font-size:0.65rem;font-weight:700;color:var(--muted);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:2px;">Ensuite</div>
+        <div style="font-size:0.82rem;font-weight:700;">Persona</div>
+        <div style="font-size:0.7rem;color:var(--muted);">+ Scoring S1</div>
+      </div>
+    </div>
   </div>
 
   <!-- PHASE 1 -->
@@ -426,33 +448,42 @@ body {
     <div class="phase-header">
       <div class="phase-num ph3">3</div>
       <div class="phase-header-text">
-        <h2>Phase 3 — Agent Sourcing &amp; Fulfillment</h2>
-        <p>Sélectionner l'agent qui expédiera tes commandes directement chez tes clients</p>
+        <h2>Phase 3 — Agent Sourcing</h2>
+        <p>Configurer ton partenaire logistique en Chine avant de lancer les pubs</p>
       </div>
       <span class="phase-duration">⏱ 30 min</span>
     </div>
-    <div class="validation-grid">
-      <div class="val-card">
-        <span class="val-icon">🤝</span>
-        <h4>Sélectionner un agent (priorité)</h4>
-        <div class="val-std">Agent > fournisseur direct</div>
-        <p>L'agent sourcing est basé en Chine. Il source auprès de l'usine, prépare les commandes et expédie directement chez chaque client final — sans que tu touches le produit. Contact direct usine possible, mais tu auras besoin d'un agent pour le fulfillment de toute façon.</p>
+
+    <div class="note" style="border-left-color:var(--orange);margin-bottom:18px;">
+      <strong>Le modèle :</strong> Tu ne stockes rien en France. L'agent sourcing est basé en Chine — il source auprès de l'usine, prépare et expédie directement chez chaque client dès qu'une commande arrive sur ton Shopify. Toi : tu vends, tu transmets les commandes, tu encaisses la marge.
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;">
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">1️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Trouver l'agent</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;"><strong style="color:var(--text);">Préféré :</strong> un agent sourcing spécialisé (Sourcing Box, ChinaDivision, Wiio…) — il centralise plusieurs usines, négocie les prix et gère le fulfillment.<br><br><strong style="color:var(--text);">Alternative :</strong> contacter directement le fournisseur AliExpress et lui demander s'il peut expédier à l'unité vers la France.</p>
       </div>
-      <div class="val-card">
-        <span class="val-icon">📋</span>
-        <h4>Contacter &amp; valider</h4>
-        <div class="val-std">Sans MOQ — ou MOQ le plus bas possible</div>
-        <p>Envoie le lien AliExpress du produit. Demande : prix unitaire, délai vers la France, méthode de transmission des commandes. <strong>Sur le MOQ :</strong> l'idéal = pas de MOQ (tu commandes à l'unité). S'il y en a un, négocie au minimum — moins de 10 unités si possible. Jamais 50 ou 100 à ce stade : tu n'as pas encore de validation marché. Les gros volumes se négocient après les premières ventes. Confirme aussi l'autorisation d'utiliser les photos/vidéos en pub.</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">2️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Envoyer le brief + négocier le MOQ</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Envoie le lien AliExpress. Demande : prix unitaire, délai d'expédition vers la France, méthode de transport. Confirme l'autorisation d'utiliser leurs visuels en pub.</p>
+        <p style="font-size:0.78rem;line-height:1.5;margin-top:10px;padding:9px 11px;background:rgba(251,146,60,0.08);border-left:3px solid #fb923c;border-radius:0 6px 6px 0;"><strong style="color:#fb923c;">MOQ :</strong> idéal = aucun (commande à l'unité). Si imposé, négocie le plus bas possible — vise &lt;10 unités, 20 max. Jamais 50 ou 100 avant tes premières ventes : le risque est encore trop élevé. Les volumes se négocient après les premières ventes réelles.</p>
       </div>
-      <div class="val-card">
-        <span class="val-icon">⚙️</span>
-        <h4>Configurer le process</h4>
-        <div class="val-std">Shopify → Agent → Client final</div>
-        <p>Quand une commande tombe sur ton Shopify, tu transmets les infos à l'agent (manuellement au départ). L'agent expédie directement au client et te fournit le numéro de suivi. Pas de stock chez toi, pas de logistique à gérer.</p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">3️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Confirmer le process commande</h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Clarifier avec l'agent :<br>— Comment lui transmets-tu les commandes ? (WhatsApp / CSV / app DSers)<br>— Quel délai entre réception et expédition ?<br>— Comment reçois-tu le numéro de suivi à envoyer au client ?</p>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
+        <div style="font-size:1.2rem;margin-bottom:8px;">4️⃣</div>
+        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:8px;">Commander un test <span style="font-size:0.72rem;color:var(--muted);font-weight:400;">(recommandé)</span></h4>
+        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Commande 1 unité à ta propre adresse. Tu vérifies la qualité réelle, l'emballage et le délai effectif avant de lancer tes pubs. Facultatif mais ça élimine les mauvaises surprises.</p>
       </div>
     </div>
-    <div class="note">
-      <strong>Comment ça fonctionne :</strong> Tu ne stockes rien en France. L'agent en Chine est ton bras opérationnel. Il source, prépare, expédie. Toi tu vends, tu transmets les commandes, tu encaisses la marge. <strong>Configure l'agent maintenant, vends dès S4.</strong>
+
+    <div class="note" style="margin-top:16px;">
+      <strong>Timing :</strong> Mise en place agent = quelques jours seulement. Lance ça en parallèle de S2 (Shopify). Test unitaire = 2 à 4 semaines si tu en commandes un. Objectif : agent opérationnel et confirmé avant le lancement S4.
     </div>
   </section>
 
@@ -576,55 +607,12 @@ body {
     </div>
   </section>
 
-  <!-- AGENT SOURCING — PONT S1 → S2 -->
-  <section class="phase-section">
-    <div class="phase-header">
-      <div class="phase-num" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.3);color:#fb923c;">⚙️</div>
-      <div class="phase-header-text">
-        <h2>Avant de passer à S2 — Configurer ton agent sourcing</h2>
-        <p>L'agent expédie directement chez tes clients depuis la Chine — tu ne touches jamais le produit</p>
-      </div>
-    </div>
-    <div class="insight" style="border-color:rgba(251,146,60,0.3);background:rgba(251,146,60,0.06);">
-      <strong>Le modèle Tariqa PRO :</strong> Tu ne stockes rien en France. L'agent sourcing en Chine est ton partenaire logistique. Il source auprès de l'usine ou du fabricant, prépare les commandes, et les expédie directement chez chaque client final. Toi, tu gères la boutique Shopify et les publicités — c'est tout.
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:18px;">
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <div style="font-size:1.2rem;margin-bottom:8px;">1️⃣</div>
-        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Trouver l'agent</h4>
-        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Option A : contacter directement le fournisseur AliExpress et lui demander s'il peut fullfiller à la commande. Option B (préférée) : passer par un agent sourcing spécialisé (Sourcing Box, ChinaDivision, Wiio...) qui fait l'intermédiaire avec les usines et gère le fulfillment.</p>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <div style="font-size:1.2rem;margin-bottom:8px;">2️⃣</div>
-        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Envoyer le brief + négocier le MOQ</h4>
-        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Envoie le lien AliExpress du produit validé. Demande : prix unitaire, délai d'expédition vers la France, méthode de transport recommandée. Demande également l'autorisation d'utiliser leurs visuels (photos / vidéos) dans tes publicités.</p>
-        <p style="font-size:0.8rem;line-height:1.5;margin-top:10px;padding:10px 12px;background:rgba(251,146,60,0.08);border-left:3px solid #fb923c;border-radius:0 6px 6px 0;"><strong style="color:#fb923c;">MOQ :</strong> L'idéal = pas de MOQ — tu commandes à l'unité au fil des commandes. S'il impose un minimum, négocie le plus bas possible : vise moins de 10 unités, 20 maximum. À ce stade, tu n'as aucune validation marché ni validation stratégie — partir sur 50 ou 100 unités, c'est trop de risque. Les volumes se négocient après les premières ventes réelles.</p>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <div style="font-size:1.2rem;margin-bottom:8px;">3️⃣</div>
-        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Confirmer le process commande</h4>
-        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Comment est-ce qu'une commande lui parvient ? (WhatsApp / CSV / app type DSers). Combien de temps entre réception de la commande et expédition ? Comment reçois-tu le numéro de suivi à transmettre au client ?</p>
-      </div>
-      <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px;">
-        <div style="font-size:1.2rem;margin-bottom:8px;">4️⃣</div>
-        <h4 style="font-size:0.88rem;font-weight:700;margin-bottom:6px;">Commander un test (recommandé)</h4>
-        <p style="font-size:0.8rem;color:var(--muted);line-height:1.5;">Commande 1 unité à ta propre adresse pour vérifier : qualité réelle du produit, emballage reçu, délai de livraison effectif. C'est facultatif mais ça élimine les mauvaises surprises avant le lancement.</p>
-      </div>
-    </div>
-    <div class="note" style="margin-top:16px;">
-      <strong>Timing :</strong> La mise en place avec l'agent prend quelques jours — fais-le en parallèle de S2. Si tu commandes un test unitaire, compte 2 à 4 semaines pour la livraison. L'objectif : agent opérationnel et prêt à expédier avant le lancement S4.
-    </div>
-  </section>
-
   <!-- PROCHAINE ÉTAPE -->
   <section style="margin-top:32px;background:linear-gradient(135deg,rgba(29,158,117,0.08),rgba(29,158,117,0.04));border:1px solid rgba(29,158,117,0.3);border-radius:14px;padding:24px 28px;margin-bottom:80px;">
     <div style="font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--green);margin-bottom:10px;">Prochaine étape — Semaine 2</div>
-    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Tu as ton produit validé. L'agent est contacté. Construis ton site.</h3>
-    <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px;">Produit ✓ — Marge ×4 ✓ — Persona ✓ — Agent sourcing configuré ✓. La semaine 2, tu crées ton Shopify mono-produit, tu rédiges ton copy avec l'IA, et tu ajoutes tous les éléments de confiance. Le site doit être prêt avant le lancement de tes pubs.</p>
-    <div style="display:flex;gap:10px;flex-wrap:wrap;">
-      <a href="s2-template-page-produit.html" style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:6px 14px;border-radius:8px;font-size:0.82rem;font-weight:700;text-decoration:none;">→ Template Page Produit S2</a>
-      <a href="s1-template-persona.html" style="background:var(--surface);border:1px solid var(--border);color:var(--muted);padding:6px 14px;border-radius:8px;font-size:0.82rem;text-decoration:none;">→ Fiche Persona S1</a>
-    </div>
+    <h3 style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Produit validé · Agent configuré · Persona défini → Construis ton site.</h3>
+    <p style="font-size:0.85rem;color:var(--muted);line-height:1.6;margin-bottom:16px;">La semaine 2, tu crées ton Shopify mono-produit, tu rédiges le copy avec l'IA et tu ajoutes tous les éléments de confiance. Le site doit être prêt avant le lancement de tes pubs en S4.</p>
+    <a href="s2-template-page-produit.html" style="background:rgba(29,158,117,0.15);border:1px solid rgba(29,158,117,0.3);color:var(--green);padding:8px 18px;border-radius:8px;font-size:0.84rem;font-weight:700;text-decoration:none;display:inline-block;">→ Commencer le Template Page Produit S2</a>
   </section>
 
 </main>
