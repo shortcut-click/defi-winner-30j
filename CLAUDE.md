@@ -1,6 +1,19 @@
 # CLAUDE.md — Défi Winner 30J
 
-Fichier mémoire du projet. Claude Code le lit automatiquement à chaque session.
+## Démarrage rapide
+
+```bash
+# Charger le token Circle avant tout appel API
+export $(cat .env | xargs)
+
+# Vérifier
+curl -s https://app.circle.so/api/admin/v2/spaces \
+  -H "Authorization: Token $CIRCLE_API_TOKEN" | python3 -m json.tool | head -20
+```
+
+> Pas de build system — HTML/CSS/JS pur. Ouvrir les fichiers directement dans le navigateur ou avec n'importe quel serveur statique.
+
+---
 
 ## Contexte projet
 
@@ -34,6 +47,14 @@ Fichier mémoire du projet. Claude Code le lit automatiquement à chaque session
 PATCH https://app.circle.so/api/admin/v2/posts/{id}
 body: { "tiptap_body": { "body": { "type": "doc", "content": [...] }, ... } }
 ```
+
+---
+
+## Quirks connus
+
+- **Circle API succès** : un PATCH réussi retourne `{"message": "Post updated."}` — pas un objet post standard. Traiter `message == "Post updated."` comme succès.
+- **Encodage Windows** : les scripts Python manipulant des emojis doivent passer par `sys.stdout.buffer.write(result.encode('utf-8'))` — le codec cp1252 de Windows plante sinon.
+- **`.env` protégé** : `.gitignore` inclut déjà `.env`. Ne jamais committer le token Circle.
 
 ---
 
@@ -87,28 +108,15 @@ Pour les `<select>` : `new Option(text, value)`.
 
 ---
 
-## Méthode & décisions produit
+## Décisions clés à ne pas réintroduire
 
-### Modèle business (Dropshipping via agent sourcing)
-- **Pas de stock en France.** L'agent sourcing en Chine source, prépare et expédie directement chez le client final.
-- Flux : Shopify commande → transmission à l'agent → agent expédie → tracking au client
-- Agent préféré > fournisseur direct (l'agent centralise usines + gère le fulfillment)
-- Si contact direct usine : passer par un agent pour le fulfillment de toute façon
-
-### MOQ (Minimum Order Quantity)
-- **Idéal : aucun MOQ** — commande à l'unité
-- Si MOQ imposé : négocier le plus bas possible (< 10 unités, 20 maximum)
-- **Jamais 50 ou 100 unités avant les premières ventes** — risque trop élevé sans validation marché
-- Les volumes se négocient après les premières ventes réelles
-
-### Framework produit winner
-- **Phase 1** (5 min) : 5 filtres disqualifiants + score douleur 1/2/3
-- **Phase 2** (20 min) : marge ×4 + demande prouvée + compétition sweet spot
-- **Phase 3** (30 min) : agent sourcing (trouver / brief+MOQ / process / test unitaire)
-- **Persona** : 4 étapes (lister, scorer, données, fiche 5 éléments)
-
-### Nuance persona 2025-2026
-Le persona n'est pas un filtre technique dans le gestionnaire de pubs — c'est **l'angle de la créa**. L'algo trouve les autres tout seul.
+| Décision | Règle |
+|---|---|
+| Stock | Pas de stock en France. Agent en Chine → expédie directement au client final |
+| MOQ | Idéal = aucun. Si imposé : < 10 unités, 20 max. Jamais 50-100 avant premières ventes |
+| Phase 3 S1 | Agent sourcing (trouver / brief+MOQ / process / test unitaire) — PAS un test pub META |
+| Persona | C'est l'angle de la créa, pas un filtre dans le gestionnaire de pubs |
+| Framework | P1 : 5 filtres + douleur 1/2/3 → P2 : marge ×4 + demande + compétition → P3 : agent |
 
 ---
 
@@ -141,6 +149,16 @@ Permissions : "Toute personne disposant du lien" → Éditeur
 Les participants dupliquent "DOSSIER DE BASE" et le renomment à leur nom.
 
 ---
+
+## Ressources externes
+
+- **Google Doc suivi des tâches :** https://docs.google.com/document/d/1j9R-ExAuXR1wgXDFNfMgzn-oR7PiLVVWyRBmB45aiqg/edit
+- **GitHub Pages :** https://shortcut-click.github.io/defi-winner-30j/
+- **Google Drive livrables :** https://drive.google.com/drive/folders/13uhqNKYS0twk9c8SpS7rEbaBG9ddX166
+
+## Agents disponibles
+
+- `Pedagogue` — expert pédagogie & formation en ligne → `~/.claude/agents/pedagogue.md`
 
 ## Tâches restantes
 
