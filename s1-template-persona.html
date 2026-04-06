@@ -527,69 +527,96 @@ function pcScore(btn, persona, crit, val) {
   scores[persona][crit] = val;
   updateTotals();
   try { localStorage.setItem('_persona_scores', JSON.stringify(scores)); } catch(e) {}
+  saveFields();
 }
 
 // ─── AUTO-SAUVEGARDE ────────────────────────────────────────────────────────
-(function() {
-  var KEY = 'defi_fiche_persona'; var _t;
-  function showSaved() {
-    var ind = document.getElementById('_si');
-    if (!ind) return;
-    ind.style.opacity = '1'; clearTimeout(_t);
-    _t = setTimeout(function() { ind.style.opacity = '0'; }, 2000);
-  }
-  function saveFields() {
-    var d = {};
+var _saveKey = 'defi_fiche_persona';
+var _saveTimer;
+
+function _showSaved() {
+  var ind = document.getElementById('_si');
+  if (!ind) return;
+  ind.style.opacity = '1'; clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(function() { ind.style.opacity = '0'; }, 2000);
+}
+
+function saveFields() {
+  var d = {};
+  document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
+    d[i] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+  });
+  // Sauvegarder aussi l'émotion sélectionnée
+  var selEmo = document.querySelector('.emotion-opt.selected');
+  d._emotion = selEmo ? selEmo.textContent : '';
+  try { localStorage.setItem(_saveKey, JSON.stringify(d)); } catch(e) {}
+  _showSaved();
+}
+
+function _restoreFields() {
+  // Restaurer inputs et textareas
+  try {
+    var d = JSON.parse(localStorage.getItem(_saveKey) || 'null');
+    if (!d) return;
     document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
-      d[i] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+      if (d[i] === undefined) return;
+      if (el.type === 'checkbox' || el.type === 'radio') el.checked = d[i]; else el.value = d[i];
     });
-    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
-    showSaved();
-  }
-  function restoreFields() {
-    try {
-      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
-      if (!d) return;
-      document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
-        if (d[i] === undefined) return;
-        if (el.type === 'checkbox' || el.type === 'radio') el.checked = d[i]; else el.value = d[i];
+    // Restaurer l'émotion sélectionnée
+    if (d._emotion) {
+      document.querySelectorAll('.emotion-opt').forEach(function(e) {
+        e.classList.remove('selected');
+        if (e.textContent === d._emotion) e.classList.add('selected');
       });
-    } catch(e) {}
-    // Restore scores
-    try {
-      var saved = JSON.parse(localStorage.getItem('_persona_scores') || 'null');
-      if (!saved) return;
-      ['A','B','C'].forEach(function(p) {
-        ['douleur','urgence','acces','decl'].forEach(function(c) {
-          var v = saved[p][c];
-          if (!v) return;
-          scores[p][c] = v;
-          var rows = document.querySelectorAll('[onclick*="pcScore"][onclick*="\'' + p + '\'"][onclick*="\'' + c + '\'"]');
-          rows.forEach(function(btn) {
-            if (btn.getAttribute('onclick').endsWith(', ' + v + ')')) {
-              var row = btn.parentElement;
-              Array.from(row.children).forEach(function(b) { b.classList.remove('a1','a2','a3'); });
-              btn.classList.add('a' + v);
-            }
-          });
+    }
+  } catch(e) {}
+  // Restaurer les scores persona
+  try {
+    var saved = JSON.parse(localStorage.getItem('_persona_scores') || 'null');
+    if (!saved) return;
+    ['A','B','C'].forEach(function(p) {
+      ['douleur','urgence','acces','decl'].forEach(function(c) {
+        var v = saved[p] && saved[p][c];
+        if (!v) return;
+        scores[p][c] = v;
+        var btns = document.querySelectorAll('[onclick*="pcScore"]');
+        btns.forEach(function(btn) {
+          var attr = btn.getAttribute('onclick') || '';
+          if (attr.indexOf("'" + p + "'") !== -1 && attr.indexOf("'" + c + "'") !== -1 && attr.indexOf(', ' + v + ')') !== -1) {
+            var row = btn.parentElement;
+            Array.from(row.children).forEach(function(b) { b.classList.remove('a1','a2','a3'); });
+            btn.classList.add('a' + v);
+          }
         });
       });
-      updateTotals();
-    } catch(e) {}
-  }
-  document.addEventListener('DOMContentLoaded', function() {
-    var inner = document.querySelector('.header-inner');
-    if (inner) {
-      var ind = document.createElement('span'); ind.id = '_si';
-      ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
-      ind.textContent = '💾 Sauvegardé'; inner.appendChild(ind);
-    }
-    restoreFields();
-    document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
-      el.addEventListener('input', saveFields); el.addEventListener('change', saveFields);
     });
+    updateTotals();
+  } catch(e) {}
+}
+
+function _initSave() {
+  // Indicateur de sauvegarde dans le header
+  var inner = document.querySelector('.header-inner');
+  if (inner && !document.getElementById('_si')) {
+    var ind = document.createElement('span'); ind.id = '_si';
+    ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
+    ind.textContent = 'Sauvegarde'; inner.appendChild(ind);
+  }
+  // Restaurer les données sauvegardées
+  _restoreFields();
+  // Attacher les événements sur tous les champs
+  document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
+    el.addEventListener('input', saveFields);
+    el.addEventListener('change', saveFields);
   });
-})();
+}
+
+// Lancer l'init — compatible que DOMContentLoaded soit déjà passé ou non
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', _initSave);
+} else {
+  _initSave();
+}
 
 function updateTotals() {
   var totals = {};
@@ -639,6 +666,7 @@ function switchTab(id) {
 function selectEmotion(el) {
   document.querySelectorAll('.emotion-opt').forEach(function(e) { e.classList.remove('selected'); });
   el.classList.add('selected');
+  saveFields();
 }
 </script>
 </body>
