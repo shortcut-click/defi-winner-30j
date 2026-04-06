@@ -577,15 +577,14 @@ function selectPain(el, score) {
       });
     } catch(e) {}
   }
-  document.addEventListener('DOMContentLoaded', function() {
+  function _init() {
     var inner = document.querySelector('.header-inner');
-    if (inner) {
+    if (inner && !document.getElementById('_si')) {
       var ind = document.createElement('span'); ind.id = '_si';
       ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
-      ind.textContent = '💾 Sauvegardé'; inner.appendChild(ind);
+      ind.textContent = 'Sauvegarde'; inner.appendChild(ind);
     }
     restoreFields();
-    // Restore button selections
     try {
       var n = localStorage.getItem('_fp_niche');
       if (n) document.querySelectorAll('.niche-opt h4').forEach(function(h) { if (h.textContent === n) h.closest('.niche-opt').classList.add('selected'); });
@@ -597,7 +596,8 @@ function selectPain(el, score) {
     document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
       el.addEventListener('input', saveFields); el.addEventListener('change', saveFields);
     });
-  });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); } else { _init(); }
 })();
 
 function calcMarge() {

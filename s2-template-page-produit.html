@@ -468,18 +468,19 @@ function copyPrompt(id, btn) {
       });
     } catch(e) {}
   }
-  document.addEventListener('DOMContentLoaded', function() {
+  function _init() {
     var inner = document.querySelector('.header-inner');
-    if (inner) {
+    if (inner && !document.getElementById('_si')) {
       var ind = document.createElement('span'); ind.id = '_si';
       ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
-      ind.textContent = '💾 Sauvegardé'; inner.appendChild(ind);
+      ind.textContent = 'Sauvegarde'; inner.appendChild(ind);
     }
     restoreFields();
     document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
       el.addEventListener('input', saveFields); el.addEventListener('change', saveFields);
     });
-  });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); } else { _init(); }
 })();
 </script>
 </body>

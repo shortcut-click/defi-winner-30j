@@ -483,7 +483,55 @@ function evalHook(inputId, feedId) {
     feed.textContent = 'Trop long (' + words + ' mots) — un hook doit tenir en 10 mots max sur un visuel.';
     feed.style.color = '#f87171';
   }
+  if (typeof saveCreasFields === 'function') saveCreasFields();
 }
+
+// ─── AUTO-SAUVEGARDE localStorage ───
+(function() {
+  var KEY = 'defi_framework_creas'; var _t;
+  function showSaved() {
+    var ind = document.getElementById('_si');
+    if (!ind) return;
+    ind.style.opacity = '1'; clearTimeout(_t);
+    _t = setTimeout(function() { ind.style.opacity = '0'; }, 2000);
+  }
+  window.saveCreasFields = function() {
+    var d = {};
+    document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
+      d[i] = (el.type === 'checkbox' || el.type === 'radio') ? el.checked : el.value;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
+    showSaved();
+  };
+  function restoreFields() {
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!d) return;
+      document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el, i) {
+        if (d[i] === undefined) return;
+        if (el.type === 'checkbox' || el.type === 'radio') el.checked = d[i]; else el.value = d[i];
+      });
+      // Re-évaluer les hooks après restauration
+      ['hookProb','hookBenef','hookProof'].forEach(function(id) {
+        var el = document.getElementById(id);
+        if (el && el.value) evalHook(id, id.replace('hook','feed'));
+      });
+    } catch(e) {}
+  }
+  function _init() {
+    var inner = document.querySelector('.header-inner');
+    if (inner && !document.getElementById('_si')) {
+      var ind = document.createElement('span'); ind.id = '_si';
+      ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
+      ind.textContent = 'Sauvegarde'; inner.appendChild(ind);
+    }
+    restoreFields();
+    document.querySelectorAll('input:not([type=button]):not([type=submit]):not([type=reset]), textarea').forEach(function(el) {
+      el.addEventListener('input', saveCreasFields); el.addEventListener('change', saveCreasFields);
+    });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); } else { _init(); }
+})();
 </script>
 </body>
 </html>

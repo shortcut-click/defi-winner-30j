@@ -699,6 +699,62 @@ function toggleStep(head) {
     icon.textContent = '▲';
   }
 }
+
+// ─── AUTO-SAUVEGARDE localStorage ───
+(function() {
+  var KEY = 'defi_framework_produit';
+  function saveState() {
+    var d = {};
+    // Sauvegarder l'état des filtres (checked/failed/none)
+    document.querySelectorAll('.filter-item').forEach(function(el, i) {
+      d['f' + i] = el.classList.contains('checked') ? 'checked' : el.classList.contains('failed') ? 'failed' : '';
+    });
+    // Sauvegarder le score douleur
+    document.querySelectorAll('.pain-level').forEach(function(el, i) {
+      if (el.classList.contains('sel-1')) d.pain = 1;
+      if (el.classList.contains('sel-2')) d.pain = 2;
+      if (el.classList.contains('sel-3')) d.pain = 3;
+    });
+    try { localStorage.setItem(KEY, JSON.stringify(d)); } catch(e) {}
+    // Indicateur sauvegarde
+    var ind = document.getElementById('_si');
+    if (ind) { ind.style.opacity = '1'; clearTimeout(window._st); window._st = setTimeout(function() { ind.style.opacity = '0'; }, 2000); }
+  }
+  function restoreState() {
+    try {
+      var d = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!d) return;
+      // Restaurer les filtres
+      document.querySelectorAll('.filter-item').forEach(function(el, i) {
+        var state = d['f' + i];
+        if (!state) return;
+        el.classList.add(state);
+        var check = el.querySelector('.filter-check');
+        check.textContent = state === 'checked' ? '✓' : '✕';
+      });
+      // Restaurer le score douleur
+      if (d.pain) {
+        document.querySelectorAll('.pain-level').forEach(function(el, idx) {
+          if (idx + 1 === d.pain) { el.classList.add('sel-' + d.pain); painScore = d.pain; }
+        });
+      }
+      updateVerdict();
+    } catch(e) {}
+  }
+  function _init() {
+    var inner = document.querySelector('.header-inner');
+    if (inner && !document.getElementById('_si')) {
+      var ind = document.createElement('span'); ind.id = '_si';
+      ind.style.cssText = 'font-size:0.68rem;color:#1D9E75;opacity:0;transition:opacity 0.4s;font-weight:700;';
+      ind.textContent = 'Sauvegarde'; inner.appendChild(ind);
+    }
+    restoreState();
+    // Sauvegarder à chaque clic sur un filtre ou un score douleur
+    document.querySelectorAll('.filter-item').forEach(function(el) { el.addEventListener('click', function() { setTimeout(saveState, 50); }); });
+    document.querySelectorAll('.pain-level').forEach(function(el) { el.addEventListener('click', function() { setTimeout(saveState, 50); }); });
+  }
+  if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _init); } else { _init(); }
+})();
 </script>
 </body>
 </html>
