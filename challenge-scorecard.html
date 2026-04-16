@@ -826,23 +826,33 @@ document.getElementById('weekTabs').addEventListener('click', function(e) {
 });
 
 /* DEMO DATA */
-function loadDemo() {
+function loadReal() {
   if (state.participants.length > 0) return;
   state.participants = [
-    { id:'d1', name:'Nadia L.', tag:'Sécurité enfants', s1:91, s2:88, s3:76, s4:82, badges:{vente:true,atc:true,rapide:true} },
-    { id:'d2', name:'Karim B.', tag:'Éveil éducatif', s1:74, s2:79, s3:85, s4:null, badges:{vente:false,atc:true,rapide:false} },
-    { id:'d3', name:'Sarah M.', tag:'Sommeil bébé', s1:87, s2:82, s3:null, s4:null, badges:{vente:false,atc:false,rapide:true} },
-    { id:'d4', name:'Amina T.', tag:'Sommeil bébé', s1:78, s2:72, s3:80, s4:null, badges:{vente:false,atc:true,rapide:false} },
-    { id:'d5', name:'Youssef A.', tag:'Confort bien-être', s1:63, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} }
+    { id:'p1', name:'Halim Bilal', tag:'Biberon anti-colique / Cam\u00e9ra b\u00e9b\u00e9', s1:82, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p2', name:'Sarah El Khattabi', tag:'Porte-b\u00e9b\u00e9 bandouli\u00e8re', s1:45, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p3', name:'Halim (Sigaoui)', tag:'Hamac pour poussette', s1:17, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p4', name:'Nasr-allah Karim', tag:'Coussin de bain b\u00e9b\u00e9', s1:10, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p5', name:'Loubna Haddouch', tag:'Sac \u00e0 langer / organiseur poussette', s1:5, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p6', name:'Sabah H', tag:'Porte-b\u00e9b\u00e9 n\u00e9opr\u00e8ne', s1:5, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p7', name:'Amal Chahboune', tag:'\u2014', s1:0, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p8', name:'Mehdi', tag:'\u2014', s1:0, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p9', name:'Nadia Boutaghras', tag:'\u2014', s1:0, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p10', name:'Aouatif K.', tag:'\u2014', s1:0, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} },
+    { id:'p11', name:'C\u00e9dric', tag:'\u2014', s1:0, s2:null, s3:null, s4:null, badges:{vente:false,atc:false,rapide:false} }
   ];
   state.comments = [
-    { id:'c1', participantId:'d1', week:'S1', text:'Excellent travail Nadia, analyse très rigoureuse. La marge ×4 est bien calculée et le persona est hyper précis. Continue comme ça !' },
-    { id:'c2', participantId:'d3', week:'S1', text:'Sarah, bon démarrage ! Ton produit a du potentiel mais les screenshots META Ads Library manquaient de profondeur. Montre les annonceurs actifs depuis 30j+.' }
+    { id:'c1', participantId:'p1', week:'S1', text:'Meilleur dossier du challenge. 2 produits recherch\u00e9s (biberon + cam\u00e9ra), 40+ fichiers, prompt IA exemplaire avec donn\u00e9es terrain r\u00e9elles (verbatims Amazon/Reddit/TikTok). Marge 4.1x valid\u00e9e. Risque plomb identifi\u00e9 \u2014 excellent esprit critique. Manque : fiche produit cam\u00e9ra + agent sourcing \u00e0 finaliser.' },
+    { id:'c2', participantId:'p2', week:'S1', text:'Persona solide (3 personas, 11/12 gagnant). Bonne veille Meta Ads Library (Kalinelo, 176 pubs, d\u00e9penses analys\u00e9es). Verbatim Reddit r\u00e9el. Mais fiche produit absente \u2014 aucune validation chiffr\u00e9e, pas de marge, pas de fournisseur. Pas de prompt IA document\u00e9.' },
+    { id:'c3', participantId:'p3', week:'S1', text:'Bonne analyse Meta Ads (Hoppie, 890 pubs, 5 mois actif, multi-pays). Site concurrent captur\u00e9. Mais pas de fiche produit, pas de persona, pas de calcul de marge. Il faut compl\u00e9ter le travail.' },
+    { id:'c4', participantId:'p4', week:'S1', text:'2 screenshots upload\u00e9s mi-avril, tr\u00e8s en retard. Fichiers non renomm\u00e9s. Contenu insuffisant pour \u00e9valuer.' },
+    { id:'c5', participantId:'p5', week:'S1', text:'Post\u00e9 son produit sur Circle (sac \u00e0 langer, 2 likes) mais aucun livrable dans le Drive. Il faut d\u00e9poser les documents.' },
+    { id:'c6', participantId:'p6', week:'S1', text:'Post\u00e9 un porte-b\u00e9b\u00e9 n\u00e9opr\u00e8ne sur Circle mais dossier Drive compl\u00e8tement vide. L\u2019intention est l\u00e0 mais pas les livrables.' }
   ];
   saveState();
 }
 
-loadDemo();
+loadReal();
 render();
 </script>
 </body>
