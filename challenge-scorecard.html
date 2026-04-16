@@ -280,10 +280,10 @@ var COLORS = ['#1D9E75','#7c3aed','#ea580c','#0284c7','#dc2626','#0891b2','#65a3
 var view = 'global';
 
 function loadState() {
-  try { var d = localStorage.getItem('ctp_sc_v3'); if (d) return JSON.parse(d); } catch(e) {}
+  try { var d = localStorage.getItem('ctp_sc_v4'); if (d) return JSON.parse(d); } catch(e) {}
   return { participants: [], comments: [] };
 }
-function saveState() { try { localStorage.setItem('ctp_sc_v3', JSON.stringify(state)); } catch(e) {} }
+function saveState() { try { localStorage.setItem('ctp_sc_v4', JSON.stringify(state)); } catch(e) {} }
 var state = loadState();
 
 function getTotal(p) {
